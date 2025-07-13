@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { 
   PiBookOpenText, 
   PiPencilLine, 
-  PiRocketLaunch, 
   PiLightbulb, 
   PiGraduationCap,
   PiPuzzlePiece,

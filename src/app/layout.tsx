@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://evolve-ai-learning.vercel.app'),
   title: "EVOLVE - AI-Powered Learning Platform",
   description: "Revolutionize your learning experience with EVOLVE - an AI-powered platform for personalized, project-based learning.",
   icons: {
