@@ -1,0 +1,1090 @@
+### Identity & Visual Language Blueprint
+
+#### 1. Core Metaphor: “Paper for Learning”
+Paper signals knowledge acquisition (books, notebooks) and experimentation (doodles, prototypes). Make it tangible with:
+
+-  Black-on-white line-art illustrations (e.g., paper planes, pencils, rockets, torn-edge frames, notebook margins).  
+-  Micro-interactions that “scribble” or “erase” on hover.  
+-  Light paper-texture background (≤5% contrast) to preserve accessibility.
+
+#### 2. Iconography & Micro-Imagery
+Name tags for reusable assets (SVG, 2 px stroke, rounded joins):
+
+| Tag | Usage | Style cue |
+| ---- | ---- | ---- |
+| paper-plane | progression / quick-start | dashed motion lines |
+| folded-corner-page | tool-tips / docs | 45° top-right fold |
+| pencil-edit | inline edit | mono-stroke, tilted 18° |
+| rocket-launch | AI-powered boost | smoke in three ellipses |
+| checklist-pad | task / module | spiral binding top |
+| bookmark-ribbon | save / favourite | negative-space cut |
+| ruler-plus-compass | analytics / metrics | intersection lines |
+| graduation-cap-hover | milestones | tassel animated on hover |
+| chat-bubble-scribble | peer discussion | wavy tail |
+| light-bulb-sketch | concept / insight | hatched filament |
+
+(Icon grammar derived from Chen’s icon design methodology [1] and education icon libraries [2][3].)
+
+#### 3. Typography
+
+Balanced between “hand-drawn paper” and “serious SaaS”:
+
+| Role | Font | Why |
+| ---- | ---- | ---- |
+| Display / H1-H2 | “Recoletta” or “Chronicle Display” (Serif) | evokes textbook headings, high legibility at large sizes [4]. |
+| Body | “Inter” or “Roboto” (Sans-serif, 1.5 rem line-height) | proven readability on screens [5]. |
+| Accent / Quotes | “Kalam” or “Patrick Hand” (Google hand-script) | note-like authenticity without impairing scanning [6]. |
+
+Best practice: max 2 families (serif + sans); add script only for <5% text. Use 400/700 weights; avoid italics for accessibility.
+
+Readable sizes (WCAG 2.2):
+
+– Body 17–18 px  
+– Caption 14 px  
+– Headings 1.6–2.8 × body scale.
+
+#### 4. Colour Psychology & Dopamine Loop
+
+Although the macro look is black-and-white, strategic colour pops trigger attention and reward circuits [7][8][9]:
+
+Primary Accent (link/buttons)  
+-  Dopamine Blue #4285F4 — boosts focus and trust in learning contexts [10]. Contrast 8.6:1 on white.
+
+Secondary Accents  
+-  Mentorship Mint #34C9A3 — calm concentration [7].  
+-  Achievement Amber #FFB623 — warmth & milestone feedback [9].  
+-  Error / Warning Terracotta #E5533C — accessible alternative to pure red.
+
+Dark Mode / Night Study  
+Background #121212; Text #E0E0E0; keep accents identical for brand consistency.
+
+Use 60-30-10 rule: 60% white/paper, 30% greys (#F5F5F5 – #9E9E9E for depth), 10% accent.
+
+Animation cue: On task completion flash accent hue +8% saturation for 180 ms to mimic micro-dopamine hit [11].
+
+#### 5. UI & Layout Patterns (SaaS-Edu Benchmarks)
+
+Pattern | Source SaaS (2025) | Fit for Paper Style
+--- | --- | ---
+Progressive Dashboard → Module Cards | 360Learning, Skillsoft [12] | Cards look like sticky-notes with drop shadows ≤2 dp.
+Split “Reader” Layout (content left, linear outline right) | Coursera, ISTE StretchAI [13] | Outline rendered as ruled notebook margin.
+Inline AI Coach | Mainstay bot [12] | Speech bubble with hand-drawn tail.
+Checklist-Onboarding | ClickUp UX study [14] | Notebook checklist with tick animations.
+Global Search + Instant Preview | Modern SaaS pattern library [15] | Search bar inside torn-paper rectangle.
+
+Apply minimalist UI conventions [16][17]: generous whitespace, 8-pt grid, one accent colour per screen, sticky “paper-tab” nav bar.
+
+#### 6. Psychological Hooks
+
+1. **Curiosity** – reveal-on-scroll doodles (Zeigarnik effect keeps users exploring).  
+2. **Competence** – visible progress bar styled as pencil filling a ruler.  
+3. **Relatedness** – avatar circles drawn as pencil sketches until profile filled.  
+4. **Autonomy** – dark/light toggle shown as sun/moon doodle on sticky note.
+
+#### 7. Accessibility & Performance
+
+-  All icons SVG, <24 KB, 2 : 1 stroke-to-canvas ratio.  
+-  Colour-blind safe (simulate Deuteranopia; blue/mint unaffected [7]).  
+-  Prefer `prefers-reduced-motion` for sketch animations.  
+-  Fonts served via `font-display: swap` to prevent FOUT.
+
+#### 8. Deliverables Check-List
+
+✔ Master icon set (24 × 24 & 48 × 48).  
+✔ Figma styles: colour tokens + typography scale.  
+✔ CSS class map (e.g., `.paper-card`, `.scribble-hover`).  
+✔ Brand one-pager for contributors.
+
+**Key References**
+
+[4] “Educational Website Fonts and Readability”, *Calibri vs Serif* study, IEEE (2022).  
+[7] Sage Journals: Impact of Color Hues on Arousal in Digital Platforms (2025).  
+[8] Hindawi: Warm vs Cool Color Tones in Multimedia Learning (2022).  
+[9] Hostinger: 30 Website Color Schemes (2025).  
+[10] VistaPrint: Color Psychology for Websites (2025).  
+[17] PayProGlobal: SaaS UI Design Patterns (2025).  
+[16] Dribbble Minimalist UI inspiration board (2025).  
+[14] Insaim: 20 SaaS Design Best Practices (2025).  
+[15] GitHub: Education Design System tokens (2019).  
+[5] Clay Agency: UI Elements & Readability Guide (2024).  
+[1] Chen, “Toward a Methodology of Graphical Icon Design”, IEEE (2003).  
+[6] EdTechBooks: Icon Library & ARC principles (2024).
+
+[1] https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=8c233b3677bf02e3a7c1ada9c45866cdfec79f09
+[2] https://icons8.com/icons/set/education-paper
+[3] https://www.vecteezy.com/free-vector/learn-icon
+[4] https://www.sec.gov/Archives/edgar/data/1070296/000117184322001829/fcap20211231_10k.htm
+[5] https://clay.global/blog/ux-guide/ui-elements
+[6] https://edtechbooks.org/design/icon_library
+[7] https://journals.sagepub.com/doi/10.1177/13567667251340408
+[8] https://downloads.hindawi.com/journals/hbet/2022/1235732.pdf
+[9] https://www.hostinger.com/tutorials/website-color-schemes
+[10] https://www.vistaprint.com/hub/website-color-schemes
+[11] https://maynetic.com/blogs/news/the-vibrant-science-of-colour-boosting-dopamine-through-colour-and-vertical-play?srsltid=AfmBOorgrckTerpUJBJK-LkEDmdK7bOW12CS7SnlTtH2orei1r9IiGxm
+[12] https://builtin.com/artificial-intelligence/ai-in-education
+[13] https://iste.org/ai
+[14] https://www.insaim.design/blog/20-best-practices-for-saas-product-design
+[15] https://gist.github.com/mpaiva-cc/d4ef3a652872cb5a91aa529db98d62dd
+[16] https://dribbble.com/tags/minimalist-ui
+[17] https://payproglobal.com/answers/what-are-saas-ui-design-patterns/
+[18] https://www.sec.gov/Archives/edgar/data/1899830/000189983025000015/perf-20241231.htm
+[19] https://www.sec.gov/Archives/edgar/data/1010134/000117891325001749/zk2533076.htm
+[20] https://www.sec.gov/Archives/edgar/data/1821468/000095017025058824/yq-20241231.htm
+[21] https://www.sec.gov/Archives/edgar/data/1899005/000121390025019728/ea0231895-20f_beamr.htm
+[22] https://www.sec.gov/Archives/edgar/data/769397/000076939725000019/adsk-20250131.htm
+[23] https://www.sec.gov/Archives/edgar/data/1057352/000105735225000016/csgp-20241231.htm
+[24] https://www.sec.gov/Archives/edgar/data/1809587/000141057825000783/beke-20241231x20f.htm
+[25] https://www.emerald.com/insight/content/doi/10.1108/IDD-10-2022-0099/full/html
+[26] https://ieeexplore.ieee.org/document/6804709/
+[27] https://www.chndoi.org/Resolution/Handler?doi=10.13703/j.0255-2930.20191026-0002
+[28] http://services.igi-global.com/resolvedoi/resolve.aspx?doi=10.4018/978-1-6684-3710-0.ch025
+[29] http://services.igi-global.com/resolvedoi/resolve.aspx?doi=10.4018/978-1-7998-4930-8.ch009
+[30] http://link.springer.com/10.1007/978-3-319-48829-5_22
+[31] https://www.mdpi.com/2227-7390/9/18/2219
+[32] https://ieeexplore.ieee.org/document/10331909/
+[33] https://easternpeak.com/blog/top-education-app-design-trends/
+[34] https://www.udemy.com/course/psychology-driven-web-design-part-2-advanced-topics/
+[35] https://dev.to/marketing_team_88143a22ad/brand-design-for-saas-startups-your-ultimate-competitive-advantage-pda
+[36] https://www.pinterest.com/eaglefiveone/e-learning-platforms/
+[37] https://3.7designs.co/blog/a-comprehensive-guide-to-web-design-psychology/
+[38] https://dribbble.com/shots/23766540-AI-Tutoring-Dashboard-UI-UX-Design-SaaS-Web-app-Figma-design
+[39] https://dribbble.com/tags/learning-platform
+[40] https://dev.to/vistasadmediacommunications/unlocking-web-design-psychology-how-understanding-user-behavior-creates-engaging-experiences-bog
+[41] https://elearningindustry.com/launch-your-lms-with-a-touch-of-saas-and-a-hint-of-ed-sheeran
+[42] https://framcreative.com/insights/latest-trends-best-practices-and-top-experiences-in-ui-ux-design-for-e-learning
+[43] https://blog.emb.global/web-design-psychology/
+[44] https://www.academyofmine.com/best-saas-learning-management-systems/
+[45] https://www.workast.com/blog/the-future-of-lms-ui-ux-emerging-trends-and-innovations/
+[46] https://h2o-digital.com/the-psychology-behind-successful-web-design/
+[47] https://www.ramotion.com/blog/what-is-saas-branding/
+[48] https://www.uxpin.com/studio/blog/ui-ux-design-trends/
+[49] https://www.sec.gov/Archives/edgar/data/17313/000001731325000042/cswc-20250331_htm.xml
+[50] https://www.sec.gov/Archives/edgar/data/1831359/000141057825000474/jwsm-20241231x10k.htm
+[51] https://www.sec.gov/Archives/edgar/data/713676/000071367625000027/pnc-20241231.htm
+[52] https://www.sec.gov/Archives/edgar/data/1060219/000155479523000063/sal0310form10k.htm
+[53] https://www.sec.gov/Archives/edgar/data/1157408/000155837023015003/lrn-20230630x10k.htm
+[54] https://www.sec.gov/Archives/edgar/data/730464/000155837023014509/atge-20230630x10k.htm
+[55] https://www.sec.gov/Archives/edgar/data/1809353/000141057823001502/tmb-20221231x10k.htm
+[56] https://journal.arimbi.or.id/index.php/Kegiatanpositif/article/view/481
+[57] https://www.informingscience.org/Publications/1983
+[58] https://www.semanticscholar.org/paper/7417068f00876e58dda854bbde2a286225b8c0d6
+[59] https://ejournals.bc.edu/index.php/ital/article/download/3354/2965
+[60] https://pmc.ncbi.nlm.nih.gov/articles/PMC2600017/
+[61] https://www.tandfonline.com/doi/pdf/10.1080/2331186X.2021.1968779?needAccess=true
+[62] https://ccsenet.org/journal/index.php/ies/article/download/24169/15311
+[63] https://arxiv.org/html/2407.14774v1
+[64] https://www.progress.com/blogs/best-practices-choosing-typography-education-websites-apps
+[65] https://htmlburger.com/blog/psychology-of-color-improve-web-design/
+[66] https://design.tutsplus.com/tutorials/photoshop-a-paper-texture-from-scratch-then-create-a-grungy-web-design-with-it--psd-1649
+[67] https://www.logome.ai/blogs/best-monospaced-fonts-for-logos
+[68] https://blog.prototypr.io/color-psychology-in-web-design-bf974293beb?gi=d0f7a61e76e2
+[69] https://www.vandelaydesign.com/paper-textures/
+[70] https://www.typewolf.com/top-10-monospaced-fonts
+[71] https://www.site123.com/learn/color-psychology-in-web-design-choosing-the-right-palette-for-your-site
+[72] https://onextrapixel.com/free-paid-paper-textures-rescources/
+[73] https://fonts.google.com/specimen/Space+Mono
+[74] https://www.thecreativemomentum.com/blog/design-noir-the-power-of-black-and-white-web-design
+[75] https://www.webfx.com/blog/web-design/how-to-create-a-worn-paper-web-layout-using-photoshop/
+[76] https://fonts.adobe.com/fonts/major-mono-display
+[77] https://www.thoughtlab.com/blog/color-psychology-in-web-design-making-the-right-impression/
+[78] https://blogs.articulate.com/rapid-elearning/hundreds-of-free-textures-for-your-e-learning-courses/
+[79] https://design.tutsplus.com/articles/34-cool-bold-monospace-fonts-evenly-spaced-fonts--cms-41946
+[80] https://www.sec.gov/Archives/edgar/data/69733/000143774925019916/nath20250331_10k.htm
+[81] https://www.sec.gov/Archives/edgar/data/1004989/000143774925017409/sgrp20241231_10k_htm.xml
+[82] https://www.sec.gov/Archives/edgar/data/1565228/000164117225008150/form10-k.htm
+[83] https://www.sec.gov/Archives/edgar/data/1376321/000117184325002214/cnet20241231_10k.htm
+[84] https://www.sec.gov/Archives/edgar/data/1774675/000143774925011912/skil20250131_10k.htm
+[85] https://www.sec.gov/Archives/edgar/data/31462/000155837025001263/ecl-20241231x10k.htm
+[86] https://www.sec.gov/Archives/edgar/data/712771/000143774925004744/cnob20241231_10k.htm
+[87] http://link.springer.com/10.1007/978-981-10-8612-0_50
+[88] https://www.thecommonwealth-ilibrary.org/index.php/comsec/catalog/view/159/156/1226
+[89] https://journal.ipm2kpe.or.id/index.php/INTECOM/article/view/9926
+[90] http://scholarpublishing.org/index.php/ASSRJ/article/view/1147
+[91] https://hrmars.com/journals/papers/IJARBSS/v14-i8/22156
+[92] http://koreascience.or.kr/journal/view.jsp?kj=JKOHBZ&py=2020&vnc=v10n11&sp=265
+[93] https://journals.lww.com/10.1097/MCG.0000000000002156
+[94] https://scholar.kyobobook.co.kr/article/detail/4010068117053
+[95] https://blog.tubikstudio.com/line-art-illustrations/
+[96] https://www.youtube.com/watch?v=hXhYHCnnt2o
+[97] https://blogs.articulate.com/rapid-elearning/over-100-free-handwritten-fonts/
+[98] https://www.vecteezy.com/free-vector/education-line-drawing
+[99] https://www.udemy.com/course/icon-design/?amp%3Bpmtag=CAREERS24LEARN15
+[100] https://fontesk.com/au-school-handwriting-fonts/
+[101] https://www.shutterstock.com/search/education-line-art
+[102] https://www.skillshare.com/en/classes/advance-your-ui-ux-skills-with-sketch-symbols-and-dynamic-styleguides/1464647384
+[103] https://github.com/MezMerrit/AU-School-Handwriting-Fonts
+[104] https://www.shutterstock.com/search/line-art-education
+[105] https://dev.to/prince_chouhan/mastering-iconography-enhancing-ux-through-visual-symbols-43in
+[106] https://blogs.articulate.com/rapid-elearning/7-free-handwritten-fonts-for-your-e-learning-courses/
+[107] https://inkbotdesign.com/educational-website-design/
+[108] https://designlab.com/sketch-101-course/symbols
+[109] https://fontsarena.com/blog/best-handwriting-fonts-for-students/
+[110] https://speckyboy.com/lines-web-design/
+[111] https://www.sec.gov/Archives/edgar/data/1771007/000129281425001707/afyaform20f_2024.htm
+[112] https://www.sec.gov/Archives/edgar/data/1873454/000173112225000554/e6507_424b4.htm
+[113] https://www.sec.gov/Archives/edgar/data/1046568/000095017025022187/prdo-20241231.htm
+[114] https://www.sec.gov/Archives/edgar/data/1636459/000114036125011373/ef20046220_10k.htm
+[115] https://www.sec.gov/Archives/edgar/data/1786182/000121390024042283/ea0204559-20f_first.htm
+[116] https://www.sec.gov/Archives/edgar/data/1771007/000129281424001607/afyaform20f_2023.htm
+[117] https://www.sec.gov/Archives/edgar/data/1892274/000168316824005751/visionary_i20f-033124.htm
+[118] http://e-jkc.org/journal/view.php?doi=10.52660/JKSC.2024.30.3.533
+[119] https://www.nature.com/articles/s41598-022-14237-3
+[120] https://onlinelibrary.wiley.com/doi/10.1111/tgis.70008
+[121] https://academic.oup.com/braincomms/article/doi/10.1093/braincomms/fcab039/6170649
+[122] https://www.semanticscholar.org/paper/2369d84f72da44227fc0daf56eadb6c65e907918
+[123] https://faseb.onlinelibrary.wiley.com/doi/10.1096/fasebj.2020.34.s1.09944
+[124] https://xlink.rsc.org/?DOI=D0FD00038H
+[125] https://www.semanticscholar.org/paper/b695e099b8532cd626f2db2ed6dfab9d230e8487
+[126] https://www.wix.com/wixel/resources/dopamine-colors
+[127] https://www.productiveandfree.com/blog/color-psychology-and-learning-outcomes
+[128] https://www.learningguild.com/articles/2509/color-selection-in-elearning-can-inform-engage-learners/
+[129] https://www.brandignity.com/2024/06/dopamine-colors/
+[130] https://www.squarepanda.in/pandablog/incorporating-color-psychology-into-teaching-strategies/
+[131] https://fountn.design/resource/how-to-use-color-psychology-to-drive-engagement-and-retention-in-ui-design/
+[132] https://www.wearetribu.com/blog/designing-for-dopamine-how-to-spark-website-engagement
+[133] https://www.productiveandfree.com/blog/color-psychology-and-learning-outcomes?srsltid=AfmBOoq_yq-kMxB4eP2S7RqOFq-eeKmrnbsNHa7MD25rL9CIy4DPO6cC
+[134] https://www.shiftelearning.com/blog/bid/348188/6-ways-color-psychology-can-be-used-to-design-effective-elearning
+[135] https://dribbble.com/shots/19105483-Dopamine-Colors
+[136] https://elearning.adobe.com/2024/06/meaning-of-colors-in-learning/
+[137] https://verpex.com/blog/website-tips/best-color-combinations-for-educational-websites
+[138] https://www.behr.com/colorfullybehr/dopamine-daze/
+[139] https://files.eric.ed.gov/fulltext/EJ1080132.pdf
+[140] https://hackernoon.com/how-to-use-color-psychology-to-drive-engagement-and-retention-in-ui-design
+[141] https://www.newtarget.com/web-insights-blog/color-psychology-in-website-design/
+[142] https://www.sec.gov/Archives/edgar/data/879101/000143774922004700/kim20211231_10k.htm
+[143] https://www.sec.gov/Archives/edgar/data/1392380/000143774922004346/gevo20211231_10k.htm
+[144] https://www.sec.gov/Archives/edgar/data/741516/000143774923006452/americannb20221231_10k.htm
+[145] https://www.sec.gov/Archives/edgar/data/1173489/000143774922004905/ceva20211231_10k.htm
+[146] https://www.sec.gov/Archives/edgar/data/1035976/000143774922006006/fncb20211231_10k.htm
+[147] https://www.sec.gov/Archives/edgar/data/1042729/000143774923005339/mbwm20221231_10k.htm
+[148] https://www.sec.gov/Archives/edgar/data/39368/000143774921001261/ful20201128_10k.htm
+[149] https://www.sec.gov/Archives/edgar/data/42682/000143774924005519/grc20231231_10k.htm
+[150] https://dergipark.org.tr/en/doi/10.12981/mahder.1526320
+[151] http://library.iated.org/view/BOLLINI2019DYS
+[152] http://culture-art-knukim.pp.ua/article/view/287701
+[153] https://www.semanticscholar.org/paper/add3539a2a3171f801f4a57817db555d835814fa
+[154] https://www.mdpi.com/2227-7102/13/9/864
+[155] https://www.sciendo.com/article/10.1515/rae-2017-0024
+[156] https://www.semanticscholar.org/paper/2a8bf4517f3430372f994ea3981351a2d9461434
+[157] https://www.semanticscholar.org/paper/edd628e6938d741f78166e245ee18a323dc219c7
+[158] https://atomisystems.com/elearning/using-fonts-in-elearning-design/
+[159] https://www.creativebloq.com/features/the-best-monospace-fonts-for-coding&rut=d33728b44484300795b3dd9e5e15223b5ba7899264ab014d2616a9295b8a6650
+[160] https://www.readz.com/what-is-the-best-font-for-content-online
+[161] https://www.fancyfonts.top/blog/best-fonts-for-saas-websites
+[162] https://www.theme-junkie.com/best-monospace-fonts/
+[163] https://www.ilovewp.com/resources/education/wordpress-for-schools/most-used-google-fonts-on-school-websites/
+[164] https://theelearningcoach.com/media/graphics/what-font-should-i-use/
+[165] https://typetype.org/blog/monoshirinnye-shrifty-v-dizajne-i-programmirovanii/
+[166] https://www.myfonts.com/pages/tags/education-fonts
+[167] https://elearning.adobe.com/2021/11/selecting-fonts-for-your-elearning-project/
+[168] https://github.com/githubnext/monaspace
+[169] https://jem-products.com/best-wordpress-fonts-for-schools-colleges-and-e-learning-platforms/
+[170] https://www.youtube.com/watch?v=e4Aq5U7CoaU
+[171] https://github.com/lloydchang/githubnext-monaspace
+[172] https://rigorousthemes.com/blog/fonts-for-teachers/
+[173] https://alphaefficiency.com/best-fonts-for-saas-websites
+[174] https://www.sec.gov/Archives/edgar/data/2036812/0002036812-24-000001-index.htm
+[175] https://www.sec.gov/Archives/edgar/data/1859040/0001859040-24-000001-index.htm
+[176] https://www.sec.gov/Archives/edgar/data/1988123/0001988123-23-000002-index.htm
+[177] https://www.sec.gov/Archives/edgar/data/1988123/0001988123-23-000001-index.htm
+[178] https://www.sec.gov/Archives/edgar/data/1859040/0001859040-21-000002-index.htm
+[179] https://www.sec.gov/Archives/edgar/data/1172706/000121465922004642/unir10k0122.htm
+[180] https://www.sec.gov/Archives/edgar/data/1551693/000095017022005233/sien-20211231.htm
+[181] https://ieeexplore.ieee.org/document/10421200/
+[182] https://www.ijraset.com/best-journal/plearny-educational-gamifying-website
+[183] https://ijsrem.com/download/canteen-crave-website-for-college-canteen/
+[184] https://gurukuljournal.com/mca-notes-website/
+[185] https://jurnal.stitek.ac.id/index.php/SANDI/article/view/100
+[186] https://www.semanticscholar.org/paper/29002f5ca9ed5d8d0817551bde81f1f12f22ffab
+[187] https://www.semanticscholar.org/paper/da4e54bd917637f083368829df8b5f33f964fc17
+[188] https://www.ijsat.org/research-paper.php?id=5388
+[189] https://www.pinterest.com/msjarosmathematics/websites-w-textured-paper-aesthetic/
+[190] https://inkfactorystudio.com/learn/education-icons/
+[191] https://artwithtrista.com/line-art-lesson-ideas-elements-of-art-projects/
+[192] https://www.behance.net/search/projects/free%20paper%20texture
+[193] https://community.articulate.com/blog/e-learning-challenges/e-learning-icons-show-and-share-your-favorite-styles-78/1088817?after=MjUuMnwyLjF8aXwxMHwzOToxfGludCwxMDg4ODE4LDEwODg5NTQ
+[194] https://www.nga.gov/educational-resources/elements-art/elements-art-line
+[195] https://www.freepik.com/free-photos-vectors/school-paper-texture
+[196] https://iconscout.com/icons/hand-drawn
+[197] https://in.pinterest.com/pin/modern-education-icons-set--818318194777710627/
+[198] https://www.shutterstock.com/search/educational-textures
+[199] https://www.classcentral.com/course/skillshare-icon-do-this-creating-your-own-icon-set-82531
+[200] https://uxknowledgebase.com/lines-and-shapes-in-design-7e4002a310e1?gi=4bb670d7a4f9
+[201] https://www.dreamstime.com/illustration/icon-set-hand-drawn-online-learning.html
+[202] https://www.shiftelearning.com/blog/using-simple-shapes-and-icons-elearning
+[203] https://www.youtube.com/watch?v=zXSFY180t9Y
+[204] https://creativemarket.com/GoodStuffNoNonsense/759302-e-Learning-Hand-Drawn-Icons
+[205] https://www.sec.gov/Archives/edgar/data/36840/000117494723000058/frevsob-20221031.htm
+[206] https://www.sec.gov/Archives/edgar/data/36104/000119312522048709/d256232d10k.htm
+[207] https://www.sec.gov/Archives/edgar/data/1290677/000114036123011882/brhc10049632_10k.htm
+[208] https://www.sec.gov/Archives/edgar/data/1437479/000117494723000382/enbp-20221231.htm
+[209] https://www.sec.gov/Archives/edgar/data/748790/000157587222000239/gceh-20211231.htm
+[210] https://www.sec.gov/Archives/edgar/data/67088/000119312521211223/d137472d20f.htm
+[211] https://www.sec.gov/Archives/edgar/data/1876945/000119312522092094/d287298d10k.htm
+[212] https://www.sec.gov/Archives/edgar/data/1618181/000119312522291886/d766546d10k.htm
+[213] https://www.semanticscholar.org/paper/f1c158528d0fb86caef29ac753f3d863e36b8b7a
+[214] https://jamanetwork.com/journals/jamaneurology/fullarticle/2801599
+[215] https://www.emerald.com/insight/content/doi/10.1108/JPMH-09-2021-0111/full/html
+[216] https://jamanetwork.com/journals/jama/fullarticle/2748794
+[217] https://journals.lww.com/10.1097/HTR.0000000000000672
+[218] https://jamanetwork.com/journals/jamacardiology/fullarticle/2831124
+[219] https://onlinelibrary.wiley.com/doi/10.1002/aur.2919
+[220] https://obgyn.onlinelibrary.wiley.com/doi/10.1111/1471-0528.18217
+[221] https://www.wix.com/blog/black-and-white-websites
+[222] https://uxdesign.cc/how-to-effectively-design-a-monochromatic-user-interface-ui-897c07c5a09e?gi=51fca5ff48a3
+[223] https://line25.com/inspiration/25-examples-of-creative-paper-use-in-web-design/
+[224] https://blog.hubspot.com/website/black-white-website-design
+[225] https://uxdesign.cc/how-to-effectively-design-a-monochromatic-user-interface-ui-897c07c5a09e
+[226] https://blueblots.com/inspiration/34-artistically-designed-websites-with-paper-textures/
+[227] https://www.pinterest.com/pin/9-gorgeous-examples-of-black-and-white-websites--37858453110851675/
+[228] https://www.uikitsnow.com/uncategorized/black-and-white-figma-e-learning-ui/
+[229] https://tripwiremagazine.com/35-awesome-examples-of-paper-texture-inspired-website-design/
+[230] https://w3layouts.com/template/black-and-white-a-educational-category-flat-responsive-web-template/
+[231] https://dribbble.com/shots/26067736-E-learning-Website-Design-Modern-UI-UX-for-Online-Education
+[232] https://blog.spoongraphics.co.uk/articles/25-super-cool-paper-inspired-website-designs
+[233] https://qodeinteractive.com/magazine/examples-of-black-and-white-websites/
+[234] https://www.uidesigntemplates.com/figma-e-learning-ui/
+[235] https://qodeinteractive.com/magazine/websites-inspired-by-poster-aesthetics/
+[236] https://webflow.com/list/black-white
+[237] https://www.sec.gov/Archives/edgar/data/1747661/000121390024088518/ea0217280-20f_colorstar.htm
+[238] https://www.sec.gov/Archives/edgar/data/1747661/000121390023086925/f20f2023_colorstartech.htm
+[239] https://www.sec.gov/Archives/edgar/data/1747661/000121390021055782/f20f2021_colorstartech.htm
+[240] https://library.iated.org/view/LAMPROGEORGOS2024EVO
+[241] https://drpress.org/ojs/index.php/HSET/article/view/6565
+[242] http://meijournals.com/ara/index.php/mejlls/article/view/698
+[243] https://jrnl.nau.edu.ua/index.php/Design/article/view/20075
+[244] http://kipo.editorum.ru/en/nauka/conference_article/15742/view
+[245] http://www.stemmpress.com/jhet/jhet20251/2083.html
+[246] https://czasopisma.aps.edu.pl/index.php/ijpint/article/view/2150
+[247] http://bulletinbstu.editorum.ru/en/nauka/article/57888/view
+[248] https://www.think-board.com/blogs/blog/boosting-student-engagement-with-color-and-surface-design
+[249] https://www.behavioraldesign.academy/color-psychology
+[250] https://assets-eu-01.kc-usercontent.com/cce44467-0106-013b-6c0b-26132a361492/036364d9-549d-4571-998e-dc29c72865f5/PPG_ClassroomColorResearch_2020_ExecSummary_FINAL.pdf
+[251] https://www.progress.com/blogs/using-color-psychology-education-web-design
+[252] https://bima.co.uk/the-psychology-of-colour-in-web-design-how-to-captivate-your-audiences/
+[253] https://www.daltile.com/tile-therapy/articles/3-effective-ways-to-leverage-color-psychology-for-enhanced-learning-outcomes
+[254] https://www.colorpsychology.org
+[255] https://wpwebinfotech.com/blog/psychology-of-color-in-web-design/
+[256] https://www.schooloutfitters.com/blog/best-classroom-colors-to-engage-students
+[257] https://www.udemy.com/course/color-theory-and-psychology-understanding-the-impact/
+[258] https://assets-eu-01.kc-usercontent.com/e4b124ab-578a-0150-d290-6a097358cc87/602ea1a5-af95-455b-b37a-ff6403ba1fb7/PPG_ClassroomColorResearch_2020_ExecSummary_FINAL.pdf
+[259] https://www.shiftelearning.com/blog/how-do-colors-influence-learning
+[260] https://www.linkedin.com/posts/mfita_the-psychology-behind-dopamine-colors-enhancing-activity-7209188044166365185-lrck
+[261] https://www.ppg.com/en-US/about-ppg/community-engagement/colorful-communities/classroom-color-research
+[262] https://www.artcobell.com/en-us/blog/color-psychology-for-education
+[263] https://www.domain.com/blog/a-guide-to-color-psychology-for-your-website/
+[264] https://www.sec.gov/Archives/edgar/data/25895/000143774925021205/crws20250330_10k.htm
+[265] https://www.sec.gov/Archives/edgar/data/1018281/000143774925019879/itkg20240630c_10k.htm
+[266] https://www.sec.gov/Archives/edgar/data/99302/000143774925018483/trns20250331_10k_htm.xml
+[267] https://www.sec.gov/Archives/edgar/data/1070296/000117184325001868/fcap20241231_10k.htm
+[268] https://www.sec.gov/Archives/edgar/data/43196/000143774925005406/gtn20241231_10k.htm
+[269] https://library.vspu.net/handle/123456789/13556
+[270] https://dx.plos.org/10.1371/journal.pone.0270741
+[271] https://posthumanism.co.uk/jp/article/view/496
+[272] https://ieeexplore.ieee.org/document/10013319/
+[273] https://www.semanticscholar.org/paper/be5d65dcbd986b63ca9c39b83d6e67bdf53fe0e7
+[274] https://papers.iafor.org/submission64369
+[275] https://journals.sagepub.com/doi/pdf/10.1177/21582440211056624
+[276] https://arxiv.org/abs/1603.04000
+[277] https://www.figma.com/resource-library/best-fonts-for-websites/
+[278] https://learn.microsoft.com/en-us/dotnet/desktop/winforms/advanced/how-to-construct-font-families-and-fonts
+[279] https://www.creativefabrica.com/the-artistry/fonts-and-digital-designs/30-amazing-free-fonts-for-teachers/
+[280] https://check-n-click.com/typography-in-elearning/
+[281] https://elearningindustry.com/how-choose-font-for-elearning-content
+[282] https://fonts.adobe.com/fonts/learning-curve
+[283] https://www.justinmind.com/blog/best-google-web-fonts-website/
+[284] https://blog.elblearning.com/blog/the-4-main-elearning-font-categories
+[285] https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/aa704138(v=vs.85)
+[286] https://www.udacity.com/blog/2021/02/an-introduction-to-font-families.html
+[287] https://typ.io/tags/education
+[288] https://developer.mozilla.org/en-US/docs/Web/CSS/font-family
+[289] https://webflow.com/blog/fonts-for-web-design
+[290] https://www.ttro.com/blog/design/five-free-fonts-that-will-improve-your-e%E2%80%91learning/
+[291] https://www.sec.gov/Archives/edgar/data/2022308/000192998024000599/class_s4.htm
+[292] https://www.sec.gov/Archives/edgar/data/2006257/000192998024000599/class_s4.htm
+[293] https://www.sec.gov/Archives/edgar/data/1592560/000141057825001300/vsa-20241231x20f.htm
+[294] https://www.sec.gov/Archives/edgar/data/2022308/000147793225004670/class_s1a.htm
+[295] https://www.sec.gov/Archives/edgar/data/1976908/000141057825000919/jdzg-20241231x20f.htm
+[296] https://www.sec.gov/Archives/edgar/data/2022308/000147793225004455/class_s1a.htm
+[297] https://ieeexplore.ieee.org/document/11042846/
+[298] https://ieeexplore.ieee.org/document/10507912/
+[299] https://ijsl.pubmedia.id/index.php/ijsl/article/view/360
+[300] https://www.ssbfnet.com/ojs/index.php/ijrbs/article/view/2236
+[301] https://ksbe-jbe.org/_common/do.php?a=full&b=13&bidx=3815&aidx=42054
+[302] https://ieeexplore.ieee.org/document/10395866/
+[303] http://journal.universitaspahlawan.ac.id/index.php/jutin/article/view/36161
+[304] https://scholar.kyobobook.co.kr/article/detail/4010070279400
+[305] https://uxcel.com
+[306] https://dribbble.com/shots/25434059-Learning-website-ui-design
+[307] https://www.linkedin.com/pulse/top-5-web-design-elements-enhance-student-engagement-online-ecgkf
+[308] https://www.codecademy.com/learn/intro-to-ui-ux
+[309] https://unicornplatform.com/blog/how-to-design-an-engaging-educational-website-for-students-using-a-website-builder/
+[310] https://www.zigpoll.com/content/what-strategies-can-a-user-experience-designer-use-to-improve-student-engagement-on-our-school's-online-portal
+[311] https://designlab.com
+[312] https://mockflow.com/wireframe-examples/educational-website-home-page-wireframe-example
+[313] https://www.unimelb.edu.au/tli/news/articles/Using-Templates-and-Custom-User-Interface-elements-in-your-LMS-site
+[314] https://www.interaction-design.org/courses
+[315] https://element451.com/element-engage
+[316] https://elearning.adobe.com/2020/07/how-to-use-ui-ux-design-principles-for-e-learning-makeover/
+[317] https://dribbble.com/tags/education-website
+[318] https://www.timeshighereducation.com/campus/five-key-elements-drive-student-online-engagement
+[319] https://elearningindustry.com/user-centered-design-for-elearning
+[320] https://www.behance.net/search/projects/education%20website
+[321] https://www.sec.gov/Archives/edgar/data/1828962/000182896225000075/crct-20250331.htm
+[322] https://www.sec.gov/Archives/edgar/data/1668010/000149315225003666/forms-1.htm
+[323] https://www.sec.gov/Archives/edgar/data/1668010/000149315225007124/form424b4.htm
+[324] https://www.sec.gov/Archives/edgar/data/1506293/000150629325000022/pins-20241231.htm
+[325] https://www.sec.gov/Archives/edgar/data/2009319/0002009319-24-000001-index.htm
+[326] https://www.sec.gov/Archives/edgar/data/1083522/000164117225017818/forms-1.htm
+[327] https://www.sec.gov/Archives/edgar/data/1579878/000162828025033742/figma-sx1.htm
+[328] https://www.nature.com/articles/s41598-022-11833-1
+[329] https://ieeexplore.ieee.org/document/8942104/
+[330] http://www.stemmpress.com/jbm/jbm20251/2289.html
+[331] https://www.emerald.com/insight/content/doi/10.1108/JPMH-04-2024-0055/full/html
+[332] https://ieeexplore.ieee.org/document/10556987/
+[333] https://jurnal.isbi.ac.id/index.php/pantun/article/view/1424
+[334] https://dl.designresearchsociety.org/drs-conference-papers/drs2018/researchpapers/75
+[335] https://drpress.org/ojs/index.php/hiaad/article/view/4062
+[336] https://webflow.com/blog/minimalist-design-examples
+[337] https://www.sitepoint.com/sketchy-design-style-still-going-strong-10-examples/
+[338] https://www.webfx.com/blog/web-design/minimalist-website-designs/
+[339] https://www.domestika.org/en/courses/850-expressive-line-work-in-illustration/final_project_lessons
+[340] https://tympanus.net/codrops/2013/01/29/planning-your-web-design-with-sketches/
+[341] https://www.awwwards.com/websites/minimal/
+[342] https://www.deepspacesparkle.com/teach-line-pattern/
+[343] https://mobirise.com/website-templates/sketch-website-templates/
+[344] https://www.nga.gov/learn/teachers/lessons-activities/elements-of-art/line.html
+[345] https://dribbble.com/search/minimalistic-news
+[346] https://www.umass.edu/ofr/sites/default/files/spp_art_is_for_everyone_virtual_art_class-line.pdf
+[347] https://www.myintervals.com/blog/designing-web-sites-using-pencil-and-paper/
+[348] https://www.designrush.com/agency/website-design-development/trends/minimal-website-ui-design
+[349] https://www.mededportal.org/doi/full/10.15766/mep_2374-8265.8448
+[350] https://webdesign.tutsplus.com/sketching-how-a-simple-pen-and-paper-can-transform-your-web-designs--webdesign-3073a
+[351] https://htmlburger.com/blog/minimal-design-website/
+[352] https://www.sec.gov/Archives/edgar/data/845877/000084587725000033/agm-20241231.htm
+[353] https://www.sec.gov/Archives/edgar/data/107140/000010714025000081/jwa-20250430.htm
+[354] https://www.sec.gov/Archives/edgar/data/1713407/000171340725000032/oak-20241231.htm
+[355] https://www.sec.gov/Archives/edgar/data/1613762/000114036125011364/ef20046145_10k.htm
+[356] https://www.sec.gov/Archives/edgar/data/1633023/000114036125011372/ef20046152_10k.htm
+[357] https://ieeexplore.ieee.org/document/9464536/
+[358] https://dl.acm.org/doi/10.1145/2020976.2021005
+[359] http://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART002203236
+[360] https://www.frontiersin.org/articles/10.3389/feduc.2023.1161460/full
+[361] https://www.mdpi.com/2071-1050/15/11/8915
+[362] https://edas.info/doi/10.5013/IJSSST.a.24.01.03
+[363] https://ieeexplore.ieee.org/document/10031471/
+[364] https://www.emerald.com/insight/content/doi/10.1108/PRR-02-2021-0013/full/html
+[365] https://www.youtube.com/watch?v=70J3FMAXY_U
+[366] https://www.dyndevice.com/en/news/color-psychology-in-elearning-how-colors-influence-learning-ELN-2141/
+[367] https://blog.braincert.com/elearnings-top-colors-and-why-they-work/
+[368] https://www.trainingjournal.com/2024/content-type/features/be-colour-wise-best-practices-for-using-colour-psychology-in-e-learning-design/
+[369] https://app.uxcel.com/courses/color-psychology-for-designers
+[370] https://community.articulate.com/blog/articles/5-popular-e-learning-color-schemes/1110145
+[371] https://blog.moorecoinc.com/5-colors-in-the-classroom-that-will-boost-active-learning
+[372] https://theelearningcoach.com/media/graphics/choose-elearning-color-palette/
+[373] https://www.colormatters.com/color-resources/e-courses-about-color
+[374] https://support.edapp.com/color-scheme
+[375] https://bookcreator.com/2023/09/why-color-matters-unlocking-the-magic-of-color-in-education/
+[376] https://alison.com/course/the-psychology-of-art-and-colors
+[377] https://www.pinterest.com/pin/education-website-app-student-colours--299770918957588544/
+[378] https://www.sec.gov/Archives/edgar/data/1999480/000199948025000037/alto-20250331.htm
+[379] https://www.sec.gov/Archives/edgar/data/1679628/000164117225001261/form10-k.htm
+[380] https://www.sec.gov/Archives/edgar/data/1999480/000199948025000025/alto-20241231.htm
+[381] https://www.sec.gov/Archives/edgar/data/803578/000143774925010818/wavd20241231c_10k.htm
+[382] https://www.sec.gov/Archives/edgar/data/803578/000143774925002056/wavd20250122_s1a.htm
+[383] https://www.sec.gov/Archives/edgar/data/803578/000143774925003176/wavd20250204_s1.htm
+[384] https://www.sec.gov/Archives/edgar/data/803578/000143774925000977/wavd20241216_s1a.htm
+[385] https://ieeexplore.ieee.org/document/9391769/
+[386] https://periodicos.ufes.br/healthandbiosciences/article/view/33306
+[387] https://nbpublish.com/library_read_article.php?id=39497
+[388] http://www.jpn.ca/lookup/doi/10.1503/jpn.130267
+[389] https://www.semanticscholar.org/paper/b87eb091b2f776636e6be7503c6bc8cca0663b15
+[390] https://link.springer.com/10.1007/978-3-030-27523-5_10
+[391] https://www.semanticscholar.org/paper/8ba2081a4187353b052af0b0bf8b0e170991658d
+[392] https://online.ucpress.edu/afterimage/article/37/2/11/19476/Facebook-the-Image-and-the-Virtual-Cedar-Bar
+[393] https://aisel.aisnet.org/icis2020/user_behaviors/user_behaviors/1/
+[394] https://moldstud.com/articles/p-the-impact-of-color-psychology-on-user-engagement-in-financial-apps-unlocking-design-strategies-for-maximum-interaction
+[395] https://uxpsychology.substack.com/p/designing-with-the-brain-in-mind
+[396] https://www.linkedin.com/pulse/rise-dopamine-dressing-how-colors-can-boost-your-social-media-vdooe
+[397] https://www.youtube.com/watch?v=QsQPGOIc4cA
+[398] https://ibrandstudio.com/articles/color-theory-ui-how-to-drive-user-engagement-retention
+[399] https://trantergrey.com/blog/neuroscience-and-graphic-design-how-colors-influence-human-behavior/
+[400] https://www.slideshare.net/slideshow/surprising-impact-of-color-psychology-on-user-decisions-in-web-design/272717655
+[401] https://www.ycode.com/blog/color-psychology-use-in-web-design
+[402] https://www.marsdevs.com/blogs/the-psychology-of-color-in-ui-ux-design-how-to-use-color-to-influence-user-behavior
+[403] https://www.forbes.com/sites/princeghuman/2023/03/28/how-the-neuroscience-of-color-impacts-consumer-behavior/
+[404] https://boringowl.io/en/blog/how-color-psychology-influences-user-behavior
+[405] https://www.woodgrain.com/the-magical-world-of-dopamine-decor/
+[406] https://www.vsplash.com/services/neuroscience-based-website/
+[407] https://www.sec.gov/Archives/edgar/data/88948/000143774925020197/senea20250331_10k.htm
+[408] https://www.sec.gov/Archives/edgar/data/729580/000143774925005652/belfb20241231_10k.htm
+[409] https://www.sec.gov/Archives/edgar/data/1022344/000155837025001271/spg-20241231x10k.htm
+[410] https://www.sec.gov/Archives/edgar/data/1063761/000155837025001271/spg-20241231x10k.htm
+[411] https://www.aclweb.org/anthology/W16-2611.pdf
+[412] https://www.shs-conferences.org/articles/shsconf/pdf/2018/09/shsconf_erpa2018_01072.pdf
+[413] https://pmc.ncbi.nlm.nih.gov/articles/PMC10151978/
+[414] https://ladybugsteacherfiles.com/student-friendly-google-font/
+[415] https://community.articulate.com/blog/articles/5-inspiring-font-pairings-for-your-next-e-learning-project/1101713
+[416] https://www.landingpageflow.com/post/google-font-pairings-for-websites
+[417] https://www.reddit.com/r/typography/comments/8nnzp7/font_recommendation_for_school_papers/
+[418] https://designshack.net/articles/trends/pairing-fonts/
+[419] https://thesouthernteach.com/blog/myfavoritefonts/
+[420] https://varrojoanna.com/the-easiest-fonts-for-kids-to-read/
+[421] https://removal.ai/font-pairings/
+[422] https://support.learnworlds.com/support/solutions/articles/12000035750-choosing-a-font-for-your-school
+[423] https://www.fontspace.com/category/student
+[424] https://www.fontpair.co
+[425] https://ladybugsteacherfiles.com/font-with-an-open-4/
+[426] https://www.sec.gov/Archives/edgar/data/1951070/000162828025034472/mcgrawhillinc-sx1a1.htm
+[427] https://www.sec.gov/Archives/edgar/data/1499620/000141057825001415/tal-20250228x20f.htm
+[428] https://www.sec.gov/Archives/edgar/data/1364954/000136495425000052/chgg-20250331.htm
+[429] https://www.sec.gov/Archives/edgar/data/1819404/000181940425000009/nrdy-20241231.htm
+[430] https://www.sec.gov/Archives/edgar/data/1847806/000164117225006794/form20-f.htm
+[431] https://www.semanticscholar.org/paper/78c1a3a53d32cb54e21359bbeff10433639f6cc5
+[432] https://arxiv.org/abs/2301.10516
+[433] https://kpfu.ru/uz-eng-hum-2022-6-15.html
+[434] https://arxiv.org/abs/2308.11863
+[435] https://dl.acm.org/doi/10.1145/3328778.3367007
+[436] https://www.semanticscholar.org/paper/a3403497268e68d76e2800b8147917864f38c482
+[437] https://ieeexplore.ieee.org/document/10020723/
+[438] https://dl.acm.org/doi/10.1145/3609987.3610000
+[439] https://www.marketermilk.com/blog/best-saas-websites
+[440] https://incop.org/index.php/met/article/view/1557
+[441] https://edwiser.org/blog/learning-interface-design/
+[442] https://www.skilljar.com/blog/top-saas-lms-platforms
+[443] https://www.mi.fu-berlin.de/en/inf/groups/hcc/theses/finished/2022-Theses/e-learning_platform_for_students_and_teachers_with_hcd-process/index.html
+[444] https://www.guru99.com/best-ui-ux-design-courses.html
+[445] https://userpilot.com/blog/saas-learning-management-system/
+[446] https://pdfs.semanticscholar.org/3f80/d41e8e23ed63d5041651a95d6d7c60ded3be.pdf
+[447] https://theproductmanager.com/tools/best-learning-design-software/
+[448] https://www.classcentral.com/course/udemy-complete-uiux-69976
+[449] https://mycodelesswebsite.com/elearning-websites/
+[450] https://doaj.org/article/2eb6169bac864f3b95b71f55d8ed8a83
+[451] https://www.udemy.com/course/learn-ui-design-all-you-need-to-start-a-6-figure-career/
+[452] https://ceur-ws.org/Vol-3085/paper30.pdf
+[453] https://play.google.com/store/apps/details?id=app.design.learn.uidesign.proapp.course.online.ui.ux.userinterface.mobile.figma.wireframe.skillshare.udemy.coursera
+[454] https://www.ispringsolutions.com/blog/saas-lms
+[455] https://www.sec.gov/Archives/edgar/data/776867/000077686725000006/wtm-20250331.htm
+[456] https://www.sec.gov/Archives/edgar/data/776867/000110465925031124/tm252335d1_def14a.htm
+[457] https://www.sec.gov/Archives/edgar/data/776867/000077686725000003/wtm-20241231.htm
+[458] https://www.sec.gov/Archives/edgar/data/776867/000077686724000019/wtm-20240930.htm
+[459] https://www.sec.gov/Archives/edgar/data/776867/000077686724000015/wtm-20240630.htm
+[460] https://www.sec.gov/Archives/edgar/data/776867/000077686724000010/wtm-20240331.htm
+[461] https://www.sec.gov/Archives/edgar/data/776867/000110465924043314/tm242661-d4_def14a.htm
+[462] https://www.spiedigitallibrary.org/conference-proceedings-of-spie/13167/3029682/Reference-based-attention-mechanism-and-region-segmentation-line-art-colorization/10.1117/12.3029682.full
+[463] https://ieeexplore.ieee.org/document/10444574/
+[464] https://www.mdpi.com/2076-3417/13/22/12120
+[465] https://cad-journal.net/files/vol_22/Vol22NoS4.html
+[466] https://ieeexplore.ieee.org/document/8702295/
+[467] https://www.mdpi.com/2076-3417/11/4/1464
+[468] https://arxiv.org/abs/2403.11090
+[469] https://drpress.org/ojs/index.php/hiaad/article/view/9827
+[470] https://www.pinterest.com/ideas/minimalist-line-art/895423125563/
+[471] https://www.dyndevice.com/en/news/an-online-course-with-a-minimalist-design-ELN-976/
+[472] https://websitevice.com/education
+[473] https://dribbble.com/tags/minimal-line-art
+[474] https://community.articulate.com/blog/articles/the-essential-guide-to-minimalist-design-for-e-learning/1109755
+[475] https://www.shutterstock.com/search/web-design-line-art
+[476] https://ceur-ws.org/Vol-2732/20201044.pdf
+[477] https://wegic.ai/blog/modern-black-white-website-examples.html
+[478] https://medium.muz.li/best-practices-for-minimalist-website-design-9e8ea07e17c2?gi=e1d8b199750f
+[479] https://pressbooks.pub/graphicdesignforcoursecreators/chapter/minimalism/
+[480] https://mycodelesswebsite.com/black-and-white-website-examples/
+[481] https://elements.envato.com/learn/minimalist-design-guide
+[482] https://www.designrush.com/best-designs/websites/trends/educational-website-designs
+[483] https://www.youtube.com/watch?v=2R1woScgbhU
+[484] https://www.digitallearninginstitute.com/blog/aesthetic-techniques-to-guide-digital-learning-design
+[485] https://www.wix.com/blog/types-of-websites
+[486] https://www.sec.gov/Archives/edgar/data/1805284/000110465925032694/tm2511408-1_s4.htm
+[487] https://www.sec.gov/Archives/edgar/data/1805284/000110465925041422/tm2513302-1_s4.htm
+[488] https://www.sec.gov/Archives/edgar/data/1805284/000110465925064824/tm2519538d1_8k.htm
+[489] https://www.sec.gov/Archives/edgar/data/1805284/000180528425000065/rkt-20250331.htm
+[490] https://www.sec.gov/Archives/edgar/data/1819994/000162828025023857/rklb-20250331.htm
+[491] https://www.sec.gov/Archives/edgar/data/1805284/000180528425000010/rkt-20241231.htm
+[492] https://www.sec.gov/Archives/edgar/data/1805284/000095014225000894/eh250610319_8k.htm
+[493] https://www.eu-jer.com/mathematical-literacy-skills-for-elementary-school-students-a-comparative-study-between-interactive-stem-learning-and-paper-and-pencil-stem-learning
+[494] https://joease.id/index.php/joease/article/view/36
+[495] https://link.springer.com/10.1007/s10639-025-13514-8
+[496] https://ieeexplore.ieee.org/document/10521353/
+[497] https://arxiv.org/abs/2305.15801
+[498] https://bera-journals.onlinelibrary.wiley.com/doi/10.1111/bjet.13482
+[499] http://link.springer.com/10.1007/978-3-319-51380-5_4
+[500] https://www.ndss-symposium.org/wp-content/uploads/2024-512-paper.pdf
+[501] https://www.vecteezy.com/free-vector/paper-rocket-logo
+[502] https://www.youtube.com/watch?v=J0tx2oqhBYM
+[503] https://onlinelibrary.wiley.com/doi/10.1002/col.21949
+[504] https://www.nasa.gov/wp-content/uploads/2009/07/147267main_3.2.1.Liftoff_Activity13.pdf
+[505] https://www.edutopia.org/article/science-takes-flight-paper-airplanes/
+[506] https://journals.sagepub.com/doi/pdf/10.1177/2158244014525423
+[507] https://stockcake.com/i/educational-creative-launch_715640_73464
+[508] https://create.vista.com/vectors/plane-paper/
+[509] https://doaj.org/article/879928c269c64e9b8b2b696a208b9d81
+[510] https://www.sciencebuddies.org/teacher-resources/lesson-plans/scientific-method-rockets
+[511] https://www.edutopia.org/blog/design-101-icons-jason-cranford-teague
+[512] https://rowanblog.com/2025/04/the-psychology-of-colors/
+[513] https://www.sfi.ie/site-files/primary-science/media/pdfs/col/dpsm_paper_rocket.pdf
+[514] https://www.shareicon.net/paper-plane-student-education-classroom-school-people-learning-humanpictos-806221
+[515] https://psych.rutgers.edu/academics/undergraduate/syllabus/3639-spring-2025/file
+[516] https://www.shutterstock.com/search/pencil-rocket-education-logo
+[517] https://www.sec.gov/Archives/edgar/data/1698022/000143774925007333/fmfg20241231_10k.htm
+[518] https://journals.nmetau.edu.ua/index.php/st/article/view/1974
+[519] https://dl.acm.org/doi/10.1145/3543873.3587300
+[520] https://www.semanticscholar.org/paper/c1f80c2f69dffc59cd59a69613446c2525d2a89a
+[521] https://jrnls.ivet.edu.ua/index.php/1/article/view/900
+[522] https://www.ijraset.com/best-journal/portfolio-builder-career-recommender-by-scraping-data-using-flask
+[523] https://www.semanticscholar.org/paper/2186a9971e7e2beebb809c788ca326d8824425b1
+[524] https://www.semanticscholar.org/paper/abbaa044e4a4b6be01e11cdf46a6b0ac95edd821
+[525] https://www.aclweb.org/anthology/D19-1225.pdf
+[526] https://fontsarena.com/blog/the-psychology-of-fonts-how-typefaces-influence-learning/
+[527] https://cognitiontoday.com/font-psychology-research-and-application/
+[528] https://community.articulate.com/blog/articles/our-four-favorite-free-fonts-for-e-learning/1103470
+[529] https://www.wix.com/blog/web-typography-rules
+[530] https://visme.co/blog/font-psychology/
+[531] https://smallpdf.com/blog/appropriate-fonts-for-academic-work
+[532] https://marker.io/blog/web-typography-best-practices
+[533] https://octet.design/journal/font-psychology/
+[534] https://www.thedesignership.com/blog/best-free-fonts-for-ui-design
+[535] https://design.google/library/choosing-web-fonts-beginners-guide
+[536] https://inkbotdesign.com/font-psychology/
+[537] https://alltimedesign.com/font-psychology/
+[538] https://mockuuups.studio/blog/post/best-fonts-for-apps/
+[539] https://www.learnui.design/blog/mobile-desktop-website-font-size-guidelines.html
+[540] https://www.xenonstack.com/insights/font-psychology
+[541] https://www.sec.gov/Archives/edgar/data/1067491/000095017025091925/infy-20250331.htm
+[542] https://www.sec.gov/Archives/edgar/data/1951070/000162828025033247/mcgrawhillinc-sx1.htm
+[543] https://www.sec.gov/Archives/edgar/data/1045986/000121390025043461/ea0240850-20f_formula.htm
+[544] https://www.sec.gov/Archives/edgar/data/2026353/000164117225003724/form424b4.htm
+[545] https://www.sec.gov/Archives/edgar/data/2026353/000164117225000021/forms-1a.htm
+[546] https://eajournals.org/ejcsit/vol13-issue22-2025/ai-driven-design-systems-the-future-of-scalable-ui-frameworks/
+[547] http://ieeexplore.ieee.org/document/8310215/
+[548] https://www.semanticscholar.org/paper/46b389a141ee13e181a956b70314451ff4dc7a89
+[549] http://journal.frontiersin.org/article/10.3389/fpsyg.2014.00985/abstract
+[550] http://choicereviews.org/review/10.5860/CHOICE.46-4135
+[551] https://www.semanticscholar.org/paper/02697c2c0212455f25de7a5d2b58423b1473e8d1
+[552] https://www.tandfonline.com/doi/full/10.1080/00140139.2019.1588996
+[553] https://linkinghub.elsevier.com/retrieve/pii/S2352154624001153
+[554] https://www.linkedin.com/pulse/dopamine-driven-saas-how-feel-good-hormone-re-writing-aleksandrova-wavue
+[555] https://www.trendhunter.com/trends/color-game-gym
+[556] https://www.zigpoll.com/content/how-can-we-incorporate-psychological-principles-into-our-user-experience-design-to-enhance-emotional-engagement-and-improve-customer-retention
+[557] https://dribbble.com/shots/25227948-Trenning-Detailed-Learner-Course-in-a-SaaS-LMS
+[558] https://mentalitch.com/the-gamification-of-color-psychology-player-motivation-and-engagement/
+[559] https://www.phases.io/insights/why-uxui-innovation-is-critical-for-customer-retention/
+[560] https://saasdesigner.com/the-impact-of-gamification-on-saas-user-retention/
+[561] https://www.zigpoll.com/content/what-psychological-principles-should-we-consider-to-improve-user-engagement-and-retention-in-our-app-design
+[562] https://mintbook.com/blog/saas-learning-management-system/
+[563] https://steemit.com/app/@technbrains/understanding-the-psychology-of-app-user-retention-strategies-for-sustainable-engagement
+[564] https://www.figma.com/community/file/1511692629840056288/app-landing-page-website-designs-free-website-templates-web-design-inspiration
+[565] https://elearningindustry.com/gamification-in-elearning-engaging-learners-through-game-elements
+[566] https://www.linkedin.com/pulse/hook-engage-retain-ux-psychology-playbook-winning-user-magalh%C3%A3es-jqkmf
+[567] https://metapress.com/neurodesign-how-digital-products-shape-the-brains-dopamine-system/
+[568] https://publications.ascilite.org/index.php/APUB/article/download/1350/1521/8615
+[569] https://www.zigpoll.com/content/how-can-a-psychologists-insights-improve-user-engagement-and-retention-strategies-in-our-app-development-process
+[570] https://www.sec.gov/Archives/edgar/data/1037038/000114036125023186/ny20044859x1_def14a.htm
+[571] https://www.sec.gov/Archives/edgar/data/1983550/000121390025036076/ea0238860-20f_trident.htm
+[572] https://www.sec.gov/Archives/edgar/data/1037038/000103703825000011/rl-20250329_htm.xml
+[573] https://www.sec.gov/Archives/edgar/data/1983550/000121390024077083/ea0200176-10.htm
+[574] https://www.sec.gov/Archives/edgar/data/1037038/000114036124030914/ny20024311x1_def14a.htm
+[575] https://www.sec.gov/Archives/edgar/data/1037038/000103703824000014/rl-20240330.htm
+[576] https://ieeexplore.ieee.org/document/10493102/
+[577] https://dl.acm.org/doi/10.1145/3597503.3623313
+[578] http://koreascience.or.kr/journal/view.jsp?kj=DJTJBT&py=2021&vnc=v19n5&sp=397
+[579] https://www.semanticscholar.org/paper/afed8a8562ca3f47de9a70d81fc6800d95b1ac9a
+[580] http://thesai.org/Publications/ViewPaper?Volume=16&Issue=4&Code=ijacsa&SerialNo=103
+[581] https://fepbl.com/index.php/csitrj/article/view/1457
+[582] https://kinetik.umm.ac.id/index.php/kinetik/article/view/2240
+[583] https://www.mdpi.com/2076-3417/15/3/1060
+[584] https://uxcel.com/blog/understanding-the-icons-in-ui-design
+[585] https://dessign.net/icon-design/
+[586] https://blog.iconizer.net/education-icons-collection/
+[587] https://www.uxpin.com/studio/blog/user-interface-elements-every-designer-should-know/
+[588] https://www.playbook.com/blog/iconography-in-ui-design/
+[589] https://www.zilliondesigns.com/blog/what-education-logos-common/
+[590] https://www.designmonks.co/blog/user-interface-elements
+[591] https://yellowslice.in/bed/designing-icons-that-stand-out-mastering-the-7-principles-of-icon-design/
+[592] https://uxcel.com/blog/beginners-guide-to-iconography
+[593] https://www.zilliondesigns.com/blog/how-to-inspire-knowledge-with-educational-logos/
+[594] https://careerfoundry.com/en/blog/ui-design/ui-element-glossary/
+[595] https://uxdesign.cc/7-principles-of-icon-design-e7187539e4a2
+[596] https://www.designmantic.com/blog/famous-education-logo-icons/
+[597] https://www.uxdesigninstitute.com/blog/7-principles-of-icon-design/
+[598] https://www.slideshare.net/slideshow/educational-technology-visual-symbols/47424163
+[599] https://www.youtube.com/watch?v=Gb5uZgIzKcA
+[600] https://www.sec.gov/Archives/edgar/data/1372020/000095017025024407/gldd-20241231.htm
+[601] https://www.sec.gov/Archives/edgar/data/1822791/000143774924007542/clnn20231231_10k.htm
+[602] https://www.sec.gov/Archives/edgar/data/1677897/000157587225000377/upyy-20250228.htm
+[603] https://www.sec.gov/Archives/edgar/data/1002047/000095017025083705/ntap-20250425.htm
+[604] https://www.sec.gov/Archives/edgar/data/2018064/000095017025078416/ttgt-20241231.htm
+[605] https://www.sec.gov/Archives/edgar/data/716314/000095017025083450/ghm-20250331.htm
+[606] https://www.sec.gov/Archives/edgar/data/729986/000119312525042589/d915367d10k.htm
+[607] https://www.frontiersin.org/articles/10.3389/fpsyg.2024.1393113/full
+[608] https://dl.acm.org/doi/10.1145/3058982
+[609] https://www.jstor.org/stable/1420252?origin=crossref
+[610] https://www.semanticscholar.org/paper/5d3a2a847d0da3be913fe59fb9a9cb72f82cec0a
+[611] https://arxiv.org/abs/2405.14106
+[612] https://jamanetwork.com/journals/jama/fullarticle/2800662
+[613] https://pnas.org/doi/full/10.1073/pnas.2108875118
+[614] https://journal.global.ac.id/index.php/sisfotek/article/view/536
+[615] https://jolt.merlot.org/vol10no4/Richardson_1214.pdf
+[616] https://community.articulate.com/blog/e-learning-challenges/designing-e-learning-in-black-and-white-513/1231667
+[617] https://theelearningcoach.com/media/contrast-for-visual-accessibility/
+[618] https://design4users.com/education-ui-design/
+[619] https://www.saskoer.ca/universaldesignforlearning/chapter/colour-contrast-and-white-space/
+[620] https://www.istockphoto.com/illustrations/education-icons-thin-line
+[621] https://elearningindustry.com/4-tips-use-minimalist-theory-in-elearning
+[622] https://www.adobe.com/in/creativecloud/illustration/discover/line-art.html
+[623] https://www.adobe.com/au/creativecloud/illustration/discover/line-art.html
+[624] https://community.articulate.com/blog/articles/contrast-considerations-for-accessible-e-learning/1091088
+[625] https://dribbble.com/search/learning-app-minimal
+[626] https://dribbble.com/tags/e-learning-platform
+[627] https://neurodiversity.design/principles/colour/
+[628] https://github.com/uditalias/line-art
+[629] https://www.sec.gov/Archives/edgar/data/1172052/000117205222000011/saft-20211231x10k.htm
+[630] https://www.sec.gov/Archives/edgar/data/31235/000143774923006897/ekc20221231_10k.htm
+[631] https://www.sec.gov/Archives/edgar/data/1172052/000117205223000006/saft-20221231x10k.htm
+[632] https://www.sec.gov/Archives/edgar/data/1126956/000143774922027522/spre20220930_10k.htm
+[633] https://www.sec.gov/Archives/edgar/data/3146/000143774922027522/spre20220930_10k.htm
+[634] https://www.sec.gov/Archives/edgar/data/57183/000143774922027522/spre20220930_10k.htm
+[635] https://www.sec.gov/Archives/edgar/data/1959472/000143774923004541/kim20221231_10k.htm
+[636] https://ojs.transpublika.com/index.php/ROMEO/article/view/1398
+[637] https://dx.plos.org/10.1371/journal.pone.0283778
+[638] https://ph.pollub.pl/index.php/jcsi/article/view/7120
+[639] https://www.semanticscholar.org/paper/66c3e6fbe95a1b253df06bcbdda11cc575ba90e6
+[640] https://www.ijsrp.org/research-paper-0423.php?rp=P13612814
+[641] https://jdmdh.episciences.org/10230
+[642] https://journal.stekom.ac.id/index.php/ijgd/article/view/2147
+[643] https://ejournal.indo-intellectual.id/index.php/imeij/article/view/1717
+[644] https://creativemarket.com/blog/best-fonts-for-reading-online
+[645] https://learnui.design/tools/typography-tutorial.html
+[646] https://presentationpoint.com/11-best-fonts-for-exceptional-reporting/
+[647] https://www.classcentral.com/report/best-typography-courses/
+[648] https://smartblogger.com/easiest-font-to-read/
+[649] https://m3.material.io/styles/typography/overview
+[650] https://www.slant.co/topics/15450/~reading-fonts
+[651] https://www.nngroup.com/articles/best-font-for-online-reading/
+[652] https://www.practicalecommerce.com/16-typography-resources-fonts-galleries-instruction
+[653] https://fontesk.com/teachers-fonts/
+[654] https://creativemarket.com/blog/fonts-for-readability
+[655] https://elearningindustry.com/typography-in-elearning-5-key-tips-for-elearning-professionals
+[656] https://ieeexplore.ieee.org/document/9988543/
+[657] https://doi.apa.org/doi/10.1037/xan0000044
+[658] http://proceedings.spiedigitallibrary.org/proceeding.aspx?doi=10.1117/12.852327
+[659] https://www.semanticscholar.org/paper/4d87b5101f6be40f964267712dfefbd660d07dee
+[660] https://www.semanticscholar.org/paper/43ac65c3ccc414df929c5a6308ea3823c0711191
+[661] https://www.tandfonline.com/doi/full/10.1080/23311975.2019.1576828
+[662] https://www.classcentral.com/subject/color-psychology
+[663] https://www.udemy.com/topic/color-psychology/
+[664] https://imaginationsoup.net/color-psychology-how-to-use-color-in-learning-colorize/
+[665] https://blog.magezon.com/40-color-schemes-for-websites-ecm/
+[666] https://inkbotdesign.com/colour-schemes-for-websites/
+[667] https://colorswall.com/palette/153270
+[668] https://www.behavioraldesign.academy/color-psychology/color-psychology-for-ux-behavioral-design
+[669] https://visme.co/blog/website-color-schemes/
+[670] https://www.hostinger.com/in/tutorials/website-color-schemes
+[671] https://www.sec.gov/Archives/edgar/data/1511737/000151173725000036/ui-20250509.htm
+[672] https://www.sec.gov/Archives/edgar/data/1511737/000151173725000015/ui-20250207.htm
+[673] https://www.sec.gov/Archives/edgar/data/1511737/000151173724000086/ui-20241205.htm
+[674] https://www.sec.gov/Archives/edgar/data/1511737/000151173724000081/ui-20241108.htm
+[675] https://www.sec.gov/Archives/edgar/data/1511737/000151173724000055/ui-20240823.htm
+[676] https://www.sec.gov/Archives/edgar/data/1511737/000151173724000028/ui-20240510.htm
+[677] https://www.sec.gov/Archives/edgar/data/1511737/000151173724000012/ui-20240209.htm
+[678] https://online.agris.cz/archive/2023/03/04
+[679] https://arxiv.org/abs/2211.14607
+[680] https://ojs.unud.ac.id/index.php/JLK/article/view/89251
+[681] https://www.semanticscholar.org/paper/acc61b1a55ace8bba5595d8aee3dc9a14370a4d8
+[682] https://ejournal.unjaya.ac.id/index.php/teknomatika/article/view/1254
+[683] https://ieeexplore.ieee.org/document/11031253/
+[684] https://arxiv.org/abs/2411.03292
+[685] https://ijsrem.com/download/next-gen-test-automation-in-life-insurance-self-healing-frameworks/
+[686] https://elearningindustry.com/elearning-platform-development-implementing-3-user-centred-design-standards
+[687] https://feedbackfruits.com/blog/introducing-the-learning-design-system-feedbackfruitss-approach-for-scalable-learning
+[688] https://userpilot.com/blog/saas-design-principles/
+[689] https://ceur-ws.org/Vol-3771/paper07.pdf
+[690] https://www.thealien.design/insights/saas-ui-design
+[691] https://dribbble.com/tags/learning-ui
+[692] https://www.justinmind.com/ui-design/how-to-design-e-learning-platform
+[693] https://www.youtube.com/watch?v=iBU76mlA0_w
+[694] https://www.youtube.com/watch?v=4rb2OWVS_rY
+[695] https://github.com/chanzuckerberg/edu-design-system
+[696] https://sapient.pro/blog/designing-for-saas-best-practices
+[697] https://www.sec.gov/Archives/edgar/data/59440/000005944024000025/vgr-20240630.htm
+[698] https://www.sec.gov/Archives/edgar/data/59440/000005944024000011/vgr-20240331.htm
+[699] https://www.sec.gov/Archives/edgar/data/1916879/000106594924000110/vhld-20240630.htm.htm
+[700] https://www.sec.gov/Archives/edgar/data/59440/000005944024000006/vgr-20231231.htm
+[701] https://www.sec.gov/Archives/edgar/data/59440/000110465924106511/tm2425647d16_8k.htm
+[702] https://www.sec.gov/Archives/edgar/data/1916879/000106594924000052/vhld-20231231.htm.htm
+[703] https://www.sec.gov/Archives/edgar/data/59440/000005944023000042/vgr-20230930.htm
+[704] https://ieeexplore.ieee.org/document/9373276/
+[705] https://www.spiedigitallibrary.org/conference-proceedings-of-spie/13075/3026808/Application-of-deep-learning-in-digital-product-design--product/10.1117/12.3026808.full
+[706] https://www.hindawi.com/journals/wcmc/2022/3499570/
+[707] http://www.tandfonline.com/doi/abs/10.1207/s15327051hci0401_1
+[708] https://openaccess.cms-conferences.org/publications/book/978-1-7923-8988-7/article/978-1-7923-8988-7_113
+[709] http://thesai.org/Publications/ViewPaper?Volume=11&Issue=6&Code=IJACSA&SerialNo=11
+[710] https://dl.acm.org/doi/10.1145/3700906.3700972
+[711] https://www.mdpi.com/2673-8945/1/2/9
+[712] https://create.vista.com/unlimited/stock-vectors/295227326/stock-vector-lessons-vector-icon-symbol-creative-sign-from-education-icons-collection-filled-flat-lessons-icon-for/
+[713] https://www.dreamstime.com/illustration/learning-symbol.html
+[714] https://www.shutterstock.com/search/e-learning-icon
+[715] https://unblast.com/20-free-education-vector-icons-ai-2/
+[716] https://conference.pixel-online.net/files/foe/ed0015/FP/9989-ARTS7284-FP-FOE15.pdf
+[717] https://create.vista.com/unlimited/stock-vectors/213291388/stock-vector-isolated-object-of-education-and-learning-symbol-collection-of-education-and-school-stock-vector-illustration/
+[718] https://www.flaticon.com/free-icons/education
+[719] https://www.istockphoto.com/illustrations/learning-styles-icon
+[720] https://iconscout.com/icons/student-learning-with-ai
+[721] https://stock.adobe.com/ca/images/book-icon-set-education-study-reading-learning-language-skill-sign-symbol-line-pictogram-vector-illustration-design-flat-graphic-design/583649754
+[722] http://koreascience.or.kr/journal/view.jsp?kj=CCTHCV&py=2020&vnc=v20n11&sp=145
+[723] https://journals.mmupress.com/index.php/jiwe/article/view/1103
+[724] http://thesai.org/Downloads/Volume11No9/Paper_61-An_Empirical_Study_of_E_Learning_Interface_Design.pdf
+[725] https://www.mdpi.com/2504-3900/82/1/23/pdf?version=1663146030
+[726] https://arxiv.org/pdf/2303.13055.pdf
+[727] https://www.mdpi.com/2071-1050/15/4/3300/pdf?version=1676972388
+[728] https://jsi.cs.ui.ac.id/index.php/jsi/article/download/340/278
+[729] https://acnsci.org/journal/index.php/etq/article/download/602/633
+[730] https://arxiv.org/abs/2412.06793
+[731] https://linkinghub.elsevier.com/retrieve/pii/S0950584922001318
+[732] https://online-journals.org/index.php/i-jet/article/download/24163/9693
+[733] https://elearningindustry.com/art-branding-training-platform
+[734] https://www.slideshare.net/slideshow/psychology-of-website-design-dr-pamela-rutledge/2259006
+[735] https://cdn.prod.website-files.com/663e76d114b01977b789af8f/668a5441bd06f18e827905f2_Brand%20Standards%20Manual-SaaS%20Academy.pdf
+[736] https://blog.powr.io/ui/ux-trends-in-2024-navigating-the-future-of-digital-design
+[737] https://www.youtube.com/watch?v=-dzDGniREyY
+[738] https://www.mdpi.com/2227-7102/13/9/864/pdf?version=1692842657
+[739] http://thesai.org/Downloads/Volume10No4/Paper_72-Towards_Usability_Guidelines_for_the_Design_of_Effective_Arabic_Websites.pdf
+[740] https://shareok.org/bitstream/11244/25547/1/10.2190.eqwd-cab0-3h7e-kpue.pdf
+[741] https://dev.to/qrolic/best-resources-to-find-textures-and-patterns-for-websites-35i8
+[742] https://smallseotools.com/blog/using-psychology-in-web-design-how-colors-effect-your-audience/
+[743] https://www.typewolf.com/space-mono
+[744] https://www.bluecompass.com/blog/black-white-web-designs
+[745] https://colorlib.com/wp/free-textures-resources/
+[746] https://papers.academic-conferences.org/index.php/ecel/article/view/2641
+[747] https://myjms.mohe.gov.my/index.php/ijares/article/view/26739
+[748] https://www.mdpi.com/2227-7102/11/4/144/pdf
+[749] https://pmc.ncbi.nlm.nih.gov/articles/PMC9096742/
+[750] http://cjlt.ca/index.php/cjlt/article/download/27849/20436
+[751] https://downloads.hindawi.com/journals/scn/2022/1327190.pdf
+[752] https://online-journals.org/index.php/i-jet/article/download/6254/4194
+[753] https://arxiv.org/html/2412.11519v1
+[754] https://www.irrodl.org/index.php/irrodl/article/download/217/1618
+[755] https://journal.privietlab.org/index.php/PSSJ/article/download/258/147
+[756] https://downloads.hindawi.com/journals/jeph/2022/1105679.pdf
+[757] https://speckyboy.com/icon-sketching/
+[758] https://www.mediatraining.ltd.uk/blogs/the-10-best-free-handwriting-fonts
+[759] https://www.smartsites.com/work/nonprofit/art-education-custom-website-design/
+[760] https://designcode.io/sketch/
+[761] https://www.neurology.org/doi/10.1212/WNL.84.14_supplement.S52.007
+[762] https://www.neurology.org/doi/10.1212/WNL.84.14_supplement.I6-5C
+[763] https://www.frontiersin.org/articles/10.3389/fpsyg.2022.966287/pdf
+[764] https://onlinelibrary.wiley.com/doi/10.1002/brb3.70020
+[765] https://www.mdpi.com/1660-4601/19/17/10986/pdf?version=1662116754
+[766] https://www.frontiersin.org/articles/10.3389/fpsyg.2018.01924/pdf
+[767] https://pmc.ncbi.nlm.nih.gov/articles/PMC9846075/
+[768] https://www.mdpi.com/2076-3417/5/3/275/pdf?version=1438778404
+[769] https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/psyp.14121
+[770] https://pmc.ncbi.nlm.nih.gov/articles/PMC9518100/
+[771] https://www.excli.de/index.php/excli/article/view/3974
+[772] https://www.learningguild.com/articles/color-selection-in-elearning-can-inform-engage-learners
+[773] https://99designs.com/blog/creative-inspiration/psychology-color-web-design/
+[774] https://pmc.ncbi.nlm.nih.gov/articles/PMC9674548/
+[775] https://www.sec.gov/Archives/edgar/data/1509957/000149315223012511/form10-k.htm
+[776] https://www.sec.gov/Archives/edgar/data/1275477/000143774923006158/bcmi20221231_10k.htm
+[777] https://www.sec.gov/Archives/edgar/data/729580/000143774923006172/belfb20221123_10k.htm
+[778] https://www.sec.gov/Archives/edgar/data/803164/000143774923007584/cofs20221231_10k.htm
+[779] https://www.sec.gov/Archives/edgar/data/1108967/000143774923009709/oeg20221231_10k.htm
+[780] https://www.sec.gov/Archives/edgar/data/946486/000143774923008864/wint20221231_10k.htm
+[781] https://www.sec.gov/Archives/edgar/data/1460329/000143774923006714/flnt20221231_10k.htm
+[782] https://www.sec.gov/Archives/edgar/data/906553/000143774923004538/bgc20221231_10k.htm
+[783] https://www.sec.gov/Archives/edgar/data/1657642/000143774923008206/pkkw20221231_10k.htm
+[784] https://www.sec.gov/Archives/edgar/data/1376321/000117184323002333/cnet20221231_10k.htm
+[785] https://www.sec.gov/Archives/edgar/data/1065201/000143774923008787/aigltd20221231_10k.htm
+[786] https://arxiv.org/pdf/2310.06939.pdf
+[787] https://aclanthology.org/2023.emnlp-industry.23.pdf
+[788] https://www.sitepoint.com/best-monospace-fonts-for-developers/
+[789] https://www.creativebloq.com/typography/top-typography-resources-912816
+[790] https://www.untitledui.com/blog/best-free-fonts
+[791] https://implementationsciencecomms.biomedcentral.com/articles/10.1186/s43058-025-00733-w
+[792] http://www.kmel-journal.org/ojs/index.php/online-publication/article/download/497/493
+[793] https://www.tandfonline.com/doi/pdf/10.1080/14606925.2017.1353059?needAccess=true
+[794] https://pmc.ncbi.nlm.nih.gov/articles/PMC10897144/
+[795] https://elearningindustry.com/13-icon-resources-for-elearning-designers
+[796] https://dribbble.com/shots/25565883-UI-Elements-for-Online-Education-Platform
+[797] https://elements.envato.com/school-and-education-hand-drawn-icons-2LC3KV
+[798] https://www.sec.gov/Archives/edgar/data/1498547/000119312521301999/d192392ds4.htm
+[799] https://www.sec.gov/Archives/edgar/data/1746129/000114036122012281/brhc10035809_10k.htm
+[800] https://www.sec.gov/Archives/edgar/data/1642122/000114036122009943/brhc10034473_10k.htm
+[801] https://www.sec.gov/Archives/edgar/data/1290677/000114036122009150/brhc10034925_10k.htm
+[802] https://www.sec.gov/Archives/edgar/data/1417663/000114036123015331/brhc10050349_10k.htm
+[803] https://www.sec.gov/Archives/edgar/data/1634447/000114036122014703/brhc10036271_10k.htm
+[804] https://www.sec.gov/Archives/edgar/data/740971/000114036122012175/brhc10035683_10k.htm
+[805] https://www.sec.gov/Archives/edgar/data/1746129/000114036123013727/brhc10050068_10k.htm
+[806] https://www.sec.gov/Archives/edgar/data/36104/000119312523050691/d410791d10k.htm
+[807] https://www.sec.gov/Archives/edgar/data/886982/000119312522052682/d192225d10k.htm
+[808] https://www.sec.gov/Archives/edgar/data/740971/000114036123015416/brhc10050488_10k.htm
+[809] https://www.sec.gov/Archives/edgar/data/790359/000114036122007333/brhc10034121_10k.htm
+[810] https://www.emerald.com/insight/content/doi/10.1108/JME-11-2022-0147/full/html
+[811] https://jurnalapik.id/index.php/jisit/article/view/68
+[812] https://www.ccsenet.org/journal/index.php/nct/article/download/72775/42226
+[813] https://pmc.ncbi.nlm.nih.gov/articles/PMC4664536/
+[814] https://jmi-upiyptk.org/ojs/index.php/jmi/article/download/62/71
+[815] https://www.itm-conferences.org/articles/itmconf/pdf/2019/02/itmconf_icicci2018_02003.pdf
+[816] https://www.ijfmr.com/papers/2023/5/7384.pdf
+[817] https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/1471-3802.12034
+[818] https://journal.alt.ac.uk/index.php/rlt/article/download/1459/pdf_1
+[819] http://arxiv.org/pdf/1501.05578.pdf
+[820] https://www.figma.com/community/file/1488229478527440303/building-the-next-big-e-learning-platform-watch-this-first
+[821] https://1stwebdesigner.com/print-inspired-website-designs/
+[822] https://www.canva.com/website-builder/templates/education/
+[823] https://dribbble.com/shots/25638634-E-Learning-Dashboard-UI-UX-Designer-Online-Course-Management
+[824] https://www.frontiersin.org/articles/10.3389/fpsyg.2023.1106483/full
+[825] https://www.semanticscholar.org/paper/3987763961d07f546ea866b1d514c477a3ebab99
+[826] https://www.mdpi.com/2076-328X/14/7/560
+[827] https://bulletinbstu.editorum.ru/en/storage/download/119400
+[828] https://www.frontiersin.org/articles/10.3389/fpsyg.2015.00368/pdf
+[829] https://www.mdpi.com/2076-328X/11/2/24
+[830] http://www.rjap.psihologietm.ro/Download/rjap201_1.pdf
+[831] https://pmc.ncbi.nlm.nih.gov/articles/PMC11637849/
+[832] https://pmc.ncbi.nlm.nih.gov/articles/PMC11235144/
+[833] https://www.frontiersin.org/articles/10.3389/fpsyg.2019.00206/pdf
+[834] https://www.ycode.com/blog/20-best-fonts-for-web-design-in-2024
+[835] https://dl.acm.org/doi/10.1145/3625704.3625716
+[836] https://businessperspectives.org/images/pdf/applications/publishing/templates/article/assets/12676/DM_2019_03_Pushkar.pdf
+[837] https://online-journals.org/index.php/i-jim/article/download/4446/3543
+[838] https://www.e3s-conferences.org/articles/e3sconf/pdf/2024/14/e3sconf_foitic2024_02002.pdf
+[839] https://journal.uii.ac.id/jurnalsnati/article/download/23625/14150
+[840] https://ejournal.upbatam.ac.id/index.php/jif/article/download/8326/3705
+[841] https://www.scitepress.org/Papers/2024/123746/123746.pdf
+[842] https://www.mentimeter.com/blog/education/student-engagement-tools
+[843] https://dribbble.com/tags/student-engagement
+[844] https://www.learningguild.com/articles/apply-ui-ux-design-principles-to-give-elearning-a-makeover/
+[845] https://www.pinterest.com/ideas/education-website-design-inspiration/960667973207/
+[846] https://www.usf.edu/innovative-education/digital-learning/digital-learning-resources/interaction_and_engagement.aspx
+[847] https://www.semanticscholar.org/paper/e022552b1818156c47fdf26944ef540a8dac98b4
+[848] https://dl.acm.org/doi/10.1145/2639189.2641200
+[849] https://www.granthaalayahpublication.org/Arts-Journal/ShodhKosh/article/download/539/620
+[850] https://www.mdpi.com/2414-4088/2/2/31/pdf?version=1528128358
+[851] https://www.tandfonline.com/doi/pdf/10.1080/14606925.2017.1352649?needAccess=true
+[852] http://pdf.blucher.com.br/designproceedings/ped2016/0428.pdf
+[853] https://www.studentartguide.com/articles/line-drawings
+[854] https://learntheweb.courses/courses/web-design-1/sketching-a-website/
+[855] https://blog.hubspot.com/website/minimalist-website
+[856] https://onextrapixel.com/lovely-website-designs-with-a-hand-drawn-feel-and-awesome-sketchy-illustrations/
+[857] https://trajdash.usc.edu/types-of-line-drawing
+[858] https://dx.plos.org/10.1371/journal.pone.0290923
+[859] https://www.semanticscholar.org/paper/6219e598f47e9474c871545b8bf7ca8d5a29f653
+[860] https://www.semanticscholar.org/paper/bf7313bf5a1e8cb5c25ff3e222625bbb38fd1da5
+[861] https://pmc.ncbi.nlm.nih.gov/articles/PMC7311418/
+[862] https://pmc.ncbi.nlm.nih.gov/articles/PMC4219036/
+[863] https://www.frontiersin.org/articles/10.3389/fnhum.2015.00382/pdf
+[864] https://pmc.ncbi.nlm.nih.gov/articles/PMC10675490/
+[865] https://www.frontiersin.org/articles/10.3389/fnsys.2025.1568878/full
+[866] https://pmc.ncbi.nlm.nih.gov/articles/PMC9752890/
+[867] https://pmc.ncbi.nlm.nih.gov/articles/PMC8572309/
+[868] https://ieeexplore.ieee.org/document/10170205/
+[869] https://ieeexplore.ieee.org/document/10117823/
+[870] http://www.jurnal.iaii.or.id/index.php/RESTI/article/download/4724/700
+[871] https://www.ijiet.org/vol13/IJIET-V13N12-2006.pdf
+[872] https://arxiv.org/abs/2311.06961
+[873] https://www.igi-global.com/ViewTitle.aspx?TitleId=316664&isxn=9781668479070
+[874] https://online-journals.org/index.php/i-jac/article/download/1061/1138
+[875] http://online-journals.org/index.php/i-jet/article/download/4698/3591
+[876] https://www.mdpi.com/1424-8220/11/8/7835/pdf
+[877] http://thesai.org/Downloads/IJARAI/Volume2No11/Paper_2-Free_Open_Source_Software.pdf
+[878] https://online-journals.org/index.php/i-jet/article/download/11687/6551
+[879] https://www.udemy.com/topic/user-interface/
+[880] https://www.talentlms.com/blog/best-saas-lms/
+[881] https://training.safetyculture.com/blog/educational-platforms/
+[882] https://www.uxmatters.com/mt/archives/2021/01/case-study-learnings-from-the-design-of-an-online-education-platform.php
+[883] https://eecs.engineering.oregonstate.edu/education/about/publications/educational%20design.pdf
+[884] https://cad-journal.net/files/vol_22/Vol22NoS3.html
+[885] https://downloads.hindawi.com/journals/misy/2021/5525648.pdf
+[886] https://pmc.ncbi.nlm.nih.gov/articles/PMC4974011/
+[887] https://blog.mitsde.com/less-is-more-the-power-of-minimalism-and-aesthetics-in-ui-ux-design/
+[888] https://www.pinterest.com/ideas/study-aesthetic-minimal/956652676071/
+[889] https://colorlib.com/wp/minimalist-website-examples/
+[890] https://www.semanticscholar.org/paper/7cef31553f2b9d24fa4d272afbfc075be35024d4
+[891] https://ieeexplore.ieee.org/document/9986957/
+[892] https://iconscout.com/icons/educational-globe-with-paper-plane?styles%5B%5D=sticker
+[893] https://onlinelibrary.wiley.com/doi/10.1002/col.22522
+[894] https://www.shutterstock.com/search/pencil-rocket-logo
+[895] https://blog.thenounproject.com/educational-icon-collections/
+[896] https://arxiv.org/pdf/2306.08188.pdf
+[897] https://arxiv.org/html/2412.00136
+[898] http://arxiv.org/pdf/2502.00250.pdf
+[899] https://pmc.ncbi.nlm.nih.gov/articles/PMC7774853/
+[900] https://arxiv.org/pdf/1812.06110.pdf
+[901] https://pmc.ncbi.nlm.nih.gov/articles/PMC7615064/
+[902] https://pmc.ncbi.nlm.nih.gov/articles/PMC8866548/
+[903] https://www.mdpi.com/1424-8220/23/9/4243/pdf?version=1682343936
+[904] https://pmc.ncbi.nlm.nih.gov/articles/PMC11916823/
+[905] https://www.linkedin.com/pulse/harnessing-dopamine-leveraging-user-psychology-product-deshmukh
+[906] https://elearningindustry.com/enhancing-learner-engagement-and-motivation-with-elearning-gamification
+[907] https://ejournal.upsi.edu.my/index.php/EJSMT/article/view/6865
+[908] https://journals.tubitak.gov.tr/elektrik/vol31/iss3/3
+[909] https://downloads.hindawi.com/journals/wcmc/2021/8304861.pdf
+[910] https://arxiv.org/html/2403.04984v1
+[911] https://arxiv.org/pdf/2301.08372.pdf
+[912] https://arxiv.org/pdf/1902.05378.pdf
+[913] http://ijece.iaescore.com/index.php/IJECE/article/download/23789/14984
+[914] http://thesai.org/Downloads/Volume5No1/Paper_12-A_Comparative_Usability_Study_on_the_Use_of_Auditory_Icons_to_Support_Virtual_Lecturers.pdf
+[915] https://journals.sagepub.com/doi/10.1177/2041669520910167
+[916] https://pmc.ncbi.nlm.nih.gov/articles/PMC10328315/
+[917] https://journal.alt.ac.uk/index.php/rlt/article/download/1397/pdf_1
+[918] https://www.radiant.digital/7-fundamental-principles-of-iconography-influencing-iconic-ux-designs/
+[919] https://graphicsprings.com/blog/view/creating-a-cohesive-logo-system-for-educational-institutions/
+[920] https://venngage.com/blog/symbols-and-meanings/
+[921] https://www.interaction-design.org/literature/topics/iconography
+[922] https://arxiv.org/abs/2207.01322
+[923] https://ieeexplore.ieee.org/document/10350149/
+[924] https://aclanthology.org/2023.acl-long.677.pdf
+[925] https://arxiv.org/abs/2301.12459
+[926] https://www.mdpi.com/2073-431X/11/5/68/pdf?version=1651213788
+[927] https://www.mdpi.com/2227-7102/14/11/1213
+[928] https://pmc.ncbi.nlm.nih.gov/articles/PMC9838585/
+[929] https://dl.acm.org/doi/pdf/10.1145/3637528.3671454
+[930] https://www.frontiersin.org/articles/10.3389/feduc.2022.869664/pdf
+[931] https://www.aclweb.org/anthology/P18-2125.pdf
+[932] https://arxiv.org/pdf/2107.02270.pdf
+[933] https://www.cast.org/binaries/content/assets/cast/downloads/cisl-features-color-contrast-202308-a11y.pdf
+[934] https://www.freepik.com/free-photos-vectors/education-line-drawing
+[935] https://www.sec.gov/Archives/edgar/data/879101/000143774923004541/kim20221231_10k.htm
+[936] https://www.sec.gov/Archives/edgar/data/728535/000143774925004736/jbht20241231d_10k.htm
+[937] https://www.sec.gov/Archives/edgar/data/835324/000143774923004492/sybt20221231_10k.htm
+[938] https://www.sec.gov/Archives/edgar/data/741516/000143774922006107/americannb20211231_10k.htm
+[939] https://www.sec.gov/Archives/edgar/data/803164/000143774922006668/cofs20211231_10k.htm
+[940] https://www.sec.gov/Archives/edgar/data/1087456/000143774922005332/uboh20211231_10k.htm
+[941] https://www.sec.gov/Archives/edgar/data/1412502/000155837022003743/sret-20211231x10k.htm
+[942] https://library.iated.org/view/ANGELOVA2021LEA
+[943] https://www.semanticscholar.org/paper/c4568a62ca2dcf7292ccffa785e236df8409653d
+[944] https://arxiv.org/abs/2406.19859
+[945] https://aclanthology.org/2021.emnlp-main.244.pdf
+[946] https://arxiv.org/abs/2211.10967
+[947] https://arxiv.org/pdf/1909.02072.pdf
+[948] https://arxiv.org/pdf/2205.06512.pdf
+[949] http://arxiv.org/pdf/2401.01699.pdf
+[950] http://arxiv.org/pdf/2403.06453.pdf
+[951] http://downloads.hindawi.com/journals/edri/2017/2148139.pdf
+[952] https://pmc.ncbi.nlm.nih.gov/articles/PMC6794354/
+[953] https://pmc.ncbi.nlm.nih.gov/articles/PMC5617316/
+[954] http://arxiv.org/pdf/2407.19921.pdf
+[955] https://dl.acm.org/doi/10.1145/3706599.3719683
+[956] https://zenodo.org/record/4291705/files/12%2012749%20Identifying%20A%20User%20Paper_007_IJEECS%20(edit%20lia).pdf
+[957] https://ejournal.bsi.ac.id/ejurnal/index.php/ji/article/download/3741/pdf
+[958] http://joiv.org/index.php/joiv/article/download/410/333
+[959] https://humanfactors.jmir.org/2022/3/e37894/PDF
+[960] https://ejournal.upi.edu/index.php/JGrKom/article/download/64138/pdf
+[961] https://www.shs-conferences.org/articles/shsconf/pdf/2021/15/shsconf_ichtml2021_02015.pdf
+[962] https://joiv.org/index.php/joiv/article/download/997/461
+[963] https://www.figma.com/community/file/1444252888298116868/education-website-design-system-learnpress
+[964] https://arxiv.org/abs/2312.07755
+[965] https://cyrusik.org/cyrus-global-business-perspectives/v8/cgbp-vol8-a1/
+[966] https://www.mdpi.com/2076-3417/11/17/7890/pdf
+[967] https://arxiv.org/abs/2305.17609v1
+[968] https://astesj.com/?download_id=5086&smd_process_download=1
+[969] http://arxiv.org/abs/2204.08676
+[970] https://onlinelibrary.wiley.com/doi/10.1002/eng2.12577
+[971] https://dx.plos.org/10.1371/journal.pone.0305290
+[972] https://www.youtube.com/watch?v=7XuMzE0dp9Q
+[973] https://iconscout.com/icons/ai-education
+[974] https://www.vectorstock.com/royalty-free-vectors/education-symbol-vectors
+[975] https://iconscout.com/icon-pack/ai-in-education_208423
+[976] https://vecta.io/symbols/tag/learning
+[977] https://icons8.com/icons/set/ai-in-education
+[978] https://www.flaticon.com/free-icons/ai-education

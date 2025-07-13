@@ -112,11 +112,80 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* EVOLVE Brand Colors */
+:root {
+  --evolve-primary: #4285F4; /* Dopamine Blue */
+  --evolve-secondary: #34C9A3; /* Mentorship Mint */
+  --evolve-accent: #FFB623; /* Achievement Amber */
+  --evolve-warning: #E5533C; /* Error Terracotta */
+  --evolve-paper: #F5F5EC; /* Paper white */
+  --evolve-charcoal: #1A1A1A; /* Charcoal black */
+  --evolve-dark-gray: #363636; /* Dark gray */
+}
+
+/* Hand-drawn dotted border utility */
+.dotted-border {
+  border: 2px dashed #000;
+  border-radius: 8px;
+}
+
+/* Paper texture background */
+.paper-texture {
+  background-color: var(--evolve-paper);
+  background-image: 
+    linear-gradient(transparent 95%, rgba(0,0,0,0.05) 95%),
+    linear-gradient(90deg, transparent 95%, rgba(0,0,0,0.05) 95%);
+  background-size: 20px 20px;
+}
+
+/* Sketch-like button styles */
+.sketch-btn {
+  position: relative;
+  border: 2px dashed #000;
+  border-radius: 8px;
+  background: white;
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.sketch-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 3px 3px 0px rgba(0,0,0,0.3);
+}
+
+/* Line art style icons */
+.line-art-icon {
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  
+  /* Custom scrollbar for paper theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--evolve-paper);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--evolve-charcoal);
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--evolve-dark-gray);
   }
 }
