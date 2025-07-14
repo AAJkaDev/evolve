@@ -1,0 +1,7 @@
+// Export all chat components
+export { default as ChatMessage } from './ChatMessage';
+export { default as ChatInput } from './ChatInput';
+export { default as ChatHeader } from './ChatHeader';
+export { default as ChatMessages } from './ChatMessages';
+export { default as ChatLoading } from './ChatLoading';
+export { default as ChatError } from './ChatError';

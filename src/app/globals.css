@@ -125,8 +125,18 @@
 
 /* Hand-drawn dotted border utility */
 .dotted-border {
-  border: 2px dashed #000;
+  border: 2px dashed var(--evolve-charcoal);
   border-radius: 8px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+/* Sketch-style chat container */
+.sketch-chat-container {
+  border: 2px dashed var(--evolve-charcoal);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 /* Paper texture background */
