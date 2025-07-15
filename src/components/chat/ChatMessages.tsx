@@ -8,7 +8,7 @@ interface ChatMessagesProps {
 
 export const ChatMessages: React.FC<ChatMessagesProps> = ({ messages }) => {
   return (
-    <div className="p-4 space-y-4 bg-white">
+    <div className="p-4 space-y-4">
       {messages.length === 0 ? (
         <div className="text-center text-[var(--evolve-dark-gray)] mt-20">
           <p className="text-lg mb-2 text-[var(--evolve-charcoal)] font-medium">Welcome to Enzo Chat!</p>

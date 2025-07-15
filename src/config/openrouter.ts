@@ -2,14 +2,14 @@ export const OPENROUTER_CONFIG = {
   // OpenRouter API endpoint
   API_URL: 'https://openrouter.ai/api/v1',
   
-  // Mistral-7B model identifier (using correct OpenRouter model ID)
-  MODEL_ID: 'mistralai/mistral-7b-instruct:free',
+  // Using GLM-4-32b model as primary
+  MODEL_ID: 'thudm/glm-4-32b:free',
   
-  // Default model parameters
+  // Default model parameters optimized for free models
   DEFAULT_PARAMS: {
     max_tokens: 2048,
-    temperature: 0.7,
-    top_p: 0.9,
+    temperature: 0.6,
+    top_p: 0.95,
     frequency_penalty: 0,
     presence_penalty: 0,
   },

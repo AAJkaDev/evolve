@@ -125,10 +125,8 @@
 
 /* Hand-drawn dotted border utility */
 .dotted-border {
-  border: 2px dashed var(--evolve-charcoal);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
+  /* Removed border and background for transparent effect */
+  background: transparent;
 }
 
 /* Sketch-style chat container */
@@ -181,21 +179,104 @@
     @apply bg-background text-foreground;
   }
   
-  /* Custom scrollbar for paper theme */
+  /* Ultra-minimal scrollbar for seamless design */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 1px;
   }
   
   ::-webkit-scrollbar-track {
-    background: var(--evolve-paper);
+    background: transparent;
   }
   
   ::-webkit-scrollbar-thumb {
-    background: var(--evolve-charcoal);
-    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 0px;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--evolve-dark-gray);
+    background: rgba(0, 0, 0, 0.1);
   }
+}
+
+/* Formatted message styles */
+.formatted-message {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.formatted-message p:last-child {
+  margin-bottom: 0;
+}
+
+.formatted-message ul:last-child,
+.formatted-message ol:last-child {
+  margin-bottom: 0;
+}
+
+.formatted-message blockquote {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.formatted-message code {
+  word-break: break-all;
+}
+
+.formatted-message pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* AI message specific styles */
+.ai-message-content {
+  color: var(--evolve-charcoal);
+  line-height: 1.6;
+}
+
+.ai-message-content h1,
+.ai-message-content h2,
+.ai-message-content h3,
+.ai-message-content h4,
+.ai-message-content h5,
+.ai-message-content h6 {
+  color: var(--evolve-charcoal);
+  font-weight: 600;
+}
+
+.ai-message-content strong {
+  color: var(--evolve-charcoal);
+  font-weight: 700;
+}
+
+.ai-message-content em {
+  color: var(--evolve-charcoal);
+  font-style: italic;
+}
+
+.ai-message-content a {
+  color: var(--evolve-blue);
+  text-decoration: underline;
+  text-decoration-style: dashed;
+}
+
+.ai-message-content a:hover {
+  color: var(--evolve-blue);
+  opacity: 0.8;
+}
+
+/* Code block enhancements */
+.formatted-message .code-block {
+  margin: 1rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.formatted-message .code-block:first-child {
+  margin-top: 0;
+}
+
+.formatted-message .code-block:last-child {
+  margin-bottom: 0;
 }
