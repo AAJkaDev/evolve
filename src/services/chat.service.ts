@@ -1,8 +1,13 @@
-import { OpenRouterMessage } from '@/types';
+import { createGeminiService } from './gemini.service';
 import { validateMessages, getErrorMessage } from '@/utils';
 
+export interface ChatMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
 export interface ChatMessageRequest {
-  messages: OpenRouterMessage[];
+  messages: ChatMessage[];
 }
 
 export interface ChatMessageResponse {
@@ -12,8 +17,18 @@ export interface ChatMessageResponse {
 
 export class ChatService {
   private static instance: ChatService;
+  private geminiService: ReturnType<typeof createGeminiService> | null = null;
   
-  private constructor() {}
+  private constructor() {
+    // Only initialize Gemini service on server-side
+    if (typeof window === 'undefined' && process.env.GEMINI_API_KEY) {
+      try {
+        this.geminiService = createGeminiService();
+      } catch (error) {
+        console.warn('Failed to initialize Gemini service:', error);
+      }
+    }
+  }
   
   static getInstance(): ChatService {
     if (!ChatService.instance) {
@@ -22,7 +37,27 @@ export class ChatService {
     return ChatService.instance;
   }
   
-  async sendMessage(messages: OpenRouterMessage[]): Promise<ChatMessageResponse> {
+  /**
+   * Send a non-streaming message (uses API route)
+   */
+  async sendMessage(messages: ChatMessage[]): Promise<ChatMessageResponse> {
+    return this.sendMessageViaAPI(messages);
+  }
+
+  /**
+   * Send a streaming message (uses API route)
+   */
+  async sendStreamedMessage(
+    messages: ChatMessage[],
+    onChunk: (chunk: string) => void
+  ): Promise<void> {
+    return this.sendStreamedMessageViaAPI(messages, onChunk);
+  }
+
+  /**
+   * Send a non-streaming message using API route
+   */
+  async sendMessageViaAPI(messages: ChatMessage[]): Promise<ChatMessageResponse> {
     if (!validateMessages(messages)) {
       throw new Error('Invalid messages format');
     }
@@ -60,8 +95,11 @@ export class ChatService {
     }
   }
 
-  async sendStreamedMessage(
-    messages: OpenRouterMessage[],
+  /**
+   * Send a streaming message using API route
+   */
+  async sendStreamedMessageViaAPI(
+    messages: ChatMessage[],
     onChunk: (chunk: string) => void
   ): Promise<void> {
     if (!validateMessages(messages)) {
@@ -123,6 +161,44 @@ export class ChatService {
       throw new Error(getErrorMessage(error));
     }
   }
+
+  /**
+   * Test the connection to Gemini API (server-side only)
+   */
+  async testConnection(): Promise<boolean> {
+    if (!this.geminiService) {
+      console.warn('ChatService: Gemini service not available (client-side)');
+      return false;
+    }
+    
+    try {
+      return await this.geminiService.testConnection();
+    } catch (error) {
+      console.error('ChatService: Connection test failed:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Get information about the current AI model (server-side only)
+   */
+  getModelInfo(): { provider: string; model: string; apiKey: string } {
+    if (!this.geminiService) {
+      return {
+        provider: 'Google Gemini',
+        model: 'gemini-1.5-flash',
+        apiKey: 'Not available (client-side)'
+      };
+    }
+    
+    const geminiInfo = this.geminiService.getModelInfo();
+    return {
+      provider: 'Google Gemini',
+      model: geminiInfo.name,
+      apiKey: geminiInfo.apiKey
+    };
+  }
+
 }
 
 export const chatService = ChatService.getInstance();

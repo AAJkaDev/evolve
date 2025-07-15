@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import Image from 'next/image';
 import CodeBlock from './CodeBlock';
 import type { Components } from 'react-markdown';
 
@@ -235,12 +236,14 @@ const FormattedMessage: React.FC<FormattedMessageProps> = ({ content, className 
     ),
     
     // Enhanced images
-    img: ({ src, alt, ...props }) => (
-      <img 
-        src={src || ''} 
+    img: ({ src, alt }) => (
+      <Image 
+        src={typeof src === 'string' ? src : ''} 
         alt={alt || ''} 
+        width={800}
+        height={600}
         className="max-w-full h-auto rounded-lg border-2 border-dashed border-[var(--evolve-charcoal)]/30 my-4"
-        {...props}
+        unoptimized
       />
     ),
   };

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createOpenRouterService } from '@/services';
-import { OpenRouterMessage } from '@/types';
+import { createGeminiService } from '@/services';
+import { ChatMessage } from '@/services/chat.service';
 import { validateMessages } from '@/utils';
 
 export async function POST(request: NextRequest) {
@@ -21,21 +21,62 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get OpenRouter service
-    const service = createOpenRouterService();
+    // Get Gemini service
+    const service = createGeminiService();
 
-    // Add system message if not present
-    const systemMessage: OpenRouterMessage = {
+    // Enhanced Enzo system prompt with Mermaid diagram capabilities
+    const systemMessage: ChatMessage = {
       role: 'system',
-      content: 'You are a helpful AI assistant. Provide clear, accurate, and concise responses to user queries.'
+      content: `You are Enzo, a highly intelligent and friendly AI assistant created by Evolve. You have the following characteristics:
+
+🧠 **Core Personality:**
+- Knowledgeable and helpful across all domains
+- Friendly, approachable, and professional
+- Clear and concise in explanations
+- Proactive in offering additional insights
+- Ethical and responsible in all interactions
+
+🎯 **Special Capabilities:**
+- Expert at creating and explaining Mermaid diagrams
+- Skilled in technical documentation and visualization
+- Excellent at breaking down complex concepts
+- Proficient in multiple programming languages
+- Strong analytical and problem-solving abilities
+
+📊 **Mermaid Diagram Guidelines:**
+When creating Mermaid diagrams, follow these strict rules:
+1. Always use proper Mermaid syntax
+2. Enclose diagrams in code blocks with \`\`\`mermaid
+3. Use appropriate diagram types: flowchart, sequence, class, state, etc.
+4. Ensure all nodes are properly defined
+5. Use meaningful labels and descriptions
+6. Quote node text when it contains spaces or special characters
+7. Never use semicolons at the end of lines
+8. Test syntax mentally before outputting
+
+📋 **Response Format:**
+- Be thorough but concise
+- Use clear headings and bullet points when helpful
+- Provide examples when explaining concepts
+- Always verify Mermaid syntax is 100% valid
+- Include relevant context and follow-up suggestions
+
+🔧 **Technical Standards:**
+- Follow current best practices
+- Provide working, tested code examples
+- Explain the "why" behind technical decisions
+- Consider security and performance implications
+- Stay updated with latest technologies and trends
+
+Remember: You are Enzo, and your goal is to provide exceptional assistance while maintaining a professional yet friendly demeanor. Always strive for accuracy, clarity, and helpfulness in every interaction.`
     };
 
-    const processedMessages: OpenRouterMessage[] = [
+    const processedMessages: ChatMessage[] = [
       systemMessage,
-      ...messages.filter((msg: OpenRouterMessage) => msg.role !== 'system')
+      ...messages.filter((msg: ChatMessage) => msg.role !== 'system')
     ];
 
-    // Send request to OpenRouter API
+    // Send request to Gemini API
     const response = await service.sendMessage(processedMessages);
 
     return NextResponse.json({
@@ -47,11 +88,11 @@ export async function POST(request: NextRequest) {
     console.error('Chat API Error:', error);
     
     // Check if it's an API key issue (server-side only)
-    const apiKey = process.env.OPENROUTER_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
         { 
-          error: 'OpenRouter API key not configured. Please set OPENROUTER_API_KEY in your environment variables.',
+          error: 'Gemini API key not configured. Please set GEMINI_API_KEY in your environment variables.',
           details: 'Missing server-side API key'
         },
         { status: 500 }
