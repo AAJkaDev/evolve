@@ -46,13 +46,13 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Chat API Error:', error);
     
-    // Check if it's an API key issue
-    const apiKey = process.env.OPENROUTER_API_KEY || process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
+    // Check if it's an API key issue (server-side only)
+    const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
         { 
           error: 'OpenRouter API key not configured. Please set OPENROUTER_API_KEY in your environment variables.',
-          details: 'Missing API key'
+          details: 'Missing server-side API key'
         },
         { status: 500 }
       );

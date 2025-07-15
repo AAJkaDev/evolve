@@ -64,7 +64,7 @@ export class OpenRouterClient {
           headers: {
             'Authorization': `Bearer ${this.apiKey}`,
             'Content-Type': 'application/json',
-            'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+            'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'https://evolve-xi.vercel.app/',
             'X-Title': 'Evolve Chat App',
           },
           timeout: OPENROUTER_CONFIG.TIMEOUT,
@@ -96,6 +96,13 @@ export class OpenRouterClient {
         });
         
         if (error.response?.status === 401) {
+          console.error('🔑 API Key Authentication Failed:', {
+            message: error.response?.data?.error?.message || 'Unknown auth error',
+            code: error.response?.data?.error?.code || 'Unknown code',
+            apiKeyPresent: !!this.apiKey,
+            apiKeyLength: this.apiKey?.length || 0,
+            apiKeyPrefix: this.apiKey?.substring(0, 10) || 'None'
+          });
           throw new Error('Invalid API key. Please check your OpenRouter API key.');
         }
       }
@@ -124,7 +131,7 @@ export class OpenRouterClient {
             headers: {
               'Authorization': `Bearer ${this.apiKey}`,
               'Content-Type': 'application/json',
-              'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+              'HTTP-Referer': process.env.NEXT_PUBLIC_APP_URL || 'https://evolve-xi.vercel.app/',
               'X-Title': 'Evolve Chat App',
             },
             timeout: OPENROUTER_CONFIG.TIMEOUT,
@@ -203,10 +210,11 @@ export class OpenRouterClient {
 let openRouterClient: OpenRouterClient | null = null;
 
 export function getOpenRouterClient(): OpenRouterClient {
-  const apiKey = process.env.OPENROUTER_API_KEY || process.env.NEXT_PUBLIC_OPENROUTER_API_KEY;
+  // Use only server-side API key for security
+  const apiKey = process.env.OPENROUTER_API_KEY;
   
   if (!apiKey) {
-    throw new Error('OpenRouter API key not found. Please set OPENROUTER_API_KEY environment variable.');
+    throw new Error('OpenRouter API key not found. Please set OPENROUTER_API_KEY environment variable for server-side usage.');
   }
   
   if (!openRouterClient) {
