@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { createGeminiService } from '@/services';
 import { ChatMessage } from '@/services/chat.service';
 import { validateMessages } from '@/utils';
+import { enzoSystemInstruction } from '@/services/gemini.service';
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,8 +25,8 @@ export async function POST(request: NextRequest) {
     // Get Gemini service
     const service = createGeminiService();
 
-    // Enhanced Enzo system prompt with new two-part response protocol
-    const enzoSystemInstruction: ChatMessage = {
+    // Default Mermaid system instruction
+    const mermaidSystemInstruction: ChatMessage = {
       role: 'system',
       content: `You are Enzo, an expert AI assistant. Your primary function is to provide clear, helpful responses.
 
@@ -104,10 +105,51 @@ export async function POST(request: NextRequest) {
       This protocol is mandatory. Adhering to it will prevent all errors.`
     };
 
-    const processedMessages: ChatMessage[] = [
-      enzoSystemInstruction,
-      ...messages.filter((msg: ChatMessage) => msg.role !== 'system')
-    ];
+    // Mind Map system instruction
+    const markmapSystemInstruction: ChatMessage = {
+      role: 'system',
+      content: enzoSystemInstruction
+    };
+
+    // Process messages with strict tool prioritization
+    let systemInstruction: ChatMessage;
+    const processedMessages: ChatMessage[] = [];
+
+    // Check the last user message for tool tags
+    const lastUserMessage = messages[messages.length - 1];
+    const messageContent = lastUserMessage?.content || '';
+
+    // PRIORITY 1: Mind Map tool takes absolute priority
+    if (messageContent.startsWith('[TOOL:MindMap]')) {
+      // Use Mind Map system instruction
+      systemInstruction = markmapSystemInstruction;
+      
+      // Remove the tag from the message
+      const cleanedMessages = messages.map(msg => {
+        if (msg === lastUserMessage) {
+          return {
+            ...msg,
+            content: msg.content.replace('[TOOL:MindMap]', '').trim()
+          };
+        }
+        return msg;
+      });
+      
+      processedMessages.push(
+        systemInstruction,
+        ...cleanedMessages.filter((msg: ChatMessage) => msg.role !== 'system')
+      );
+    }
+    // PRIORITY 2: All other logic (if Mind Map is not detected)
+    else {
+      // Use default Mermaid system instruction
+      systemInstruction = mermaidSystemInstruction;
+      
+      processedMessages.push(
+        systemInstruction,
+        ...messages.filter((msg: ChatMessage) => msg.role !== 'system')
+      );
+    }
 
     // Create a readable stream
     const encoder = new TextEncoder();

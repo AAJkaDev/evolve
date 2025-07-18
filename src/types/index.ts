@@ -8,18 +8,33 @@ export interface Message {
   timestamp: Date;
 }
 
+// New conversation turn structure
+export interface ConversationTurn {
+  id: string;
+  userMessage: Message;
+  aiResponses: Message[];
+  timestamp: Date;
+}
+
 export interface UseChatOptions {
   initialMessages?: Message[];
+  initialTurns?: ConversationTurn[];
   stream?: boolean;
 }
 
 export interface UseChatReturn {
+  // Legacy support for existing components
   messages: Message[];
+  // New turn-based structure
+  turns: ConversationTurn[];
   isLoading: boolean;
   error: string | null;
-  sendMessage: (content: string) => Promise<void>;
+  sendMessage: (content: string, toolMode?: 'default' | 'markmap') => Promise<void>;
   clearMessages: () => void;
   retry: () => Promise<void>;
+  // New functions for advanced controls
+  handleRetry: (turnIndex: number) => Promise<void>;
+  handleEditAndResubmit: (turnIndex: number, newContent: string) => Promise<void>;
 }
 
 export interface OpenRouterMessage {

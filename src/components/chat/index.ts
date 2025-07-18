@@ -7,3 +7,4 @@ export { default as ChatLoading } from './ChatLoading';
 export { default as ChatError } from './ChatError';
 export { default as MermaidDiagram } from './MermaidDiagram';
 export { default as DiagramModal } from './DiagramModal';
+export { default as MessageControls } from './MessageControls';

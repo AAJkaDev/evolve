@@ -1,3 +1,314 @@
+/* Markmap stylings to align with Evolve brand identity */
+.markmap-container {
+  font-family: var(--font-sans);
+  background: var(--evolve-paper, #F5F5EC); /* Paper white */
+  border: 2px solid var(--evolve-charcoal, #1A1A1A); /* Charcoal black */
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.markmap-toolbar button {
+  background: var(--evolve-primary, #4285F4); /* Dopamine Blue */
+  color: var(--evolve-paper, #F5F5EC);
+  border-radius: var(--radius-sm);
+  transition: all 0.3s ease;
+}
+
+.markmap-toolbar button:hover,
+.markmap-toolbar button:focus {
+  background: var(--evolve-secondary, #34C9A3); /* Mentorship Mint */
+  outline: none;
+  box-shadow: 0 0 0 2px var(--evolve-accent, #FFB623); /* Achievement Amber */
+}
+
+.markmap-node {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.markmap-node:hover {
+  opacity: 0.8;
+}
+
+.markmap-node circle {
+  stroke-width: 2;
+  stroke: var(--evolve-paper, #F5F5EC);
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.markmap-node text {
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.markmap-link {
+  stroke-width: 2;
+  stroke-opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.markmap-link:hover {
+  stroke-opacity: 1;
+  stroke-width: 3;
+}
+
+.markmap-toolbar {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced mind map container styling */
+.mind-map-container {
+  position: relative;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border: 2px solid var(--evolve-charcoal);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mind map SVG styling */
+.mind-map-container svg {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  display: block;
+  margin: 0 auto;
+  max-width: none;
+  max-height: none;
+}
+
+/* Ensure full-screen mind maps use full height */
+.mind-map-container.h-full {
+  height: 100vh;
+}
+
+/* Fix for mind map in modal */
+.mind-map-container[class*="h-full"] svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Node styling with EVOLVE brand colors */
+.markmap-node circle {
+  fill: var(--evolve-primary);
+  stroke: var(--evolve-paper);
+  stroke-width: 2;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+  transition: all 0.3s ease;
+}
+
+.markmap-node:hover circle {
+  fill: var(--evolve-secondary);
+  stroke: var(--evolve-accent);
+  stroke-width: 3;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+
+/* Text styling */
+.markmap-node text {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  fill: var(--evolve-charcoal);
+  text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+  pointer-events: none;
+}
+
+/* Link styling */
+.markmap-link {
+  stroke: var(--evolve-primary);
+  stroke-width: 2;
+  stroke-opacity: 0.7;
+  fill: none;
+  transition: all 0.3s ease;
+}
+
+.markmap-link:hover {
+  stroke: var(--evolve-secondary);
+  stroke-width: 3;
+  stroke-opacity: 1;
+}
+
+/* Toolbar enhancements */
+.markmap-toolbar {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 8px;
+  display: flex;
+  gap: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.markmap-toolbar button {
+  background: var(--evolve-primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.markmap-toolbar button:hover {
+  background: var(--evolve-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.markmap-toolbar button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading animation for mind maps */
+.mind-map-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: var(--evolve-paper);
+  border-radius: 8px;
+}
+
+.mind-map-loading::after {
+  content: '';
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--evolve-primary);
+  border-top: 4px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Error state styling */
+.mind-map-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: var(--evolve-paper);
+  border-radius: 8px;
+  color: var(--evolve-warning);
+  text-align: center;
+  padding: 20px;
+}
+
+.mind-map-error h3 {
+  margin-bottom: 8px;
+  color: var(--evolve-warning);
+}
+
+.mind-map-error p {
+  color: var(--evolve-charcoal);
+  opacity: 0.7;
+}
+
+/* Mind map modal specific styling */
+.mind-map-modal {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.mind-map-modal-content {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  max-width: 95vw;
+  max-height: 95vh;
+}
+
+.mind-map-modal-header {
+  background: var(--evolve-paper);
+  border-bottom: 1px solid var(--evolve-charcoal, rgba(0, 0, 0, 0.1));
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mind-map-modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--evolve-charcoal);
+  margin: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .markmap-toolbar {
+    bottom: 8px;
+    padding: 6px;
+    gap: 6px;
+  }
+  
+  .markmap-toolbar button {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+  
+  .mind-map-container {
+    border-radius: 8px;
+  }
+  
+  .markmap-node text {
+    font-size: 12px;
+  }
+}
+
+/* Dark mode support */
+.dark .mind-map-container {
+  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  border-color: #4a5568;
+}
+
+.dark .markmap-node text {
+  fill: #e2e8f0;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.dark .markmap-toolbar {
+  background: rgba(45, 55, 72, 0.95);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .mind-map-loading,
+.dark .mind-map-error {
+  background: #2d3748;
+  color: #e2e8f0;
+}
+
+.dark .mind-map-modal-header {
+  background: #2d3748;
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .mind-map-modal-title {
+  color: #e2e8f0;
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
