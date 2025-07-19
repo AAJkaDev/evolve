@@ -1,6 +1,28 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import { chatService } from '@/services';
 import { Message, ConversationTurn, UseChatOptions, UseChatReturn } from '@/types';
+
+// Media search detection
+const MEDIA_SEARCH_PATTERNS = {
+  images: /\[SEARCH:Images\]\s*(.+)/i,
+  videos: /\[SEARCH:Videos\]\s*(.+)/i,
+  both: /\[SEARCH:Both\]\s*(.+)/i,
+};
+
+
+
+const extractMediaSearchInfo = (content: string) => {
+  for (const [type, pattern] of Object.entries(MEDIA_SEARCH_PATTERNS)) {
+    const match = content.match(pattern);
+    if (match) {
+      return {
+        type: type as 'images' | 'videos' | 'both',
+        query: match[1]?.trim() || '',
+      };
+    }
+  }
+  return null;
+};
 
 export function useChat(options: UseChatOptions = {}): UseChatReturn {
   const { initialMessages = [], initialTurns = [], stream = false } = options;
@@ -29,6 +51,8 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const currentLoadingMessageRef = useRef<{ turnIndex: number; messageId: string } | null>(null);
 
   const generateId = () => crypto.randomUUID();
 
@@ -65,6 +89,38 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     return apiMessages;
   }, [turns]);
 
+  // Stop current AI response generation
+  const stopGeneration = useCallback(() => {
+    console.log('stopGeneration called');
+    
+    // Immediately set loading to false for instant UI feedback
+    setIsLoading(false);
+    
+    // Remove current loading message immediately
+    if (currentLoadingMessageRef.current) {
+      const { turnIndex, messageId } = currentLoadingMessageRef.current;
+      setTurns(prev => prev.map((t, i) => 
+        i === turnIndex 
+          ? {
+              ...t,
+              aiResponses: t.aiResponses.filter(msg => msg.id !== messageId)
+            }
+          : t
+      ));
+      currentLoadingMessageRef.current = null;
+    }
+    
+    // Then abort the request
+    if (abortControllerRef.current) {
+      console.log('Aborting request...');
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    
+    // Clear any error state
+    setError(null);
+  }, []);
+
   // Generate AI response for a specific turn
   const generateAiResponse = useCallback(async (
     turnIndex: number, 
@@ -72,6 +128,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   ) => {
     const turn = turns[turnIndex];
     if (!turn) return;
+
+    // Create new AbortController for this request
+    abortControllerRef.current = new AbortController();
 
     // Create loading message
     const loadingMessage: Message = {
@@ -81,6 +140,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       timestamp: new Date(),
     };
 
+    // Track the loading message for immediate removal if stopped
+    currentLoadingMessageRef.current = { turnIndex, messageId: loadingMessage.id };
+    
     // Add loading message to the turn
     setTurns(prev => prev.map((t, i) => 
       i === turnIndex 
@@ -109,9 +171,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
                 }
               : t
           ));
-        }, toolMode);
+        }, toolMode, abortControllerRef.current.signal);
       } else {
-        const { message, timestamp } = await chatService.sendMessage(apiMessages, toolMode);
+        const { message, timestamp } = await chatService.sendMessage(apiMessages, toolMode, abortControllerRef.current.signal);
         const assistantMessage: Message = {
           id: generateId(),
           role: 'assistant',
@@ -132,6 +194,20 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
         ));
       }
     } catch (err) {
+      // Don't show error for aborted requests
+      if (err instanceof Error && err.name === 'AbortError') {
+        // Just remove the loading message for aborted requests
+        setTurns(prev => prev.map((t, i) => 
+          i === turnIndex 
+            ? {
+                ...t,
+                aiResponses: t.aiResponses.filter(msg => msg.id !== loadingMessage.id)
+              }
+            : t
+        ));
+        return;
+      }
+      
       setError(err instanceof Error ? err.message : 'An unexpected error occurred');
       // Remove loading message on error
       setTurns(prev => prev.map((t, i) => 
@@ -142,8 +218,62 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
             }
           : t
       ));
+    } finally {
+      // Clean up abort controller and loading message reference
+      abortControllerRef.current = null;
+      currentLoadingMessageRef.current = null;
     }
   }, [turns, buildApiMessages, stream]);
+
+  // Handle media search queries
+  const handleMediaSearch = useCallback(async (
+    turnIndex: number, 
+    query: string, 
+    type: 'images' | 'videos' | 'both'
+  ) => {
+    try {
+      // Call the media search API
+      const response = await fetch('/api/media-search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query,
+          type,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Media search failed: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      
+      // Create a media search result message
+      const mediaMessage: Message = {
+        id: generateId(),
+        role: 'assistant',
+        content: JSON.stringify({
+          type: 'media_search_results',
+          searchType: type,
+          query,
+          results: data,
+        }),
+        timestamp: new Date(),
+      };
+
+      // Add the media results to the turn
+      setTurns(prev => prev.map((t, i) => 
+        i === turnIndex 
+          ? { ...t, aiResponses: [mediaMessage] }
+          : t
+      ));
+    } catch (error) {
+      console.error('Media search error:', error);
+      throw error;
+    }
+  }, []);
 
   const sendMessage = useCallback(async (content: string, toolMode: 'default' | 'markmap' = 'default') => {
     if (!content.trim() || isLoading) return;
@@ -151,6 +281,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     setIsLoading(true);
     setError(null);
 
+    // Check if this is a media search query
+    const mediaSearchInfo = extractMediaSearchInfo(content.trim());
+    
     // Create user message
     const userMessage: Message = {
       id: generateId(),
@@ -172,6 +305,20 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 
     // Add new turn to state
     setTurns(prev => [...prev, newTurn]);
+
+    // Handle media search queries
+    if (mediaSearchInfo) {
+      try {
+        await handleMediaSearch(newTurnIndex, mediaSearchInfo.query, mediaSearchInfo.type);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Media search failed');
+        // Remove the turn if media search fails
+        setTurns(prev => prev.filter(t => t.id !== newTurn.id));
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
 
     try {
       // Build API messages from existing turns plus the new user message
@@ -240,7 +387,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     } finally {
       setIsLoading(false);
     }
-  }, [turns, isLoading, buildApiMessages, stream]);
+  }, [turns, isLoading, buildApiMessages, stream, handleMediaSearch]);
 
   const clearMessages = useCallback(() => {
     setTurns([]);
@@ -316,5 +463,6 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     // New advanced functions
     handleRetry,
     handleEditAndResubmit,
+    stopGeneration,
   };
 }

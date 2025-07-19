@@ -22,6 +22,7 @@ interface MessageControlsProps {
   onLike?: () => void;
   onDislike?: () => void;
   className?: string;
+  isMediaSearchResult?: boolean;
 }
 
 export const MessageControls: React.FC<MessageControlsProps> = ({
@@ -36,6 +37,7 @@ export const MessageControls: React.FC<MessageControlsProps> = ({
   onLike,
   onDislike,
   className = '',
+  isMediaSearchResult = false,
 }) => {
   const [copySuccess, setCopySuccess] = useState(false);
   const [likeState, setLikeState] = useState<'liked' | 'disliked' | null>(null);
@@ -114,21 +116,23 @@ export const MessageControls: React.FC<MessageControlsProps> = ({
         </button>
       )}
 
-      {/* Copy Button - For all messages */}
-      <button
-        onClick={handleCopy}
-        className={getButtonClass()}
-        title="Copy message"
-      >
-        {copySuccess ? (
-          <Check size={14} className="text-green-500" />
-        ) : (
-          <Copy size={14} className={getIconClass()} />
-        )}
-      </button>
+      {/* Copy Button - For all messages except media search results */}
+      {!isMediaSearchResult && (
+        <button
+          onClick={handleCopy}
+          className={getButtonClass()}
+          title="Copy message"
+        >
+          {copySuccess ? (
+            <Check size={14} className="text-green-500" />
+          ) : (
+            <Copy size={14} className={getIconClass()} />
+          )}
+        </button>
+      )}
 
-      {/* Retry Button - Only for AI messages */}
-      {!isUser && (
+      {/* Retry Button - Only for AI messages except media search results */}
+      {!isUser && !isMediaSearchResult && (
         <button
           onClick={handleRetry}
           className={getButtonClass()}
@@ -178,14 +182,16 @@ export const MessageControls: React.FC<MessageControlsProps> = ({
         </button>
       )}
 
-      {/* Share Button - For all messages */}
-      <button
-        onClick={handleShare}
-        className={getButtonClass()}
-        title="Share message"
-      >
-        <Share2 size={14} className={getIconClass()} />
-      </button>
+      {/* Share Button - For all messages except media search results */}
+      {!isMediaSearchResult && (
+        <button
+          onClick={handleShare}
+          className={getButtonClass()}
+          title="Share message"
+        >
+          <Share2 size={14} className={getIconClass()} />
+        </button>
+      )}
 
       {/* Response Counter - Only for AI messages with multiple responses */}
       {!isUser && totalResponses > 1 && (

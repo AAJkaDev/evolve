@@ -5,6 +5,7 @@ import { FormattedMessage } from '@/components';
 import { MarkdownMindMap } from './MarkdownMindMap';
 import MindMapModal from './MindMapModal';
 import MessageControls from './MessageControls';
+import MediaSearchResults from './MediaSearchResults';
 import { Check, X } from 'lucide-react';
 
 interface ChatMessageProps {
@@ -32,6 +33,25 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   // Function to detect if a message is a mind map
   const isMindMap = useCallback((content: string) => {
     return content.trim().startsWith('# Mind Map');
+  }, []);
+
+  // Function to detect if a message contains media search results
+  const isMediaSearchResult = useCallback((content: string) => {
+    try {
+      const parsed = JSON.parse(content);
+      return parsed.type === 'media_search_results';
+    } catch {
+      return false;
+    }
+  }, []);
+
+  // Function to parse media search results
+  const parseMediaSearchResult = useCallback((content: string) => {
+    try {
+      return JSON.parse(content);
+    } catch {
+      return null;
+    }
   }, []);
 
   // Handle copy functionality
@@ -193,6 +213,23 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
                   markdown={message.content}
                 />
               </>
+            ) : isMediaSearchResult(message.content) ? (
+              // Media search results
+              (() => {
+                const mediaData = parseMediaSearchResult(message.content);
+                return mediaData ? (
+                  <MediaSearchResults
+                    searchType={mediaData.searchType}
+                    query={mediaData.query}
+                    results={mediaData.results}
+                  />
+                ) : (
+                  <FormattedMessage 
+                    content={message.content} 
+                    className="ai-message-content"
+                  />
+                );
+              })()
             ) : (
               <FormattedMessage 
                 content={message.content} 
@@ -223,6 +260,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
               onShare={handleShare}
               onLike={handleLike}
               onDislike={handleDislike}
+              isMediaSearchResult={isMediaSearchResult(message.content)}
             />
           </div>
         )}

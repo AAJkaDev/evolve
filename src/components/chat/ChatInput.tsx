@@ -1,27 +1,33 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FiPlus, FiMic } from 'react-icons/fi';
 import { IoSend } from 'react-icons/io5';
+import { PiImagesSquareDuotone } from 'react-icons/pi';
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
   isLoading?: boolean;
   placeholder?: string;
+  lastUserPrompt?: string;
+  onStop?: () => void;
 }
 
-// Complete tool definitions with all six tools
+// Complete tool definitions with media search options
 const tools = {
   'MindMap': { tag: '[TOOL:MindMap]', display: 'Mind Map' },
   'Search': { tag: '[TOOL:Search]', display: 'Search & Research' },
-  'Videos': { tag: '[TOOL:Videos]', display: 'Find Relevant Videos' },
   'Practice': { tag: '[TOOL:Practice]', display: 'Practice & Test' },
   'Connections': { tag: '[TOOL:Connections]', display: 'Explore Connections' },
-  'Code': { tag: '[TOOL:Code]', display: 'Code Environment' }
+  'Code': { tag: '[TOOL:Code]', display: 'Code Environment' },
+  'Images': { tag: '[SEARCH:Images]', display: 'Find Images' },
+  'MediaVideos': { tag: '[SEARCH:Videos]', display: 'Find Videos' },
+  'MediaBoth': { tag: '[SEARCH:Both]', display: 'Find Images & Videos' }
 } as const;
 
 export const ChatInput: React.FC<ChatInputProps> = ({
   onSendMessage,
   isLoading = false,
-  placeholder = "Type your message..."
+  placeholder = "Type your message...",
+  onStop
 }) => {
   const [input, setInput] = useState('');
   const [activeTool, setActiveTool] = useState<keyof typeof tools | null>(null);
@@ -50,6 +56,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   useEffect(() => {
     adjustTextareaHeight();
   }, [input]);
+
+
 
   // Handle click outside to close tools menu
   useEffect(() => {
@@ -83,6 +91,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({
     setActiveTool(toolKey);
     setIsToolsMenuOpen(false);
   };
+
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -201,13 +211,6 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                         </button>
                         <button
                           className="w-full px-3 py-2 text-left text-white hover:bg-gray-700 rounded-md transition-colors duration-200 flex items-center text-sm"
-                          onClick={() => handleToolSelect('Videos')}
-                        >
-                          <span className="mr-3 text-gray-300">•</span>
-                          Find Relevant Videos
-                        </button>
-                        <button
-                          className="w-full px-3 py-2 text-left text-white hover:bg-gray-700 rounded-md transition-colors duration-200 flex items-center text-sm"
                           onClick={() => handleToolSelect('Practice')}
                         >
                           <span className="mr-3 text-gray-300">•</span>
@@ -227,6 +230,40 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                           <span className="mr-3 text-gray-300">•</span>
                           Code Environment
                         </button>
+                        {/* Media Search Section */}
+                        <div className="border-t border-gray-600 pt-2 mt-2">
+                          <div className="px-3 py-1 text-xs text-gray-400 uppercase tracking-wide font-medium">
+                            Media Search
+                          </div>
+                          <button
+                            className="w-full px-3 py-2 text-left text-white hover:bg-gray-700 rounded-md transition-colors duration-200 flex items-center text-sm"
+                            onClick={() => handleToolSelect('MediaBoth')}
+                            title="Find Images & Videos"
+                          >
+                            <PiImagesSquareDuotone className="mr-3 text-gray-300" size={16} />
+                            Find Images & Videos
+                          </button>
+                          
+                          {/* Sub-options with indentation */}
+                          <div className="ml-4 mt-1 space-y-1">
+                            <button
+                              className="w-full px-3 py-1.5 text-left text-gray-300 hover:text-white hover:bg-gray-700 rounded-md transition-colors duration-200 flex items-center text-xs"
+                              onClick={() => handleToolSelect('Images')}
+                              title="Find Images Only"
+                            >
+                              <span className="mr-2 text-gray-400">→</span>
+                              Images
+                            </button>
+                            <button
+                              className="w-full px-3 py-1.5 text-left text-gray-300 hover:text-white hover:bg-gray-700 rounded-md transition-colors duration-200 flex items-center text-xs"
+                              onClick={() => handleToolSelect('MediaVideos')}
+                              title="Find Videos Only"
+                            >
+                              <span className="mr-2 text-gray-400">→</span>
+                              Videos
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -244,25 +281,51 @@ export const ChatInput: React.FC<ChatInputProps> = ({
               
               {/* Send Button */}
               <button
-                type="submit"
-                disabled={!input.trim() || isLoading}
-                className="
+                type={isLoading ? "button" : "submit"}
+                disabled={!input.trim() && !isLoading}
+                className={`
                   p-2
                   text-gray-600
-                  hover:text-gray-800
-                  hover:bg-gray-100
-                  disabled:text-gray-400
-                  disabled:cursor-not-allowed
                   rounded-full
-                  transition-colors
+                  transition-all
+                  duration-200
                   flex
                   items-center
                   justify-center
-                "
-                title="Send message"
+                  ${isLoading 
+                    ? 'cursor-pointer hover:bg-red-50 hover:scale-105 active:scale-95' 
+                    : (!input.trim() 
+                      ? 'cursor-not-allowed disabled:text-gray-400' 
+                      : 'cursor-pointer hover:text-gray-800 hover:bg-gray-100'
+                    )
+                  }
+                `}
+                title={isLoading ? "Click to stop generation" : "Send message"}
+                onClick={isLoading ? (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('Stop button clicked'); // Debug log
+                  onStop?.();
+                } : undefined}
+                onMouseDown={isLoading ? (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                } : undefined}
               >
                 {isLoading ? (
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600"></div>
+                  <div className="relative flex items-center justify-center">
+                    {/* Spinning loader */}
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 pointer-events-none"></div>
+                    {/* Red glowing stop dot - bigger and more visible */}
+                    <div 
+                      className="absolute w-3 h-3 bg-red-500 rounded-full animate-pulse pointer-events-none"
+                      style={{
+                        boxShadow: '0 0 12px rgba(239, 68, 68, 1), 0 0 24px rgba(239, 68, 68, 0.6), 0 0 36px rgba(239, 68, 68, 0.3)'
+                      }}
+                    />
+                    {/* Invisible larger click area for better UX */}
+                    <div className="absolute inset-0 w-6 h-6 -m-1 pointer-events-none" />
+                  </div>
                 ) : (
                   <IoSend size={20} />
                 )}

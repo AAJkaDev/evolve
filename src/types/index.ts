@@ -35,6 +35,7 @@ export interface UseChatReturn {
   // New functions for advanced controls
   handleRetry: (turnIndex: number) => Promise<void>;
   handleEditAndResubmit: (turnIndex: number, newContent: string) => Promise<void>;
+  stopGeneration: () => void;
 }
 
 export interface OpenRouterMessage {

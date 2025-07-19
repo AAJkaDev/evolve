@@ -41,8 +41,8 @@ export class ChatService {
   /**
    * Send a non-streaming message (uses API route)
    */
-  async sendMessage(messages: ChatMessage[], toolMode?: 'default' | 'markmap'): Promise<ChatMessageResponse> {
-    return this.sendMessageViaAPI(messages, toolMode);
+  async sendMessage(messages: ChatMessage[], toolMode?: 'default' | 'markmap', abortSignal?: AbortSignal): Promise<ChatMessageResponse> {
+    return this.sendMessageViaAPI(messages, toolMode, abortSignal);
   }
 
   /**
@@ -51,15 +51,16 @@ export class ChatService {
   async sendStreamedMessage(
     messages: ChatMessage[],
     onChunk: (chunk: string) => void,
-    toolMode?: 'default' | 'markmap'
+    toolMode?: 'default' | 'markmap',
+    abortSignal?: AbortSignal
   ): Promise<void> {
-    return this.sendStreamedMessageViaAPI(messages, onChunk, toolMode);
+    return this.sendStreamedMessageViaAPI(messages, onChunk, toolMode, abortSignal);
   }
 
   /**
    * Send a non-streaming message using API route
    */
-  async sendMessageViaAPI(messages: ChatMessage[], toolMode?: 'default' | 'markmap'): Promise<ChatMessageResponse> {
+  async sendMessageViaAPI(messages: ChatMessage[], toolMode?: 'default' | 'markmap', abortSignal?: AbortSignal): Promise<ChatMessageResponse> {
     if (!validateMessages(messages)) {
       throw new Error('Invalid messages format');
     }
@@ -71,6 +72,7 @@ export class ChatService {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ messages, mode: toolMode || 'default' }),
+        signal: abortSignal,
       });
 
       if (!response.ok) {
@@ -103,7 +105,8 @@ export class ChatService {
   async sendStreamedMessageViaAPI(
     messages: ChatMessage[],
     onChunk: (chunk: string) => void,
-    toolMode?: 'default' | 'markmap'
+    toolMode?: 'default' | 'markmap',
+    abortSignal?: AbortSignal
   ): Promise<void> {
     if (!validateMessages(messages)) {
       throw new Error('Invalid messages format');
@@ -116,6 +119,7 @@ export class ChatService {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ messages, mode: toolMode || 'default' }),
+        signal: abortSignal,
       });
 
       if (!response.ok) {

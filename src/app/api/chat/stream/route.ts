@@ -7,6 +7,9 @@ import { enzoSystemInstruction } from '@/services/gemini.service';
 export async function POST(request: NextRequest) {
   try {
     const { messages } = await request.json();
+    
+    // Get abort signal from request
+    const abortSignal = request.signal;
 
     if (!messages || !Array.isArray(messages)) {
       return new Response(
@@ -160,34 +163,56 @@ export async function POST(request: NextRequest) {
         controller = controllerParam;
       },
       cancel() {
-        console.log('Stream cancelled');
+        console.log('Stream cancelled by client');
+        // This will be called when the client aborts the request
       },
     });
 
     // Send streamed request to Gemini API
     service.sendStreamedMessage(processedMessages, (chunk: string) => {
       try {
+        // Check if request was aborted
+        if (abortSignal.aborted) {
+          console.log('Request aborted, stopping chunk processing');
+          controller.close();
+          return;
+        }
+        
         const data = `data: ${JSON.stringify({ chunk })}\n\n`;
         controller.enqueue(encoder.encode(data));
       } catch (err) {
         console.error('Chunk encoding error:', err);
       }
-    }).then(() => {
+    }, abortSignal).then(() => {
       // Signal end of stream
       try {
-        controller.enqueue(encoder.encode('data: [DONE]\n\n'));
-        controller.close();
+        if (!abortSignal.aborted) {
+          controller.enqueue(encoder.encode('data: [DONE]\n\n'));
+          controller.close();
+        }
       } catch (err) {
         console.error('Stream close error:', err);
       }
     }).catch((error) => {
       console.error('Streaming error:', error);
       try {
-        const errorData = `data: ${JSON.stringify({ error: error.message })}\n\n`;
-        controller.enqueue(encoder.encode(errorData));
+        if (!abortSignal.aborted) {
+          const errorData = `data: ${JSON.stringify({ error: error.message })}\n\n`;
+          controller.enqueue(encoder.encode(errorData));
+        }
         controller.close();
       } catch (err) {
         console.error('Error handling error:', err);
+      }
+    });
+    
+    // Handle abort signal
+    abortSignal.addEventListener('abort', () => {
+      console.log('Request aborted by client');
+      try {
+        controller.close();
+      } catch (err) {
+        console.error('Error closing controller on abort:', err);
       }
     });
 
