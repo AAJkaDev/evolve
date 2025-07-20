@@ -1,0 +1,22 @@
+# FastAPI and server dependencies
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
+pydantic>=2.0.0
+
+# HTTP requests
+requests>=2.31.0
+
+# Google AI integration (simplified)
+google-generativeai>=0.3.0
+google-api-python-client>=2.108.0
+
+# Document processing
+apify-client>=1.7.0
+
+# Additional utilities
+python-multipart>=0.0.6
+python-dotenv>=1.0.0
+
+# Text processing
+markdown>=3.5.0
+beautifulsoup4>=4.12.0

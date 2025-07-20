@@ -6,6 +6,7 @@ import { MarkdownMindMap } from './MarkdownMindMap';
 import MindMapModal from './MindMapModal';
 import MessageControls from './MessageControls';
 import MediaSearchResults from './MediaSearchResults';
+import { ResearchMessage } from './ResearchMessage';
 import { Check, X } from 'lucide-react';
 
 interface ChatMessageProps {
@@ -15,6 +16,7 @@ interface ChatMessageProps {
   totalResponses?: number;
   onRetry?: () => void;
   onEdit?: (newContent: string) => void;
+  onResearchClick?: (data: unknown) => void;
 }
 
 export const ChatMessage: React.FC<ChatMessageProps> = ({ 
@@ -23,7 +25,8 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
   responseIndex, 
   totalResponses, 
   onRetry, 
-  onEdit 
+  onEdit,
+  onResearchClick 
 }) => {
   const [isMindMapOpen, setIsMindMapOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -40,6 +43,16 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
     try {
       const parsed = JSON.parse(content);
       return parsed.type === 'media_search_results';
+    } catch {
+      return false;
+    }
+  }, []);
+
+  // Function to detect if a message contains research results
+  const isResearchMessage = useCallback((content: string) => {
+    try {
+      const parsed = JSON.parse(content);
+      return parsed.type === 'research_loading' || parsed.type === 'research_results';
     } catch {
       return false;
     }
@@ -230,6 +243,9 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
                   />
                 );
               })()
+            ) : isResearchMessage(message.content) ? (
+              // Research results (loading or completed)
+              <ResearchMessage content={message.content} onResearchClick={onResearchClick} />
             ) : (
               <FormattedMessage 
                 content={message.content} 

@@ -1,6 +1,7 @@
 import React from 'react';
-import { FiTrash2 } from 'react-icons/fi';
+import { FiTrash2, FiArrowLeft } from 'react-icons/fi';
 import { Button } from '@/components/ui/Button';
+import { useRouter } from 'next/navigation';
 
 interface ChatHeaderProps {
   title?: string;
@@ -17,13 +18,32 @@ export const ChatHeader: React.FC<ChatHeaderProps> = ({
   streamEnabled = false,
   onStreamToggle
 }) => {
+  const router = useRouter();
+  
+  const handleBackClick = () => {
+    router.push('/dashboard');
+  };
   return (
     <div className="flex justify-center px-4 py-3">
       <div className="w-full max-w-4xl">
         <div className="flex items-center justify-between py-2">
-          <div className="flex flex-col">
-            <h1 className="text-xl font-medium text-[var(--evolve-charcoal)]">{title}</h1>
-            <p className="text-xs text-[var(--evolve-dark-gray)] mt-0.5 opacity-75">{subtitle}</p>
+          <div className="flex items-center space-x-3">
+            {/* Back Button */}
+            <Button
+              onClick={handleBackClick}
+              variant="ghost"
+              size="sm"
+              className="p-2 text-[var(--evolve-dark-gray)] hover:text-[var(--evolve-charcoal)] hover:bg-[var(--evolve-paper)] rounded-full"
+              title="Back to dashboard"
+            >
+              <FiArrowLeft size={16} className="line-art-icon" />
+            </Button>
+            
+            {/* Title and Subtitle */}
+            <div className="flex flex-col">
+              <h1 className="text-xl font-medium text-[var(--evolve-charcoal)]">{title}</h1>
+              <p className="text-xs text-[var(--evolve-dark-gray)] mt-0.5 opacity-75">{subtitle}</p>
+            </div>
           </div>
           <div className="flex items-center space-x-3">
             {onStreamToggle && (

@@ -9,6 +9,9 @@ const MEDIA_SEARCH_PATTERNS = {
   both: /\[SEARCH:Both\]\s*(.+)/i,
 };
 
+// Research tool detection
+const RESEARCH_PATTERN = /\[TOOL:Research\]\s*(.+)/i;
+
 
 
 const extractMediaSearchInfo = (content: string) => {
@@ -20,6 +23,16 @@ const extractMediaSearchInfo = (content: string) => {
         query: match[1]?.trim() || '',
       };
     }
+  }
+  return null;
+};
+
+const extractResearchInfo = (content: string) => {
+  const match = content.match(RESEARCH_PATTERN);
+  if (match) {
+    return {
+      query: match[1]?.trim() || '',
+    };
   }
   return null;
 };
@@ -275,6 +288,98 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     }
   }, []);
 
+  // Handle research queries
+  const handleResearchQuery = useCallback(async (
+    turnIndex: number, 
+    query: string
+  ) => {
+    try {
+      // Create initial loading message with research status
+      const loadingMessage: Message = {
+        id: generateId(),
+        role: 'assistant',
+        content: JSON.stringify({
+          type: 'research_loading',
+          query,
+          status: 'Starting deep research...',
+          stage: 'initializing'
+        }),
+        timestamp: new Date(),
+      };
+
+      // Add loading message to the turn
+      setTurns(prev => prev.map((t, i) => 
+        i === turnIndex 
+          ? { ...t, aiResponses: [loadingMessage] }
+          : t
+      ));
+
+      // Update loading status - Stage 1: Searching
+      setTurns(prev => prev.map((t, i) => 
+        i === turnIndex 
+          ? {
+              ...t,
+              aiResponses: t.aiResponses.map(msg => 
+                msg.id === loadingMessage.id 
+                  ? { 
+                      ...msg, 
+                      content: JSON.stringify({
+                        type: 'research_loading',
+                        query,
+                        status: 'Searching for relevant sources...',
+                        stage: 'searching'
+                      })
+                    }
+                  : msg
+              )
+            }
+          : t
+      ));
+
+      // Call the research API
+      const response = await fetch('/api/search-research', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query,
+          max_results: 10,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Research failed: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      
+      // Create a research result message
+      const researchMessage: Message = {
+        id: generateId(),
+        role: 'assistant',
+        content: JSON.stringify({
+          type: 'research_results',
+          query,
+          answer: data.answer,
+          citations: data.citations,
+          sources: data.sources,
+        }),
+        timestamp: new Date(),
+      };
+
+      // Replace loading message with research results
+      setTurns(prev => prev.map((t, i) => 
+        i === turnIndex 
+          ? { ...t, aiResponses: [researchMessage] }
+          : t
+      ));
+    } catch (error) {
+      console.error('Research error:', error);
+      throw error;
+    }
+  }, []);
+
   const sendMessage = useCallback(async (content: string, toolMode: 'default' | 'markmap' = 'default') => {
     if (!content.trim() || isLoading) return;
 
@@ -283,6 +388,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 
     // Check if this is a media search query
     const mediaSearchInfo = extractMediaSearchInfo(content.trim());
+    
+    // Check if this is a research query
+    const researchInfo = extractResearchInfo(content.trim());
     
     // Create user message
     const userMessage: Message = {
@@ -313,6 +421,20 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Media search failed');
         // Remove the turn if media search fails
+        setTurns(prev => prev.filter(t => t.id !== newTurn.id));
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
+
+    // Handle research queries
+    if (researchInfo) {
+      try {
+        await handleResearchQuery(newTurnIndex, researchInfo.query);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Research failed');
+        // Remove the turn if research fails
         setTurns(prev => prev.filter(t => t.id !== newTurn.id));
       } finally {
         setIsLoading(false);
@@ -387,7 +509,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     } finally {
       setIsLoading(false);
     }
-  }, [turns, isLoading, buildApiMessages, stream, handleMediaSearch]);
+    }, [turns, isLoading, buildApiMessages, stream, handleMediaSearch, handleResearchQuery]);
 
   const clearMessages = useCallback(() => {
     setTurns([]);

@@ -6,12 +6,15 @@ import { ChatHeader, ChatInput, ChatLoading, ChatError } from "@/components";
 import ChatMessage from "@/components/chat/ChatMessage";
 import { ResearchInline } from "@/components/chat/ResearchInline";
 
-export default function Chat() {
+interface ChatPageNewProps {
+  onRequestResearch?: (query: string) => void;
+}
+
+export default function ChatPageNew({}: ChatPageNewProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [streamEnabled, setStreamEnabled] = useState(true);
   const [showResearchPanel, setShowResearchPanel] = useState(false);
   const [researchQuery, setResearchQuery] = useState("");
-  const [completedResearchQueries, setCompletedResearchQueries] = useState<Set<string>>(new Set());
   
   const { 
     turns, 
@@ -34,11 +37,10 @@ export default function Chat() {
   // Get the last user message for media search context
   const lastUserPrompt = turns.length > 0 ? turns[turns.length - 1].userMessage.content : '';
 
-
-
   useEffect(() => {
     scrollToBottom();
   }, [turns]);
+
 
   // Handle message sending with research tool detection
   const handleSendMessage = (message: string) => {
@@ -51,31 +53,6 @@ export default function Chat() {
     }
     
     sendMessage(message);
-  };
-
-  // Handle research completion - add to chat history
-  const handleResearchComplete = (query: string) => {
-    // Prevent duplicate research results for the same query
-    if (completedResearchQueries.has(query)) {
-      return;
-    }
-    
-    // Mark this query as completed
-    setCompletedResearchQueries(prev => new Set(prev).add(query));
-    
-    // Close the research panel since we're done
-    setShowResearchPanel(false);
-    
-    // Add a clean conversation turn to the chat history
-    // The user asked the question, AI provided the answer
-    sendMessage(`Research: ${query}`);
-  };
-
-  // Handle clicking on research message to reopen panel
-  const handleResearchMessageClick = (data: unknown) => {
-    const researchData = data as { query: string };
-    setResearchQuery(researchData.query);
-    setShowResearchPanel(true);
   };
 
   return (
@@ -117,7 +94,6 @@ export default function Chat() {
                         responseIndex={responseIndex}
                         totalResponses={turn.aiResponses.length}
                         onRetry={() => handleRetry(turnIndex)}
-                        onResearchClick={handleResearchMessageClick}
                       />
                     ))}
                   </div>
@@ -157,10 +133,7 @@ export default function Chat() {
             
             {/* Research component */}
             <div className="flex-1 overflow-y-auto p-4">
-              <ResearchInline 
-                initialQuery={researchQuery} 
-                onResearchComplete={handleResearchComplete}
-              />
+              <ResearchInline initialQuery={researchQuery} />
             </div>
           </div>
         )}
@@ -168,4 +141,3 @@ export default function Chat() {
     </div>
   );
 }
-

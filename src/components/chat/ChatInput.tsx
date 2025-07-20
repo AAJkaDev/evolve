@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FiPlus, FiMic } from 'react-icons/fi';
+import { FiPlus, FiMic, FiSearch } from 'react-icons/fi';
 import { IoSend } from 'react-icons/io5';
 import { PiImagesSquareDuotone } from 'react-icons/pi';
 
@@ -15,6 +15,7 @@ interface ChatInputProps {
 const tools = {
   'MindMap': { tag: '[TOOL:MindMap]', display: 'Mind Map' },
   'Search': { tag: '[TOOL:Search]', display: 'Search & Research' },
+  'Research': { tag: '[TOOL:Research]', display: 'Research & Synthesis' },
   'Practice': { tag: '[TOOL:Practice]', display: 'Practice & Test' },
   'Connections': { tag: '[TOOL:Connections]', display: 'Explore Connections' },
   'Code': { tag: '[TOOL:Code]', display: 'Code Environment' },
@@ -112,9 +113,10 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   };
 
   return (
-    <div className="p-4 flex justify-center">
-      <div className="w-full max-w-4xl">
-        <form onSubmit={handleSubmit}>
+    <>
+      <div className="p-4 flex justify-center">
+        <div className="w-full max-w-4xl">
+          <form onSubmit={handleSubmit}>
           {/* Main Container with Dotted Border */}
           <div className="border-2 border-dotted border-gray-400 rounded-lg bg-white p-4 flex items-center gap-4">
             
@@ -195,13 +197,29 @@ export const ChatInput: React.FC<ChatInputProps> = ({
                   <div className="absolute right-0 bottom-full mb-2 w-56 bg-gray-800 rounded-lg shadow-xl border border-gray-600 z-50">
                     <div className="p-2">
                       <div className="space-y-1">
-                        <button
-                          className="w-full px-3 py-2 text-left text-white hover:bg-gray-700 rounded-md transition-colors duration-200 flex items-center text-sm"
-                          onClick={() => handleToolSelect('Search')}
-                        >
-                          <span className="mr-3 text-gray-300">•</span>
-                          Search & Research
-                        </button>
+                        {/* Hidden: Basic Search & Research tool */}
+                        {false && (
+                          <button
+                            className="w-full px-3 py-2 text-left text-white hover:bg-gray-700 rounded-md transition-colors duration-200 flex items-center text-sm"
+                            onClick={() => handleToolSelect('Search')}
+                          >
+                            <span className="mr-3 text-gray-300">•</span>
+                            Search & Research
+                          </button>
+                        )}
+                        
+                        {/* Hidden: Advanced Research & Synthesis tool */}
+                        {false && (
+                          <button
+                            className="w-full px-3 py-2 text-left text-white hover:bg-gray-700 rounded-md transition-colors duration-200 flex items-center text-sm font-medium"
+                            onClick={() => handleToolSelect('Research')}
+                            title="AI-powered deep research with citations"
+                          >
+                            <FiSearch className="mr-3 text-blue-400" size={16} />
+                            <span className="flex-1">Research & Synthesis</span>
+                            <span className="text-xs text-blue-400 ml-2">NEW</span>
+                          </button>
+                        )}
                         <button
                           className="w-full px-3 py-2 text-left text-white hover:bg-gray-700 rounded-md transition-colors duration-200 flex items-center text-sm"
                           onClick={() => handleToolSelect('MindMap')}
@@ -332,9 +350,10 @@ export const ChatInput: React.FC<ChatInputProps> = ({
               </button>
             </div>
           </div>
-        </form>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

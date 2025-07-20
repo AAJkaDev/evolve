@@ -16,6 +16,7 @@ const FALLBACK_KEYS = {
   PEXELS_API_KEY: 'f9Mbfd58FNQZLNUJOJEzesEC2eUKeCRV8ShxYErIrFTDSFyeE7nVn62c',
   YT_API_KEY: 'AIzaSyCLGO2oiUausQS5O7lZB21fBwMHWmRuPfk', // User's YouTube Data API v3 key
   GOOGLE_CLIENT_ID: '319885625479-dcs6da1j4qaurb52dfbnivqtrlh98nap.apps.googleusercontent.com', // User's Google OAuth Client ID
+  PYTHON_WORKER_URL: 'http://localhost:8000', // Project Perplexity Python RAG microservice
 };
 
 export const ENV_CONFIG = {

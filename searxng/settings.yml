@@ -1,0 +1,175 @@
+# SearxNG Configuration for Project Perplexity
+# Cost-free meta-search engine configuration
+
+use_default_settings: true
+
+general:
+  debug: false
+  instance_name: "Project Perplexity Search"
+  contact_url: false
+  enable_metrics: false
+
+search:
+  safe_search: 0
+  autocomplete: ""
+  default_lang: "en"
+  formats:
+    - html
+    - json
+  result_format: "json"  # Enable JSON API for our pipeline
+
+server:
+  port: 8080
+  bind_address: "0.0.0.0"
+  secret_key: "ProjectPerplexitySecureKey2025!@#$%^&*()_+"
+  base_url: false
+  image_proxy: false
+  http_protocol_version: "1.0"
+  method: "POST"
+  default_http_headers:
+    X-Content-Type-Options: nosniff
+    X-XSS-Protection: 1; mode=block
+    X-Download-Options: noopen
+    X-Robots-Tag: noindex, nofollow
+    Referrer-Policy: no-referrer
+
+ui:
+  static_use_hash: false
+  default_locale: ""
+  query_in_title: false
+  infinite_scroll: false
+  center_alignment: false
+  cache_url: "https://web.archive.org/web/"
+  default_theme: simple
+  theme_args:
+    simple_style: auto
+
+# Free search engines configuration
+engines:
+  # Web Search Engines
+  - name: brave
+    engine: brave
+    shortcut: br
+    categories: [general, web]
+    disabled: false
+    timeout: 3.0
+
+  - name: duckduckgo
+    engine: duckduckgo
+    shortcut: ddg
+    categories: [general, web]
+    disabled: false
+    timeout: 3.0
+
+  - name: bing
+    engine: bing
+    shortcut: bi
+    categories: [general, web]
+    disabled: false
+    timeout: 3.0
+
+  - name: google
+    engine: google
+    shortcut: go
+    categories: [general, web]
+    disabled: false
+    timeout: 3.0
+    use_mobile_ui: false
+
+  - name: startpage
+    engine: startpage
+    shortcut: sp
+    categories: [general, web]
+    disabled: false
+    timeout: 3.0
+
+  - name: searx
+    engine: searx
+    shortcut: se
+    categories: [general, web]
+    disabled: false
+    timeout: 3.0
+
+  # News Sources
+  - name: bing news
+    engine: bing_news
+    shortcut: bin
+    categories: [news]
+    disabled: false
+    timeout: 3.0
+
+  - name: duckduckgo news
+    engine: duckduckgo
+    shortcut: ddgn
+    categories: [news]
+    disabled: false
+    timeout: 3.0
+
+  # Academic Sources
+  - name: arxiv
+    engine: arxiv
+    shortcut: arx
+    categories: [science, general]
+    disabled: false
+    timeout: 4.0
+
+  - name: crossref
+    engine: crossref
+    shortcut: cr
+    categories: [science, general]
+    disabled: false
+    timeout: 4.0
+
+  - name: semantic scholar
+    engine: semantic_scholar
+    shortcut: se
+    categories: [science, general]
+    disabled: false
+    timeout: 4.0
+
+  # Wikipedia
+  - name: wikipedia
+    engine: wikipedia
+    shortcut: wp
+    categories: [general]
+    disabled: false
+    timeout: 3.0
+
+  # Disable engines we don't want
+  - name: google images
+    engine: google_images
+    disabled: true
+
+  - name: bing images
+    engine: bing_images
+    disabled: true
+
+  - name: youtube
+    engine: youtube_noapi
+    disabled: true
+
+categories_as_tabs:
+  general:
+    - brave
+    - duckduckgo
+    - bing
+    - google
+    - startpage
+    - wikipedia
+  news:
+    - bing news
+    - duckduckgo news
+  science:
+    - arxiv
+    - crossref
+    - semantic scholar
+
+locales:
+  en: English
+
+doi_resolvers:
+  oadoi.org: 'https://oadoi.org/'
+  doi.org: 'https://doi.org/'
+  doai.io: 'https://doai.io/'
+  sci-hub.se: 'https://sci-hub.se/'
+
