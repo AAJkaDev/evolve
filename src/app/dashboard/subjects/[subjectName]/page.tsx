@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { 
-  FloatingLeftSidebar, 
-  FloatingRightSidebar,
+  EvolveSidebar,
   ChatInput
 } from '@/components';
 
@@ -13,6 +12,7 @@ export default function SubjectPage() {
   const params = useParams();
   const subjectName = params.subjectName as string;
   const [isLoading, setIsLoading] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   
   // Format subject name for display (convert URL param to readable format)
   const displayName = subjectName?.toUpperCase().replace('-', ' ') || '';
@@ -34,11 +34,8 @@ export default function SubjectPage() {
 
   return (
     <div className="min-h-screen bg-[#F5F5EC] relative overflow-hidden">
-      {/* Floating Left Sidebar */}
-      <FloatingLeftSidebar />
-      
-      {/* Floating Right Sidebar */}
-      <FloatingRightSidebar />
+      {/* Main Sidebar */}
+      <EvolveSidebar isOpen={sidebarOpen} onToggle={setSidebarOpen} />
       
       {/* Main Content Area */}
       <div className="flex flex-col h-screen">

@@ -1,13 +1,11 @@
 "use client";
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { 
-  FloatingLeftSidebar, 
-  FloatingRightSidebar 
+  EvolveSidebar 
 } from '@/components';
-
 // Enhanced subject data with descriptions and colors
 const subjects = [
   {
@@ -73,13 +71,24 @@ const subjects = [
 ];
 
 export default function SubjectsPage() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  
   return (
     <div className="min-h-screen bg-[#F5F5EC] relative overflow-hidden">
-      {/* Floating Left Sidebar */}
-      <FloatingLeftSidebar />
+      {/* Main Sidebar */}
+      <EvolveSidebar isOpen={sidebarOpen} onToggle={setSidebarOpen} />
       
-      {/* Floating Right Sidebar */}
-      <FloatingRightSidebar />
+      {/* Dotted Grid Background */}
+      <div 
+        className="absolute inset-0 opacity-[0.03]" 
+        style={{
+          backgroundImage: `
+            radial-gradient(circle at 1px 1px, #1A1A1A 1px, transparent 0),
+            radial-gradient(circle at 21px 21px, #4285F4 0.5px, transparent 0)
+          `,
+          backgroundSize: '20px 20px, 40px 40px'
+        }} 
+      />
       
       {/* Main Content Area */}
       <div className="h-screen flex flex-col">

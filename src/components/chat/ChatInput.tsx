@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { FiPlus, FiMic, FiSearch } from 'react-icons/fi';
 import { IoSend } from 'react-icons/io5';
 import { PiImagesSquareDuotone } from 'react-icons/pi';
@@ -36,8 +36,8 @@ export const ChatInput: React.FC<ChatInputProps> = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const toolsMenuRef = useRef<HTMLDivElement>(null);
 
-  // Auto-resize textarea
-  const adjustTextareaHeight = () => {
+  // Optimized auto-resize textarea with useCallback
+  const adjustTextareaHeight = useCallback(() => {
     const textarea = textareaRef.current;
     if (textarea) {
       textarea.style.height = 'auto';
@@ -52,50 +52,40 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         textarea.style.overflowY = 'auto';
       }
     }
-  };
+  }, []);
 
   useEffect(() => {
     adjustTextareaHeight();
-  }, [input]);
+  }, [input, adjustTextareaHeight]);
 
 
 
-  // Handle click outside to close tools menu
+  // Optimized click outside handler
+  const handleClickOutside = useCallback((event: MouseEvent) => {
+    if (toolsMenuRef.current && !toolsMenuRef.current.contains(event.target as Node)) {
+      setIsToolsMenuOpen(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (toolsMenuRef.current && !toolsMenuRef.current.contains(event.target as Node)) {
-        setIsToolsMenuOpen(false);
-      }
-    };
-
     if (isToolsMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
     }
+  }, [isToolsMenuOpen, handleClickOutside]);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isToolsMenuOpen]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  // Optimized handlers with useCallback
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
-  };
+  }, []);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSubmit(e as React.FormEvent);
-    }
-  };
 
-  const handleToolSelect = (toolKey: keyof typeof tools) => {
+  const handleToolSelect = useCallback((toolKey: keyof typeof tools) => {
     setActiveTool(toolKey);
     setIsToolsMenuOpen(false);
-  };
+  }, []);
 
-
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     if (input.trim() && !isLoading) {
       const messageContent = activeTool 
@@ -106,11 +96,19 @@ export const ChatInput: React.FC<ChatInputProps> = ({
       setInput('');
       setActiveTool(null); // Reset tool after sending
     }
-  };
+  }, [input, isLoading, activeTool, onSendMessage]);
 
-  const clearActiveTool = () => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e as React.FormEvent);
+    }
+  }, [handleSubmit]);
+
+  const clearActiveTool = useCallback(() => {
     setActiveTool(null);
-  };
+  }, []);
+
 
   return (
     <>
