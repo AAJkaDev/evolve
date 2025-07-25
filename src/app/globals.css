@@ -466,9 +466,9 @@ html, body {
 /* Sketch-like button styles */
 .sketch-btn {
   position: relative;
-  border: 2px dashed #000;
+  border: 2px dashed;
+  border-color: var(--foreground);
   border-radius: 8px;
-  background: white;
   padding: 12px 24px;
   transition: all 0.3s ease;
   cursor: pointer;
@@ -477,6 +477,10 @@ html, body {
 .sketch-btn:hover {
   transform: translate(-2px, -2px);
   box-shadow: 3px 3px 0px rgba(0,0,0,0.3);
+}
+
+.dark .sketch-btn:hover {
+  box-shadow: 3px 3px 0px rgba(255,255,255,0.3);
 }
 
 /* Line art style icons */

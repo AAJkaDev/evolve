@@ -64,18 +64,50 @@ const MermaidDiagram = ({ chart, onFullscreen, isFullscreen = false }: MermaidDi
         const mermaid = mermaidLib.default;
         const svgPanZoom = svgPanZoomLib.default;
         
-        // Clean up the chart syntax to fix common issues
+        // Enhanced chart syntax cleaning to fix common Mermaid errors
         const cleanedChart = chart
+          // Fix arrow syntax errors - replace invalid arrow patterns
+          .replace(/\|>/g, '-->') // Fix |> arrows (most common error)
+          .replace(/\|->/g, '-->') // Fix |-> arrows
+          .replace(/\|-->/g, '-->') // Fix |--> arrows
+          .replace(/\s*-\s*>/g, '-->') // Fix - > arrows with spaces
+          .replace(/\s*→\s*/g, '-->') // Fix unicode arrows
+          .replace(/\s*⟶\s*/g, '-->') // Fix other unicode arrows
+          // Ensure proper graph declaration
+          .replace(/^graph\s*$/m, 'graph TD')
+          .replace(/^graph\s+(?!TD|LR|TB|RL)/m, 'graph TD')
+          // Clean node labels to remove problematic characters
           .replace(/\[([^\]]+)\]/g, (match, content) => {
-            // Remove problematic characters from node labels
-            const cleaned = content.replace(/[()]/g, '').replace(/\s+/g, ' ').trim();
+            // Remove problematic characters from square brackets
+            const cleaned = content
+              .replace(/[|><&"']/g, '') // Remove pipe, angle brackets, ampersand, quotes
+              .replace(/\s+/g, ' ') // Normalize whitespace
+              .trim();
             return `[${cleaned}]`;
           })
           .replace(/\(([^\)]+)\)/g, (match, content) => {
-            // Clean rounded rectangles
-            const cleaned = content.replace(/[()]/g, '').replace(/\s+/g, ' ').trim();
+            // Clean rounded rectangles - avoid nested parentheses
+            const cleaned = content
+              .replace(/[|><&"']/g, '') // Remove problematic characters
+              .replace(/\s+/g, ' ') // Normalize whitespace
+              .trim();
             return `(${cleaned})`;
-          });
+          })
+          // Clean curly braces (diamond shapes)
+          .replace(/\{([^\}]+)\}/g, (match, content) => {
+            const cleaned = content
+              .replace(/[|><&"']/g, '')
+              .replace(/\s+/g, ' ')
+              .trim();
+            return `{${cleaned}}`;
+          })
+          // Remove any remaining pipe symbols that might cause issues
+          .replace(/\|(?![\s]*[\w\[\(\{])/g, '')
+          // Clean up multiple consecutive arrows
+          .replace(/-->\s*-->/g, '-->')
+          // Ensure proper line endings
+          .replace(/\r\n/g, '\n')
+          .replace(/\r/g, '\n');
         
         const { svg } = await mermaid.render(diagramId, cleanedChart);
         if (currentContainer && isMounted) {

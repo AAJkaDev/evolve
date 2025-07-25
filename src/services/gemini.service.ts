@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI, GenerativeModel, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
-import { ChatMessage } from './chat.service';
+import { ChatMessage } from '@/types/chat';
 
 // Comprehensive system instruction for Enzo with advanced mind map capabilities
 export const enzoSystemInstruction = `
@@ -176,6 +176,19 @@ Utilize the FULL potential of markdown to create visually rich and engaging mind
 - Provide analysis and recommendations
 - Offer troubleshooting assistance
 - Support multiple programming languages and frameworks
+
+## Mermaid Diagram Generation (When Requested)
+When generating Mermaid diagrams for visual learning:
+- **CRITICAL**: Use ONLY \`-->\` for arrows (never \`|>\`, \`|->\`, or other variations)
+- Start with \`graph TD\` or \`graph LR\`
+- Use simple node IDs: A, B, C, D
+- Keep labels short and avoid special characters
+- Example:
+  \`\`\`mermaid
+  graph TD
+      A[Start] --> B[Process]
+      B --> C[End]
+  \`\`\`
 
 ## Brand Alignment
 - Embody EVOLVE's values: innovation, growth, accessibility

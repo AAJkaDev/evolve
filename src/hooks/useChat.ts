@@ -1,6 +1,7 @@
-import { useState, useCallback, useMemo, useRef } from 'react';
+import { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import { chatService } from '@/services';
 import { Message, ConversationTurn, UseChatOptions, UseChatReturn } from '@/types';
+import { ChatRequest } from '@/types/chat';
 
 // Media search detection
 const MEDIA_SEARCH_PATTERNS = {
@@ -12,6 +13,8 @@ const MEDIA_SEARCH_PATTERNS = {
 // Research tool detection
 const RESEARCH_PATTERN = /\[TOOL:Research\]\s*(.+)/i;
 
+// Socratic mode detection
+const SOCRATIC_MODE_PATTERN = /\[MODE:Socratic\]\s*(.+)/i;
 
 
 const extractMediaSearchInfo = (content: string) => {
@@ -21,6 +24,7 @@ const extractMediaSearchInfo = (content: string) => {
       return {
         type: type as 'images' | 'videos' | 'both',
         query: match[1]?.trim() || '',
+        originalContent: content, // Keep original for combined processing
       };
     }
   }
@@ -32,6 +36,57 @@ const extractResearchInfo = (content: string) => {
   if (match) {
     return {
       query: match[1]?.trim() || '',
+      originalContent: content, // Keep original for combined processing
+    };
+  }
+  return null;
+};
+
+// NEW: Extract combined mode information
+const extractCombinedModeInfo = (content: string) => {
+  console.log('🔍 Checking for combinations in:', content);
+  
+  // Check for tool + learning mode combinations
+  // Example: [SEARCH:Videos] [TOOL:TutorMode] how to become rich
+  const toolWithLearningPattern = /\[((?:TOOL|SEARCH):[^\]]+)\]\s*\[TOOL:([^\]]+)\]\s*(.+)/i;
+  const toolWithLearningMatch = content.match(toolWithLearningPattern);
+  
+  if (toolWithLearningMatch) {
+    console.log('📚 Found tool + learning mode:', toolWithLearningMatch);
+    return {
+      type: 'tool_with_learning_mode',
+      toolTag: toolWithLearningMatch[1], // e.g., "SEARCH:Videos"
+      learningModeTag: toolWithLearningMatch[2], // e.g., "TutorMode"
+      query: toolWithLearningMatch[3]?.trim() || '',
+      originalContent: content,
+    };
+  }
+  
+  // Check for tool + Socratic combinations
+  // Example: [SEARCH:Videos] [MODE:Socratic] how to become rich
+  const toolWithSocraticPattern = /\[((?:TOOL|SEARCH):[^\]]+)\]\s*\[MODE:Socratic\]\s*(.+)/i;
+  const toolWithSocraticMatch = content.match(toolWithSocraticPattern);
+  
+  if (toolWithSocraticMatch) {
+    console.log('🤔 Found tool + Socratic mode:', toolWithSocraticMatch);
+    return {
+      type: 'tool_with_socratic',
+      toolTag: toolWithSocraticMatch[1], // e.g., "SEARCH:Videos"
+      query: toolWithSocraticMatch[2]?.trim() || '',
+      originalContent: content,
+    };
+  }
+  
+  console.log('❌ No combinations found');
+  return null;
+};
+
+const extractSocraticInfo = (content: string) => {
+  const match = content.match(SOCRATIC_MODE_PATTERN);
+  if (match) {
+    return {
+      query: match[1]?.trim() || '',
+      originalContent: content,
     };
   }
   return null;
@@ -64,12 +119,13 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mode, setMode] = useState<'standard' | 'socratic'>('standard');
   const abortControllerRef = useRef<AbortController | null>(null);
   const currentLoadingMessageRef = useRef<{ turnIndex: number; messageId: string } | null>(null);
 
-  const generateId = () => crypto.randomUUID();
+  const generateId = useCallback(() => crypto.randomUUID(), []);
 
-  // Legacy messages array for backward compatibility
+// Legacy messages array for backward compatibility
   const messages = useMemo(() => {
     const flatMessages: Message[] = [];
     turns.forEach(turn => {
@@ -78,6 +134,20 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     });
     return flatMessages;
   }, [turns]);
+
+// Keep study modes active until manually ended
+useEffect(() => {
+  const handleVisibilityChange = () => {
+    if (document.hidden) {
+      // Preserve current state
+      // Adjust based on the current active mode, whether it's socratic or any other study mode
+    }
+  };
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  return () => {
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+  };
+}, []);
 
   // Build API messages from turns for context
   const buildApiMessages = useCallback((upToTurnIndex?: number) => {
@@ -236,7 +306,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       abortControllerRef.current = null;
       currentLoadingMessageRef.current = null;
     }
-  }, [turns, buildApiMessages, stream]);
+  }, [turns, buildApiMessages, stream, generateId]);
 
   // Handle media search queries
   const handleMediaSearch = useCallback(async (
@@ -286,7 +356,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       console.error('Media search error:', error);
       throw error;
     }
-  }, []);
+  }, [generateId]);
 
   // Handle research queries
   const handleResearchQuery = useCallback(async (
@@ -378,14 +448,255 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       console.error('Research error:', error);
       throw error;
     }
-  }, []);
+  }, [generateId]);
 
-  const sendMessage = useCallback(async (content: string, toolMode: 'default' | 'markmap' = 'default') => {
+  // Helper function to handle study mode responses
+  const handleStudyModeResponse = useCallback(async (
+    query: string,
+    learningModeTag: string
+  ): Promise<Message | null> => {
+    try {
+      // Build the study mode message for API
+      const studyModeContent = `[TOOL:${learningModeTag}] ${query}`;
+      
+      const apiMessages = buildApiMessages();
+      apiMessages.push({
+        role: 'user',
+        content: studyModeContent,
+      });
+
+      const chatRequest: ChatRequest = {
+        messages: apiMessages,
+        mode: 'standard',
+      };
+
+      const { message, timestamp } = await chatService.sendChatRequest(chatRequest);
+      
+      return {
+        id: generateId(),
+        role: 'assistant',
+        content: message,
+        timestamp: new Date(timestamp),
+      };
+    } catch (error) {
+      console.error('Study mode response error:', error);
+      return null;
+    }
+  }, [buildApiMessages, generateId]);
+
+  // Helper function to handle Socratic responses
+  const handleSocraticResponse = useCallback(async (
+    query: string
+  ): Promise<Message | null> => {
+    try {
+      const apiMessages = buildApiMessages();
+      apiMessages.push({
+        role: 'user',
+        content: query,
+      });
+
+      const chatRequest: ChatRequest = {
+        messages: apiMessages,
+        mode: 'socratic',
+      };
+
+      const { message, timestamp } = await chatService.sendChatRequest(chatRequest);
+      
+      return {
+        id: generateId(),
+        role: 'assistant',
+        content: message,
+        timestamp: new Date(timestamp),
+      };
+    } catch (error) {
+      console.error('Socratic response error:', error);
+      return null;
+    }
+  }, [buildApiMessages, generateId]);
+
+  // Helper function to handle tool responses
+  const handleToolResponse = useCallback(async (
+    query: string,
+    toolTag: string
+  ): Promise<Message | null> => {
+    try {
+      // Handle different tool types
+      if (toolTag.startsWith('SEARCH:')) {
+        // Media search tools
+        const searchType = toolTag.replace('SEARCH:', '').toLowerCase();
+        const mediaType = searchType === 'images' ? 'images' : 
+                         searchType === 'videos' ? 'videos' : 'both';
+        
+        const response = await fetch('/api/media-search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query,
+            type: mediaType,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Media search failed: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        
+        return {
+          id: generateId(),
+          role: 'assistant',
+          content: JSON.stringify({
+            type: 'media_search_results',
+            searchType: mediaType,
+            query,
+            results: data,
+          }),
+          timestamp: new Date(),
+        };
+        
+      } else if (toolTag === 'TOOL:Research') {
+        // Research tool
+        const response = await fetch('/api/search-research', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            query,
+            max_results: 10,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error(`Research failed: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        
+        return {
+          id: generateId(),
+          role: 'assistant',
+          content: JSON.stringify({
+            type: 'research_results',
+            query,
+            answer: data.answer,
+            citations: data.citations,
+            sources: data.sources,
+          }),
+          timestamp: new Date(),
+        };
+        
+      } else {
+        // Other tools (MindMap, Practice, Connections, Code)
+        const apiMessages = buildApiMessages();
+        apiMessages.push({
+          role: 'user',
+          content: `[${toolTag}] ${query}`,
+        });
+
+        const chatRequest: ChatRequest = {
+          messages: apiMessages,
+          mode: 'standard',
+        };
+
+        const { message, timestamp } = await chatService.sendChatRequest(chatRequest);
+        
+        return {
+          id: generateId(),
+          role: 'assistant',
+          content: message,
+          timestamp: new Date(timestamp),
+        };
+      }
+    } catch (error) {
+      console.error('Tool response error:', error);
+      return null;
+    }
+  }, [buildApiMessages, generateId]);
+
+  // NEW: Handle combined modes (study mode + tool)
+  const handleCombinedMode = useCallback(async (
+    turnIndex: number,
+    combinedInfo: {
+      type: string;
+      toolTag?: string;
+      learningModeTag?: string;
+      query: string;
+      originalContent: string;
+    }
+  ) => {
+    console.log('🔄 Processing combined mode:', combinedInfo);
+    
+    const responses: Message[] = [];
+    
+    if (combinedInfo.type === 'tool_with_learning_mode') {
+      console.log('📚 Tool + Learning Mode combination');
+      
+      // First, handle the study mode response
+      const studyModeMessage = await handleStudyModeResponse(
+        combinedInfo.query, 
+        combinedInfo.learningModeTag || ''
+      );
+      if (studyModeMessage) {
+        responses.push(studyModeMessage);
+      }
+      
+      // Then, handle the tool response
+      const toolMessage = await handleToolResponse(
+        combinedInfo.query,
+        combinedInfo.toolTag || ''
+      );
+      if (toolMessage) {
+        responses.push(toolMessage);
+      }
+      
+    } else if (combinedInfo.type === 'tool_with_socratic') {
+      console.log('🤔 Tool + Socratic Mode combination');
+      
+      // First, handle the Socratic mode response
+      const socraticMessage = await handleSocraticResponse(
+        combinedInfo.query
+      );
+      if (socraticMessage) {
+        responses.push(socraticMessage);
+      }
+      
+      // Then, handle the tool response
+      const toolMessage = await handleToolResponse(
+        combinedInfo.query,
+        combinedInfo.toolTag || ''
+      );
+      if (toolMessage) {
+        responses.push(toolMessage);
+      }
+    }
+    
+    // Add all responses to the turn
+    if (responses.length > 0) {
+      setTurns(prev => prev.map((t, i) => 
+        i === turnIndex 
+          ? { ...t, aiResponses: responses }
+          : t
+      ));
+    }
+  }, [handleStudyModeResponse, handleSocraticResponse, handleToolResponse, setTurns]);
+
+  const sendMessage = useCallback(async (content: string) => {
     if (!content.trim() || isLoading) return;
 
     setIsLoading(true);
     setError(null);
 
+    console.log('🔍 Processing message:', content.trim());
+
+    // COMBINED MODE PROCESSING: Check for combinations first
+    const combinedModeInfo = extractCombinedModeInfo(content.trim());
+    
+    // Check if this is a Socratic mode query first
+    const socraticInfo = extractSocraticInfo(content.trim());
+    
     // Check if this is a media search query
     const mediaSearchInfo = extractMediaSearchInfo(content.trim());
     
@@ -413,6 +724,102 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
 
     // Add new turn to state
     setTurns(prev => [...prev, newTurn]);
+
+    // NEW: Handle combined modes first (highest priority)
+    if (combinedModeInfo) {
+      console.log('🎯 Combined mode detected:', combinedModeInfo);
+      try {
+        await handleCombinedMode(newTurnIndex, combinedModeInfo);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Combined mode failed');
+        setTurns(prev => prev.filter(t => t.id !== newTurn.id));
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
+
+    // Handle Socratic mode queries
+    if (socraticInfo) {
+      try {
+        // For Socratic mode, set the mode and send the cleaned content
+        setMode('socratic');
+        
+        // Build API messages from existing turns plus the new user message
+        const apiMessages = buildApiMessages(); // Get all previous context
+        apiMessages.push({
+          role: userMessage.role,
+          content: socraticInfo.query, // Use cleaned content without the MODE tag
+        });
+
+        // Create ChatRequest with Socratic mode
+        const chatRequest: ChatRequest = {
+          messages: apiMessages,
+          mode: 'socratic',
+        };
+
+        // Create loading message
+        const loadingMessage: Message = {
+          id: generateId(),
+          role: 'assistant',
+          content: '',
+          timestamp: new Date(),
+        };
+
+        // Add loading message to the new turn
+        setTurns(prev => prev.map((t, i) => 
+          i === newTurnIndex 
+            ? { ...t, aiResponses: [loadingMessage] }
+            : t
+        ));
+
+        if (stream) {
+          await chatService.sendStreamingChatRequest(chatRequest, (chunk) => {
+            setTurns(prev => prev.map((t, i) => 
+              i === newTurnIndex 
+                ? {
+                    ...t,
+                    aiResponses: t.aiResponses.map(msg => 
+                      msg.id === loadingMessage.id 
+                        ? { ...msg, content: msg.content + chunk }
+                        : msg
+                    )
+                  }
+                : t
+            ));
+          });
+        } else {
+          const { message, timestamp } = await chatService.sendChatRequest(chatRequest);
+          const assistantMessage: Message = {
+            id: generateId(),
+            role: 'assistant',
+            content: message,
+            timestamp: new Date(timestamp),
+          };
+          
+          // Replace loading message with actual response
+          setTurns(prev => prev.map((t, i) => 
+            i === newTurnIndex 
+              ? {
+                  ...t,
+                  aiResponses: t.aiResponses.map(msg => 
+                    msg.id === loadingMessage.id ? assistantMessage : msg
+                  )
+                }
+              : t
+          ));
+        }
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Socratic mode failed');
+        // Remove the turn if Socratic mode fails
+        setTurns(prev => prev.filter(t => t.id !== newTurn.id));
+      } finally {
+        setIsLoading(false);
+        // Keep Socratic mode active for the session instead of resetting
+        // setMode('standard'); // Removed to maintain Socratic session continuity
+      }
+      return;
+    }
 
     // Handle media search queries
     if (mediaSearchInfo) {
@@ -450,6 +857,12 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
         content: userMessage.content,
       });
 
+      // Create ChatRequest with current mode
+      const chatRequest: ChatRequest = {
+        messages: apiMessages,
+        mode: mode,
+      };
+
       // Create loading message
       const loadingMessage: Message = {
         id: generateId(),
@@ -466,7 +879,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       ));
 
       if (stream) {
-        await chatService.sendStreamedMessage(apiMessages, (chunk) => {
+        await chatService.sendStreamingChatRequest(chatRequest, (chunk) => {
           setTurns(prev => prev.map((t, i) => 
             i === newTurnIndex 
               ? {
@@ -479,9 +892,9 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
                 }
               : t
           ));
-        }, toolMode);
+        });
       } else {
-        const { message, timestamp } = await chatService.sendMessage(apiMessages, toolMode);
+        const { message, timestamp } = await chatService.sendChatRequest(chatRequest);
         const assistantMessage: Message = {
           id: generateId(),
           role: 'assistant',
@@ -508,8 +921,10 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
       throw err;
     } finally {
       setIsLoading(false);
+      // Reset mode back to 'standard' after each message is sent
+      setMode('standard');
     }
-    }, [turns, isLoading, buildApiMessages, stream, handleMediaSearch, handleResearchQuery]);
+    }, [turns, isLoading, buildApiMessages, stream, handleMediaSearch, handleResearchQuery, mode, handleCombinedMode, generateId]);
 
   const clearMessages = useCallback(() => {
     setTurns([]);
@@ -586,5 +1001,8 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     handleRetry,
     handleEditAndResubmit,
     stopGeneration,
+    // Socratic mode management
+    mode,
+    setMode,
   };
 }

@@ -16,14 +16,14 @@ export default function ChatPageNew({}: ChatPageNewProps) {
   const [showResearchPanel, setShowResearchPanel] = useState(false);
   const [researchQuery, setResearchQuery] = useState("");
   
-  const { 
-    turns, 
-    isLoading, 
-    error, 
-    sendMessage, 
-    clearMessages, 
-    retry, 
-    handleRetry, 
+  const {
+    turns,
+    isLoading,
+    error,
+    sendMessage,
+    clearMessages,
+    retry,
+    handleRetry,
     handleEditAndResubmit,
     stopGeneration
   } = useChat({

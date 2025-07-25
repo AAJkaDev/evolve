@@ -7,6 +7,8 @@ import { useChat } from "@/hooks/useChat";
 import { ChatInput, ChatLoading, ChatError } from "@/components";
 import ChatMessage from "@/components/chat/ChatMessage";
 import { ResearchInline } from "@/components/chat/ResearchInline";
+import { ChatBackground } from "@/components/chat/ChatBackground";
+import { useTheme } from "@/contexts/ThemeContext";
 import { 
   PiArrowLeft,
   PiSparkle,
@@ -17,13 +19,14 @@ import {
 
 export default function Chat() {
   const router = useRouter();
+  const { theme } = useTheme();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [streamEnabled, setStreamEnabled] = useState(true);
   const [showResearchPanel, setShowResearchPanel] = useState(false);
   const [researchQuery, setResearchQuery] = useState("");
   const [completedResearchQueries, setCompletedResearchQueries] = useState<Set<string>>(new Set());
   
-  const { 
+const { 
     turns, 
     isLoading, 
     error, 
@@ -96,31 +99,40 @@ export default function Chat() {
   };
 
   return (
-    <div className="w-full h-screen bg-[#F5F5EC] flex flex-col overflow-hidden relative">
-      {/* Dot Background Layer */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundSize: '20px 20px',
-          backgroundImage: `radial-gradient(#1A1A1A 1px, transparent 1px)`,
-          opacity: 0.12,
-        }}
-      />
+<div className={`w-full h-screen ${theme === 'dark' ? 'bg-transparent' : 'bg-[#F5F5EC]'} flex flex-col overflow-hidden relative ${theme === 'dark' ? 'dark' : ''}`}>
+      <ChatBackground />
+      {/* Theme-aware Dot Background Layer */}
+      {theme === 'light' && (
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundSize: '20px 20px',
+            backgroundImage: `radial-gradient(#1A1A1A 1px, transparent 1px)`,
+            opacity: 0.12,
+          }}
+        />
+      )}
       
-      {/* Radial gradient overlay for faded edges effect */}
-      <div 
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `radial-gradient(ellipse at center, transparent 10%, rgba(245, 245, 236, 0.8) 70%)`,
-          maskImage: `radial-gradient(ellipse at center, transparent 20%, black 80%)`,
-        }}
-      />
+      {/* Theme-aware Radial gradient overlay for faded edges effect - only for light mode */}
+      {theme === 'light' && (
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `radial-gradient(ellipse at center, transparent 10%, rgba(245, 245, 236, 0.8) 70%)`,
+            maskImage: `radial-gradient(ellipse at center, transparent 20%, black 80%)`,
+          }}
+        />
+      )}
       
       {/* Minimal Header */}
       <motion.header 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative z-20 bg-white/70 backdrop-blur-md border-b border-dashed border-[#1A1A1A]/20"
+        className={`relative z-20 backdrop-blur-md border-b border-dashed ${
+          theme === 'dark' 
+            ? 'bg-black/80 border-white/20' 
+            : 'bg-white/70 border-[#1A1A1A]/20'
+        }`}
       >
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -130,9 +142,15 @@ export default function Chat() {
                 onClick={() => router.push('/dashboard')}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="p-2 rounded-xl bg-white/80 border border-dashed border-[#1A1A1A]/30 hover:border-[#4285F4] transition-all"
+                className={`p-2 rounded-xl border border-dashed hover:border-[#4285F4] transition-all ${
+                  theme === 'dark'
+                    ? 'bg-gray-800/80 border-white/30'
+                    : 'bg-white/80 border-[#1A1A1A]/30'
+                }`}
               >
-                <PiArrowLeft className="w-5 h-5 text-[#1A1A1A]" />
+                <PiArrowLeft className={`w-5 h-5 ${
+                  theme === 'dark' ? 'text-white' : 'text-[#1A1A1A]'
+                }`} />
               </motion.button>
               
               <div className="flex items-center gap-3">
@@ -140,8 +158,12 @@ export default function Chat() {
                   <PiSparkle className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <span className="text-lg font-bold text-[#1A1A1A]">EVOLVE</span>
-                  <span className="text-sm text-[#363636]/70 ml-2">Chat</span>
+                  <span className={`text-lg font-bold ${
+                    theme === 'dark' ? 'text-white' : 'text-[#1A1A1A]'
+                  }`}>EVOLVE</span>
+                  <span className={`text-sm ml-2 ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-[#363636]/70'
+                  }`}>Chat</span>
                 </div>
               </div>
             </div>
@@ -153,15 +175,23 @@ export default function Chat() {
                 onClick={() => setStreamEnabled(!streamEnabled)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/80 border border-dashed border-[#1A1A1A]/20 hover:border-[#4285F4] transition-all"
+                className={`flex items-center gap-2 px-3 py-2 rounded-xl border border-dashed hover:border-[#4285F4] transition-all ${
+                  theme === 'dark'
+                    ? 'bg-gray-800/80 border-white/20'
+                    : 'bg-white/80 border-[#1A1A1A]/20'
+                }`}
                 title={streamEnabled ? "Disable streaming" : "Enable streaming"}
               >
                 {streamEnabled ? (
                   <PiToggleRight className="w-5 h-5 text-[#4285F4]" />
                 ) : (
-                  <PiToggleLeft className="w-5 h-5 text-[#363636]" />
+                  <PiToggleLeft className={`w-5 h-5 ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-[#363636]'
+                  }`} />
                 )}
-                <span className="text-xs font-medium text-[#363636]">Stream</span>
+                <span className={`text-xs font-medium ${
+                  theme === 'dark' ? 'text-gray-300' : 'text-[#363636]'
+                }`}>Stream</span>
               </motion.button>
               
               {/* Clear Messages */}
@@ -169,10 +199,16 @@ export default function Chat() {
                 onClick={clearMessages}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="p-2 rounded-xl bg-white/80 border border-dashed border-[#1A1A1A]/20 hover:border-[#E5533C] transition-all"
+                className={`p-2 rounded-xl border border-dashed hover:border-[#E5533C] transition-all ${
+                  theme === 'dark'
+                    ? 'bg-gray-800/80 border-white/20'
+                    : 'bg-white/80 border-[#1A1A1A]/20'
+                }`}
                 title="Clear all messages"
               >
-                <PiTrash className="w-5 h-5 text-[#363636] hover:text-[#E5533C]" />
+                <PiTrash className={`w-5 h-5 hover:text-[#E5533C] ${
+                  theme === 'dark' ? 'text-gray-300' : 'text-[#363636]'
+                }`} />
               </motion.button>
             </div>
           </div>
@@ -192,15 +228,23 @@ export default function Chat() {
                   animate={{ opacity: 1, y: 0 }}
                   className="text-center mt-32"
                 >
-                  <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full border border-dashed border-[#4285F4]/40 mb-6">
+                  <div className={`inline-flex items-center gap-2 backdrop-blur-sm px-4 py-2 rounded-full border border-dashed border-[#4285F4]/40 mb-6 ${
+                    theme === 'dark' ? 'bg-gray-800/70' : 'bg-white/70'
+                  }`}>
                     <div className="w-2 h-2 bg-[#4285F4] rounded-full animate-pulse" />
                     <span className="text-sm font-medium text-[#4285F4]">EVOLVE AI Ready</span>
                     <div className="w-2 h-2 bg-[#34C9A3] rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
                   </div>
                   
-                  <h2 className="text-3xl font-bold text-[#1A1A1A] mb-4">Ready to Learn?</h2>
-                  <p className="text-lg text-[#363636]/80 mb-2">Ask me anything about your subjects, projects, or learning goals.</p>
-                  <p className="text-sm text-[#363636]/60">I&apos;m here to help you understand complex concepts, solve problems, and guide your learning journey.</p>
+                  <h2 className={`text-3xl font-bold mb-4 ${
+                    theme === 'dark' ? 'text-white' : 'text-[#1A1A1A]'
+                  }`}>Ready to Learn?</h2>
+                  <p className={`text-lg mb-2 ${
+                    theme === 'dark' ? 'text-gray-300' : 'text-[#363636]/80'
+                  }`}>Ask me anything about your subjects, projects, or learning goals.</p>
+                  <p className={`text-sm ${
+                    theme === 'dark' ? 'text-gray-400' : 'text-[#363636]/60'
+                  }`}>I&apos;m here to help you understand complex concepts, solve problems, and guide your learning journey.</p>
                 </motion.div>
               ) : (
                 turns.map((turn, turnIndex) => (
@@ -240,7 +284,11 @@ export default function Chat() {
           </div>
 
           {/* Fixed chat input at bottom */}
-          <div className="flex-shrink-0 bg-white/80 backdrop-blur-md border-t border-dashed border-[#1A1A1A]/20">
+          <div className={`flex-shrink-0 backdrop-blur-md border-t border-dashed ${
+            theme === 'dark' 
+              ? 'bg-black/80 border-white/20' 
+              : 'bg-white/80 border-[#1A1A1A]/20'
+          }`}>
             <div className="max-w-4xl mx-auto px-6 py-4">
               <ChatInput 
                 onSendMessage={handleSendMessage} 

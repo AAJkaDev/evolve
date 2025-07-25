@@ -52,7 +52,7 @@ export const GlobalCursor: React.FC<GlobalCursorProps> = ({ userName = "User" })
   const handleMouseDown = useCallback(() => {
     isClickingRef.current = true;
     if (cursorPointerRef.current) {
-      cursorPointerRef.current.style.transform = 'scale(0.8) scaleX(-1)';
+      cursorPointerRef.current.style.transform = 'scale(0.8) scaleX(-1) rotate(-15deg)';
     }
     // Show ripple effect
     if (rippleRef.current) {
@@ -71,7 +71,7 @@ export const GlobalCursor: React.FC<GlobalCursorProps> = ({ userName = "User" })
     isClickingRef.current = false;
     if (cursorPointerRef.current) {
       const scale = isHoveringRef.current ? 1.2 : 1;
-      cursorPointerRef.current.style.transform = `scale(${scale}) scaleX(-1)`;
+      cursorPointerRef.current.style.transform = `scale(${scale}) scaleX(-1) rotate(-15deg)`;
     }
   }, []);
 
@@ -84,7 +84,7 @@ export const GlobalCursor: React.FC<GlobalCursorProps> = ({ userName = "User" })
     if (wasHovering !== isHoveringRef.current) {
       if (cursorPointerRef.current) {
         const scale = isClickingRef.current ? 0.8 : isHoveringRef.current ? 1.2 : 1;
-        cursorPointerRef.current.style.transform = `scale(${scale}) scaleX(-1)`;
+        cursorPointerRef.current.style.transform = `scale(${scale}) scaleX(-1) rotate(-15deg)`;
       }
       
       // Show/hide user bubble instantly
@@ -154,7 +154,7 @@ export const GlobalCursor: React.FC<GlobalCursorProps> = ({ userName = "User" })
         ref={cursorPointerRef}
         className="relative"
         style={{
-          transform: 'scale(1) scaleX(-1)',
+          transform: 'scale(1) scaleX(-1) rotate(-15deg)',
           willChange: 'transform',
           transition: 'transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
         }}
@@ -202,8 +202,8 @@ export const GlobalCursor: React.FC<GlobalCursorProps> = ({ userName = "User" })
         className="absolute rounded-full border-2 pointer-events-none"
         style={{ 
           borderColor: currentColor,
-          left: -12,
-          top: -12,
+          left: -1,
+          top: -14,
           width: 24,
           height: 24,
           opacity: 0,

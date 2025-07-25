@@ -1,13 +1,13 @@
 // Mock AI responses for when OpenRouter is rate limited
 export const mockAIResponses = [
-  "Hello! I'm Kimi-K2, your AI assistant. I'm here to help you with any questions or tasks you have. How can I assist you today?",
+  "Hello! I'm Enzo, your AI assistant. I'm here to help you with any questions or tasks you have. How can I assist you today?",
   "I understand you're looking for help. As an AI assistant, I can help with various tasks including answering questions, writing, coding, analysis, and more. What would you like to work on?",
   "Thank you for your question! I'm designed to be helpful, harmless, and honest. I can assist with a wide range of topics. Could you please provide more details about what you need help with?",
   "That's an interesting question! I'm here to provide helpful and accurate information. Let me know what specific topic or task you'd like assistance with.",
   "I appreciate you reaching out! As your AI assistant, I'm ready to help with whatever you need. Please feel free to ask me anything or let me know how I can be of service.",
   "Great question! I'm designed to be a helpful AI assistant that can provide information, help with tasks, and engage in meaningful conversations. What would you like to explore today?",
   "I'm here to help! Whether you need information, want to brainstorm ideas, need help with a project, or just want to have a conversation, I'm ready to assist. What's on your mind?",
-  "Thanks for using the chat! I'm Kimi-K2, and I'm designed to be helpful across many different areas. From answering questions to helping with creative tasks, I'm here for you. How can I help?",
+  "Thanks for using the chat! I'm Enzo, and I'm designed to be helpful across many different areas. From answering questions to helping with creative tasks, I'm here for you. How can I help?",
   "I'm glad you're here! As an AI assistant, I can help with research, writing, problem-solving, coding, and much more. What would you like to work on together?",
   "Hello! I'm ready to assist you with whatever you need. Whether it's answering questions, helping with analysis, creative writing, or technical tasks, I'm here to help. What can I do for you?"
 ];
@@ -17,7 +17,7 @@ export function getMockAIResponse(userMessage: string): string {
   const message = userMessage.toLowerCase();
   
   if (message.includes('hello') || message.includes('hi') || message.includes('hey')) {
-    return "Hello! I'm Kimi-K2, your AI assistant. It's nice to meet you! How can I help you today?";
+    return "Hello! I'm Enzo, your AI assistant. It's nice to meet you! How can I help you today?";
   }
   
   if (message.includes('help') || message.includes('assist')) {
@@ -25,7 +25,7 @@ export function getMockAIResponse(userMessage: string): string {
   }
   
   if (message.includes('what') && (message.includes('you') || message.includes('kimi'))) {
-    return "I'm Kimi-K2, an AI assistant designed to be helpful, harmless, and honest. I can help with questions, creative tasks, technical problems, writing, and engaging conversations. What would you like to know more about?";
+    return "I'm Enzo, an AI assistant designed to be helpful, harmless, and honest. I can help with questions, creative tasks, technical problems, writing, and engaging conversations. What would you like to know more about?";
   }
   
   if (message.includes('code') || message.includes('programming') || message.includes('develop')) {

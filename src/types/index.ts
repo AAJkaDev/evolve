@@ -36,6 +36,9 @@ export interface UseChatReturn {
   handleRetry: (turnIndex: number) => Promise<void>;
   handleEditAndResubmit: (turnIndex: number, newContent: string) => Promise<void>;
   stopGeneration: () => void;
+  // Socratic mode management
+  mode: 'standard' | 'socratic';
+  setMode: (mode: 'standard' | 'socratic') => void;
 }
 
 export interface OpenRouterMessage {

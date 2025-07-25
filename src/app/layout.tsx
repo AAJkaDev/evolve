@@ -4,6 +4,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { CursorWrapper } from '@/components/ui/cursor-wrapper';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,8 +24,9 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/favicon.svg',
-        type: 'image/svg+xml',
+        url: '/LogoForBlackBG.png',
+        type: 'image/png',
+        sizes: '32x32'
       },
       {
         url: '/favicon.ico',
@@ -34,9 +36,9 @@ export const metadata: Metadata = {
     ],
     apple: [
       {
-        url: '/favicon.svg',
+        url: '/LogoForBlackBG.png',
         sizes: '180x180',
-        type: 'image/svg+xml',
+        type: 'image/png',
       },
     ],
   },
@@ -45,7 +47,7 @@ export const metadata: Metadata = {
     description: "Revolutionize your learning experience with EVOLVE - an AI-powered platform for personalized, project-based learning.",
     images: [
       {
-        url: '/logo.svg',
+        url: '/LogoForWhiteBG.png',
         width: 1200,
         height: 630,
         alt: 'EVOLVE Logo',
@@ -56,7 +58,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: "EVOLVE - AI-Powered Learning Platform",
     description: "Revolutionize your learning experience with EVOLVE - an AI-powered platform for personalized, project-based learning.",
-    images: ['/logo.svg'],
+    images: ['/LogoForWhiteBG.png'],
   },
 };
 
@@ -71,10 +73,12 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <CursorWrapper />
-          {children}
-          <Analytics />
-          <SpeedInsights />
+          <ThemeProvider>
+            <CursorWrapper />
+            {children}
+            <Analytics />
+            <SpeedInsights />
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>

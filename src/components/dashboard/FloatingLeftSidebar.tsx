@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import ThemeAwareLogo from '@/components/ui/ThemeAwareLogo';
 import { 
   PiHouse, 
   PiHouseFill,
@@ -167,9 +167,7 @@ const FloatingLeftSidebar: React.FC<FloatingLeftSidebarProps> = ({ forceCollapse
                 transition={{ duration: 0.6, ease: "easeInOut" }}
                 className="cursor-pointer flex items-center justify-center"
               >
-                <Image
-                  src="/logo.svg"
-                  alt="EVOLVE"
+                <ThemeAwareLogo
                   width={28}
                   height={28}
                   className="opacity-90"
@@ -242,9 +240,7 @@ const FloatingLeftSidebar: React.FC<FloatingLeftSidebarProps> = ({ forceCollapse
                       animate={{ rotate: hoveredItem === 'logo' ? 360 : 0 }}
                       transition={{ duration: 0.8, ease: "easeInOut" }}
                     >
-                      <Image
-                        src="/logo.svg"
-                        alt="EVOLVE"
+                      <ThemeAwareLogo
                         width={28}
                         height={28}
                         className="opacity-90"

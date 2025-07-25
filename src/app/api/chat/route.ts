@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createGeminiService } from '@/services';
-import { ChatMessage } from '@/services/chat.service';
+import { createLLMRouter } from '@/services';
+import { ChatMessage, ChatRequest } from '@/types/chat';
 import { validateMessages } from '@/utils';
+import { createSocraticSystemMessage, getSocraticContextForState } from '@/config/socratic-system-prompt';
 
 export async function POST(request: NextRequest) {
   try {
-    const { messages } = await request.json();
+    const requestBody: ChatRequest = await request.json();
+    const { messages, mode } = requestBody;
 
     if (!messages || !Array.isArray(messages)) {
       return NextResponse.json(
@@ -21,87 +23,58 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get Gemini service
-    const service = createGeminiService();
+    // Get LLM router service (Groq primary, Gemini fallback)
+    const llmRouter = createLLMRouter();
 
-    // Enhanced Enzo system prompt with new two-part response protocol
+    // Handle Socratic mode with system prompt instead of microservice
+    if (mode === 'socratic') {
+      console.log('Processing in Socratic mode with system prompt...');
+      
+      // Get the last user message for context engineering
+      const lastUserMessage = messages[messages.length - 1];
+      const messageCount = messages.filter(msg => msg.role === 'user').length;
+      
+      // Create Socratic system instruction with context engineering
+      const socraticContext = getSocraticContextForState(messageCount, lastUserMessage?.content || '');
+      const socraticSystemInstruction: ChatMessage = {
+        role: 'system',
+        content: createSocraticSystemMessage() + '\n\n' + socraticContext
+      };
+
+      const processedMessages: ChatMessage[] = [
+        socraticSystemInstruction,
+        ...messages.filter((msg: ChatMessage) => msg.role !== 'system')
+      ];
+
+      // Send request via LLM router with Socratic system prompt
+      const result = await llmRouter.sendMessage(processedMessages);
+
+      return NextResponse.json({
+        message: result.message,
+        timestamp: new Date().toISOString(),
+        provider: result.provider
+      });
+    }
+
+    // Continue with standard/default chat flow for mode === 'standard' or undefined
+    console.log(`Processing in standard mode (non-streaming, mode: ${mode || 'undefined'})...`);
+
+    // Condensed Enzo system prompt
     const enzoSystemInstruction: ChatMessage = {
       role: 'system',
-      content: `You are Enzo, an expert AI assistant. Your primary function is to provide clear, helpful responses.
+      content: `You are Enzo, an expert AI assistant who provides clear, helpful responses.
 
-      **--- CRITICAL RESPONSE PROTOCOL ---**
+**Response Protocol:**
+1. **Standard Response:** Normal conversational text and code blocks for any request not asking for diagrams.
+2. **Diagram Response:** When user asks for diagrams/visuals:
+   - If they also want explanation: Put explanation above "---" then Mermaid diagram below
+   - If diagram only: Just provide the Mermaid diagram
 
-      Your responses MUST follow one of two formats:
-
-      **1. Standard Response (Default):**
-         - For ANY request that does not explicitly ask for a "diagram", "visual", "flowchart", "graph", etc., you will respond with normal, conversational text and/or standard code blocks (like Python, JS).
-
-      **2. Structured Diagram Response:**
-         - This format is ONLY for when the user asks for a diagram AND provides additional requests, like "explain," "summarize," or "give me the code."
-         - You MUST structure your response into two parts, separated by a horizontal rule ("---").
-         - **Part 1 (Above the "---"):** The explanatory text or additional code the user requested.
-         - **Part 2 (Below the "---"):** The Mermaid diagram block, which MUST start with \`\`\`mermaid and end with \`\`\`.
-
-      **--- EXAMPLES ---**
-
-      * **User Prompt:** "Hi there"
-          **Your Correct Response:** "Hello! How can I help you today?"
-
-      * **User Prompt:** "Can you draw a flowchart of the login process?"
-          **Your Correct Response (Diagram Only):**
-          \`\`\`mermaid
-          graph TD
-              A[User visits page] --> B{Enter credentials};
-              B --> C[Submit];
-              C --> D{Valid?};
-              D -- Yes --> E[Logged In];
-              D -- No --> B;
-          \`\`\`
-
-      * **User Prompt:** "Visualize the merge sort algorithm and explain it."
-          **Your Correct Response (Structured Diagram Response):**
-          Merge sort is a divide-and-conquer algorithm. It works by:
-          1.  **Divide:** Recursively splitting the input array in half until each subarray has only one element.
-          2.  **Conquer & Combine:** Merging the one-element subarrays back together in sorted order.
-
-          The diagram below illustrates one step of the merge process.
-          ---
-          \`\`\`mermaid
-          graph TD
-              subgraph "Merge Step"
-                  A([1, 5]) & B([2, 4]) --> C{Merge};
-                  C --> D([1, 2, 4, 5]);
-              end
-          \`\`\`
-
-      **--- MERMAID SYNTAX RULES ---**
-      When creating Mermaid diagrams, follow these strict rules:
-      1. Use simple node names (A, B, C, etc.) for connections
-      2. Keep node labels simple and avoid special characters like parentheses () in labels
-      3. Use square brackets for rectangular nodes: [Simple Label]
-      4. Use parentheses for rounded rectangles: (Simple Label)
-      5. Use curly braces for decision nodes: {Simple Label}
-      6. Avoid spaces in node IDs
-      7. Use simple arrow syntax: A --> B
-      8. For labels with special characters, use quotes: A["Label with (parentheses)"]
-      
-      **GOOD Example:**
-      \`\`\`mermaid
-      graph TD
-          A[Start] --> B[Process Data]
-          B --> C{Is Valid?}
-          C --Yes--> D[Success]
-          C --No--> E[Error]
-      \`\`\`
-      
-      **BAD Example (avoid):**
-      \`\`\`mermaid
-      graph TD
-          A[Start] --> B[Process (Data)]
-          B --> C{Is Valid (Check)?}
-      \`\`\`
-
-      This protocol is mandatory. Adhering to it will prevent all errors.`
+**Mermaid Rules:**
+- Use simple node IDs (A, B, C)
+- Square brackets [Label], parentheses (Label), curly braces {Decision}
+- Simple arrows: A --> B
+- Avoid special characters in labels`
     };
 
     const processedMessages: ChatMessage[] = [
@@ -109,24 +82,26 @@ export async function POST(request: NextRequest) {
       ...messages.filter((msg: ChatMessage) => msg.role !== 'system')
     ];
 
-    // Send request to Gemini API
-    const response = await service.sendMessage(processedMessages);
+    // Send request via LLM router
+    const result = await llmRouter.sendMessage(processedMessages);
 
     return NextResponse.json({
-      message: response,
-      timestamp: new Date().toISOString()
+      message: result.message,
+      timestamp: new Date().toISOString(),
+      provider: result.provider
     });
 
   } catch (error) {
     console.error('Chat API Error:', error);
     
-    // Check if it's an API key issue (server-side only)
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
+    // Check if any LLM service is available
+    const groqKey = process.env.GROQ_API_KEY;
+    const geminiKey = process.env.GEMINI_API_KEY;
+    if (!groqKey && !geminiKey) {
       return NextResponse.json(
         { 
-          error: 'Gemini API key not configured. Please set GEMINI_API_KEY in your environment variables.',
-          details: 'Missing server-side API key'
+          error: 'No LLM service configured. Please set GROQ_API_KEY or GEMINI_API_KEY in your environment variables.',
+          details: 'Missing server-side API keys'
         },
         { status: 500 }
       );
